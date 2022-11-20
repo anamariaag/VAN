@@ -212,7 +212,7 @@
                     </div>
 
                     <!-- FECHA -->
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <div class="form-group">
                             <div class="input-group">
                                 <input
@@ -224,12 +224,12 @@
                                 />
                             </div>
                         </div>
-                    </div>
-                    <br />
+                    </div> -->
                     <br />
                     <br />
                     <br />
                     <div class="col-md-12">
+                        <!-- rounded rounded-pill shadow-sm -->
                         <div class="month">
                             <ul>
                                 <li class="prev">
@@ -238,7 +238,10 @@
                                     >
                                 </li>
                                 <li class="next">
-                                    <a type="button" onclick="changeMonth(1)"
+                                    <a
+                                        role="button"
+                                        type="button"
+                                        onclick="changeMonth(1)"
                                         >&#10095;</a
                                     >
                                 </li>
@@ -264,14 +267,20 @@
                         </ul>
 
                         <ul id="days" class="days"></ul>
+                        <a
+                            class="btn todayBtn"
+                            role="button"
+                            onclick="returnToday()"
+                            >TODAY</a
+                        >
                     </div>
 
                     <!-- PIE CHART -->
                     <!-- <div class="col-md-12">
                         <center>
                             <div class="pie"></div>
-                        </center>
-                        <!-- etiquetas -->
+                        </center> -->
+                    <!-- etiquetas -->
                     <!-- <div class="legend">
                             <div class="segment1"></div>
                             <div>Completadas</div>
@@ -280,7 +289,7 @@
                             <div class="segment3"></div>
                             <div>Urgentes</div>
                         </div>
-                    </div>  -->
+                    </div> -->
                 </div>
             </div>
 
@@ -971,17 +980,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- FOOTER -->
-        <div class="container">
-            <div class="row">
-                <footer class="page-footer font-small fixed-bottom" id="navbar">
-                    <div class="footer-copyright text-center py-3">
-                        Proyecto Aplicaciones y Servicios WEB <br />ITESO 2022
-                    </div>
-                </footer>
-            </div>
-        </div>
+        <br />
+        <br />
+        <br />
+        <br />
 
         <!-- MODAL CONFIRMACIÓN ELIMINAR -->
         <div class="modal fade" id="eliminarTarea" role="dialog">
@@ -1282,7 +1284,15 @@
                 </div>
             </div>
         </div>
-
+        <div class="container">
+            <div class="row">
+                <footer class="page-footer font-small fixed-bottom" id="navbar">
+                    <div class="footer-copyright text-center py-3">
+                        Proyecto Aplicaciones y Servicios WEB <br />ITESO 2022
+                    </div>
+                </footer>
+            </div>
+        </div>
         <!-- ALERTA DE TAREA COMPLETADA -->
         <script>
             function tareaCompletada() {

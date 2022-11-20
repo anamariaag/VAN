@@ -1,13 +1,18 @@
 var days = 0;
 var today = new Date();
+var selected = new Date();
 const setCalendar = () => {
-    days = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    days = new Date(
+        selected.getFullYear(),
+        selected.getMonth() + 1,
+        0
+    ).getDate();
 
-    let k = today.getDate();
+    let k = selected.getDate();
     k = 1;
-    let m = (today.getMonth() + 11) % 12;
-    let C = Math.floor(today.getFullYear() / 100);
-    let Y = today.getFullYear() % 100;
+    let m = (selected.getMonth() + 11) % 12;
+    let C = Math.floor(selected.getFullYear() / 100);
+    let Y = selected.getFullYear() % 100;
     let W =
         (k +
             Math.floor(2.6 * m - 0.2) -
@@ -35,17 +40,24 @@ const setCalendar = () => {
     let li_arr = Array.from(lis);
 
     for (let i = 0; i < li_arr.length; i++) {
+        if (
+            li_arr[i].innerText == today.getDate() &&
+            selected.getMonth() == today.getMonth() &&
+            selected.getFullYear() == today.getFullYear()
+        ) {
+            li_arr[i].setAttribute("class", "today");
+            li_arr[i].addEventListener("mouseout", () => {
+                li_arr[i].setAttribute("class", "today");
+            });
+        } else {
+            li_arr[i].addEventListener("mouseout", () => {
+                li_arr[i].classList.remove("activeDay");
+            });
+        }
+
         li_arr[i].addEventListener("mouseover", () => {
-            let varElem = document.createElement("span");
-            varElem.setAttribute("class", "active");
-            varElem.innerText = li_arr[i].innerText;
-            li_arr[i].innerText = "";
-            li_arr[i].append(varElem);
-        });
-        li_arr[i].addEventListener("mouseout", () => {
-            let span = li_arr[i].firstChild;
-            li_arr[i].innerText = span.innerText;
-            span.remove();
+            // li_arr[i].classList.add("activeDay");
+            li_arr[i].setAttribute("class", "activeDay");
         });
     }
 
@@ -63,14 +75,20 @@ const setCalendar = () => {
         "November",
         "December",
     ];
-    document.getElementById("monthName").innerText = months[today.getMonth()];
-    document.getElementById("year").innerText = today.getFullYear();
+    document.getElementById("monthName").innerText =
+        months[selected.getMonth()];
+    document.getElementById("year").innerText = selected.getFullYear();
 };
 
 const changeMonth = (num) => {
-    today.setMonth(today.getMonth() + num);
+    selected.setMonth(selected.getMonth() + num);
     document.getElementById("days").innerHTML = "";
+    setCalendar();
+};
 
+const returnToday = () => {
+    selected = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    document.getElementById("days").innerHTML = "";
     setCalendar();
 };
 

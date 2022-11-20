@@ -7,7 +7,7 @@ body {
 
 /* Month header */
 .month {
-    padding: 5% 25px;
+    padding: 4% 25px;
     width: 100%;
     background: linear-gradient(145deg, #9cf1ed, #dfe07f);
     text-align: center;
@@ -47,9 +47,11 @@ body {
 
 .weekdays li {
     display: inline-block;
-    width: 13%;
+    width: 12.5%;
     color: #666;
     text-align: center;
+    font-size: 12px;
+    list-style-type: none;
 }
 
 /* Days (1-31) */
@@ -70,8 +72,32 @@ body {
 }
 
 /* Highlight the "current" day */
-.days li .active {
-    padding: 5px;
+.activeDay {
+    /* padding: 5px; */
     background: lightblue;
     color: black !important;
+    border-radius: 5px;
+    /* border: 4px solid lightblue; */
+}
+
+.today {
+    /* padding: 5px; */
+    /* background: lightblue; */
+    color: black !important; 
+    /* border: 2px solid #999;  */
+    border-radius: 7px;
+    background: #ddd;
+}
+
+.todayBtn {
+    padding: 1% 10%;
+    width: 100%;
+    background: linear-gradient(145deg, #9cf1ed, #dfe07f);
+    text-align: center; 
+    margin: 0;
+    /* padding: 0; */
+    color: black;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
