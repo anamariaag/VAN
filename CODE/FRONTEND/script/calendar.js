@@ -1,6 +1,6 @@
 var days = 0;
 var today = new Date();
-var selected = new Date();
+var selected = new Date(today.getFullYear(), today.getMonth(), 1);
 const setCalendar = () => {
     days = new Date(
         selected.getFullYear(),
@@ -8,19 +8,8 @@ const setCalendar = () => {
         0
     ).getDate();
 
-    let k = selected.getDate();
-    k = 1;
-    let m = (selected.getMonth() + 11) % 12;
-    let C = Math.floor(selected.getFullYear() / 100);
-    let Y = selected.getFullYear() % 100;
-    let W =
-        (k +
-            Math.floor(2.6 * m - 0.2) -
-            2 * C +
-            Y +
-            Math.floor(Y / 4) +
-            Math.floor(C / 4)) %
-        7;
+    let W = selected.getDay();
+    W = (W + 6) % 7;
 
     let put_days = document.getElementById("days");
 
@@ -87,7 +76,7 @@ const changeMonth = (num) => {
 };
 
 const returnToday = () => {
-    selected = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    selected = new Date(today.getFullYear(), today.getMonth(), 1);
     document.getElementById("days").innerHTML = "";
     setCalendar();
 };
