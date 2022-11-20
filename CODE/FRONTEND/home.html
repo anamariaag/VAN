@@ -23,6 +23,7 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="./style/home.css" />
+        <link rel="stylesheet" href="./style/calendar.css" />
     </head>
     <body>
         <!-- Optional JavaScript -->
@@ -224,14 +225,54 @@
                             </div>
                         </div>
                     </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="col-md-12">
+                        <div class="month">
+                            <ul>
+                                <li class="prev">
+                                    <a type="button" onclick="changeMonth(-1)"
+                                        >&#10094;</a
+                                    >
+                                </li>
+                                <li class="next">
+                                    <a type="button" onclick="changeMonth(1)"
+                                        >&#10095;</a
+                                    >
+                                </li>
+                                <li>
+                                    <div id="monthName"></div>
+                                    <br /><span
+                                        style="font-size: 18px"
+                                        id="year"
+                                        >2021</span
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="weekdays">
+                            <li>Mo</li>
+                            <li>Tu</li>
+                            <li>We</li>
+                            <li>Th</li>
+                            <li>Fr</li>
+                            <li>Sa</li>
+                            <li>Su</li>
+                        </ul>
+
+                        <ul id="days" class="days"></ul>
+                    </div>
 
                     <!-- PIE CHART -->
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <center>
                             <div class="pie"></div>
                         </center>
                         <!-- etiquetas -->
-                        <div class="legend">
+                    <!-- <div class="legend">
                             <div class="segment1"></div>
                             <div>Completadas</div>
                             <div class="segment2"></div>
@@ -239,8 +280,7 @@
                             <div class="segment3"></div>
                             <div>Urgentes</div>
                         </div>
-                    </div>
-                    
+                    </div>  -->
                 </div>
             </div>
 
@@ -1249,5 +1289,6 @@
                 alert("¡Tarea completada con éxito!");
             }
         </script>
+        <script src="./script/calendar.js"></script>
     </body>
 </html>
