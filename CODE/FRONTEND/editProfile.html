@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Profile</title>
+        <link rel="stylesheet" href="./style/editProfile.css" />
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+            integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- NAV BAR -->
+        <div class="container">
+            <nav
+                class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+                id="navbar"
+            >
+                <!-- Brand -->
+                <a class="navbar-brand" href="home.html">@ VAN </a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Links -->
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul class="navbar-nav m-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="home.html">Tareas</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a
+                                class="nav-link"
+                                aria-current="page"
+                                href="profile.html"
+                                >Perfil
+                                <span class="sr-only">(current)</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <!--AÑADIR TAREA-->
+                <a
+                    class="nav-link"
+                    href=""
+                    data-toggle="modal"
+                    data-target="#nuevaTarea"
+                >
+                    <img
+                        src="imagenes/plus.png"
+                        class="rounded-circle"
+                        width="30"
+                        height="30"
+                    />
+                </a>
+
+                <ul class="navbar-nav">
+                    <!-- Notification dropdown -->
+                    <li class="nav-item dropleft">
+                        <a
+                            class="nav-link dropdown-toggle hidden-arrow"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <i class="fas fa-bell"></i>
+                            <span
+                                class="badge rounded-pill badge-notification bg-danger"
+                                >3</span
+                            >
+                        </a>
+                        <ul
+                            class="dropdown-menu"
+                            aria-labelledby="navbarDropdown"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="#">Notif 1</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Notif 2</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Notif 3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- User Profile -->
+                    <li class="nav-item dropleft">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <img
+                                src="imagenes/user.png"
+                                class="rounded-circle"
+                                width="30"
+                                height="30"
+                            />
+                        </a>
+                        <ul
+                            class="dropdown-menu"
+                            aria-labelledby="navbarDropdown"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="login.html"
+                                    >Cerrar Sesión</a
+                                >
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="editProfile.html"
+                                    >Editar Usuario</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="container">
+            <div class="main-body">
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card" id="card">
+                            <div class="card-body">
+                                <div
+                                    class="d-flex flex-column align-items-center text-center"
+                                >
+                                    <img
+                                        src="https://randomuser.me/api/portraits/women/3.jpg"
+                                        alt="Admin"
+                                        class="rounded-circle"
+                                        width="270"
+                                    />
+                                    <div class="mt-3">
+                                        <h4>@valrmzl</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card" id="card">
+                            <div class="card-body">
+                                <br /><br /><br />
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Nombre Completo</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            value="John Doe"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Usuario</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            value="(239) 816-9029"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Contraseña</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            value="(320) 380-4539"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">URL</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            value="hhtp"
+                                        />
+                                    </div>
+                                </div>
+
+                                <br /><br />
+
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <a
+                                            class="btn btn-info"
+                                            id="btn_guardarCambios"
+                                            href="profile.html"
+                                            >Guardar cambios</a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="container">
+            <div class="row">
+                <footer class="page-footer font-small fixed-bottom" id="navbar">
+                    <div class="footer-copyright text-center py-3">
+                        Proyecto Aplicaciones y Servicios WEB <br />ITESO 2022
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!-- MODAL NUEVA TAREA -->
+        <div class="modal fade" id="nuevaTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Nueva Tarea</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="card" id="card">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Tarea</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                value="Tarea 1"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Usuarios agregados
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    user 2, user 3
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección usuarios
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectUsers"
+                                            >
+                                                <option>user1</option>
+                                                <option>user2</option>
+                                                <option>user3</option>
+                                                <option>user4</option>
+                                                <option>user5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Etiquetas</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    WORK, URGENT
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección etiquetas
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectEtiqueta"
+                                            >
+                                                <option>ALL</option>
+                                                <option>WORK</option>
+                                                <option>URGENT</option>
+                                                <option>HOME</option>
+                                                <option>SCHOOL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Fecha</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success">
+                            Guardar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

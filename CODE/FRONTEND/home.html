@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Home</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+            integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="./style/home.css" />
+    </head>
+    <body>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- NAV BAR -->
+        <div class="container">
+            <nav
+                class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+                id="navbar"
+            >
+                <!-- Brand -->
+                <a class="navbar-brand" href="#">@ VAN </a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Links -->
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul class="navbar-nav m-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="#"
+                                >Tareas<span class="sr-only">(current)</span></a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="profile.html">Perfil</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--AÑADIR TAREA-->
+                <a
+                    class="nav-link"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#nuevaTarea"
+                >
+                    <img
+                        src="imagenes/plus.png"
+                        class="rounded-circle"
+                        width="30"
+                        height="30"
+                    />
+                </a>
+
+                <ul class="navbar-nav">
+                    <!-- Notification dropdown -->
+                    <li class="nav-item dropleft">
+                        <a
+                            class="nav-link dropdown-toggle hidden-arrow"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <i class="fas fa-bell"></i>
+                            <span
+                                class="badge rounded-pill badge-notification bg-danger"
+                                >3</span
+                            >
+                        </a>
+                        <ul
+                            class="dropdown-menu"
+                            aria-labelledby="navbarDropdown"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="#">Notif 1</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Notif 2</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Notif 3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- User Profile -->
+                    <li class="nav-item dropleft">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <img
+                                src="imagenes/user.png"
+                                class="rounded-circle"
+                                width="30"
+                                height="30"
+                            />
+                        </a>
+                        <ul
+                            class="dropdown-menu"
+                            aria-labelledby="navbarDropdown"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="login.html"
+                                    >Cerrar Sesión</a
+                                >
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="editProfile.html"
+                                    >Editar Usuario</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- CONTAINER PRINCIPAL -->
+        <div class="row d-flex containertasks">
+            <div class="col-md-4">
+                <div class="row">
+                    <!-- SEARCH -->
+                    <div class="col-md-12">
+                        <form action="">
+                            <div
+                                class="p-1 bg-light rounded rounded-pill shadow-sm mb-4"
+                            >
+                                <div class="input-group">
+                                    <input
+                                        type="search"
+                                        placeholder="search"
+                                        class="form-control border-0 bg-light"
+                                    />
+                                    <div class="input-group-append">
+                                        <button
+                                            id="button-addon1"
+                                            type="submit"
+                                            class="btn btn-link text-secondary"
+                                        >
+                                            <i class="fa fa-search"> </i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- ETIQUETAS -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <select id="etiqueta" class="form-control pill">
+                                <option selected>ALL</option>
+                                <option>WORK</option>
+                                <option>URGENT</option>
+                                <option>HOME</option>
+                                <option>SCHOOL</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- FECHA -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="date"
+                                    max="31/12/2024"
+                                    min="1/1/1900"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PIE CHART -->
+                    <div class="col-md-12">
+                        <center>
+                            <div class="pie"></div>
+                        </center>
+                        <!-- etiquetas -->
+                        <div class="legend">
+                            <div class="segment1"></div>
+                            <div>Completadas</div>
+                            <div class="segment2"></div>
+                            <div>Pendientes</div>
+                            <div class="segment3"></div>
+                            <div>Urgentes</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- TASKS LISTS -->
+            <div class="col-md-8">
+                <div class="card-hover-shadow-2x mb-3 card">
+                    <div class="card-header-tab card-header">
+                        <div
+                            class="card-header-title font-size-lg text-capitalize font-weight-normal"
+                        >
+                            <i class="fa fa-tasks"></i>&nbsp;Tareas
+                        </div>
+                    </div>
+                    <div class="scroll-area-sm">
+                        <perfect-scrollbar class="ps-show-limits">
+                            <div
+                                style="position: static"
+                                class="ps ps--active-y"
+                            >
+                                <div class="ps-content">
+                                    <ul class="list-group list-group-flush">
+                                        <!--1 item-->
+                                        <li class="list-group-item">
+                                            <!--color de tarea: bg-->
+                                            <div
+                                                class="todo-indicator bg-primary"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task1"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task1"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Primera entrega de
+                                                            Proyecto Final WEB
+                                                        </div>
+                                                        <!--autor-->
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            By Vale, Ana, Naim
+                                                            <!--etiquetas color: badge-->
+                                                            <div
+                                                                class="badge badge-warning ml-2"
+                                                            >
+                                                                URGENT
+                                                            </div>
+                                                            <div
+                                                                class="badge badge-info ml-2"
+                                                            >
+                                                                SCHOOL
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <!--editar y eliminar tareas-->
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!--2 item-->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-warning"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task2"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task2"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Examen Micros
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            <div>
+                                                                By Ana, Vale,
+                                                                Jesus
+                                                                <div
+                                                                    class="badge badge-warning ml-2"
+                                                                >
+                                                                    URGENT
+                                                                </div>
+                                                                <div
+                                                                    class="badge badge-info ml-2"
+                                                                >
+                                                                    SCHOOL
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!-- 3 item-->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-secondary"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task3"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task3"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left flex2"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Proyecto Gestión
+                                                            Bases de Datos
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            By Vale, Naim
+                                                            <div
+                                                                class="badge badge-info ml-2"
+                                                            >
+                                                                SCHOOL
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!--4 item-->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-success"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task4"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task4"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Ir al super
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            By Ana
+                                                            <div
+                                                                class="badge badge-primary ml-2"
+                                                            >
+                                                                HOME
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!--5 item -->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-warning"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task5"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task5"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left flex2"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Reporte práctica 3
+                                                            Micros
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            By Ana, Val, Jesus
+                                                            <div
+                                                                class="badge badge-warning ml-2"
+                                                            >
+                                                                URGENT
+                                                            </div>
+                                                            <div
+                                                                class="badge badge-info ml-2"
+                                                            >
+                                                                SCHOOL
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!--6 item-->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-info"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task6"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task6"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left flex2"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Posada Sistemamigas
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            By Ana, Vale,
+                                                            Cinthya, Dani, Lau,
+                                                            Jaz, Jenny
+                                                            <div
+                                                                class="badge badge-light ml-2"
+                                                            >
+                                                                FRIENDS
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!--7 item-->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-primary"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task7"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task7"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left flex2"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Segunda entrega de
+                                                            Proyecto Final WEB
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            By Vale, Ana, Naim
+                                                            <div
+                                                                class="badge badge-info ml-2"
+                                                            >
+                                                                SCHOOL
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!--8 item-->
+                                        <li class="list-group-item">
+                                            <div
+                                                class="todo-indicator bg-warning"
+                                            ></div>
+                                            <div class="widget-content p-0">
+                                                <div
+                                                    class="widget-content-wrapper"
+                                                >
+                                                    <div
+                                                        class="widget-content-left mr-2"
+                                                    >
+                                                        <div
+                                                            class="custom-checkbox custom-control"
+                                                        >
+                                                            <input
+                                                                class="custom-control-input"
+                                                                id="task8"
+                                                                type="checkbox"
+                                                                onclick="tareaCompletada()"
+                                                            />
+                                                            <label
+                                                                class="custom-control-label"
+                                                                for="task8"
+                                                                >&nbsp;</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-left"
+                                                    >
+                                                        <div
+                                                            class="widget-heading"
+                                                        >
+                                                            Practica
+                                                            Arquitectura
+                                                            Computacional
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            <div>
+                                                                By Naim, Kury
+                                                                <div
+                                                                    class="badge badge-warning ml-2"
+                                                                >
+                                                                    URGENT
+                                                                </div>
+                                                                <div
+                                                                    class="badge badge-info ml-2"
+                                                                >
+                                                                    SCHOOL
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="widget-subheading"
+                                                        >
+                                                            Date
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="widget-content-right"
+                                                    >
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-success"
+                                                            data-toggle="modal"
+                                                            data-target="#editarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-edit"
+                                                            ></i>
+                                                        </button>
+                                                        <button
+                                                            class="border-0 btn-transition btn btn-outline-danger"
+                                                            data-toggle="modal"
+                                                            data-target="#eliminarTarea"
+                                                        >
+                                                            <i
+                                                                class="fa fa-trash"
+                                                            ></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </perfect-scrollbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="container">
+            <div class="row">
+                <footer class="page-footer font-small fixed-bottom" id="navbar">
+                    <div class="footer-copyright text-center py-3">
+                        Proyecto Aplicaciones y Servicios WEB <br />ITESO 2022
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!-- MODAL CONFIRMACIÓN ELIMINAR -->
+        <div class="modal fade" id="eliminarTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar tarea</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p class="text-center">
+                            ¿Estas seguro que deseas eliminar esta tarea?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger">
+                            Si, eliminar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL EDITAR TAREA -->
+        <div class="modal fade" id="editarTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editar Tarea</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="card" id="card">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Tarea</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                value="Tarea 1"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Usuarios agregados
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    user 2, user 3
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección usuarios
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectUsers"
+                                            >
+                                                <option>user1</option>
+                                                <option>user2</option>
+                                                <option>user3</option>
+                                                <option>user4</option>
+                                                <option>user5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Etiquetas</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    WORK, URGENT
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección etiquetas
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectEtiqueta"
+                                            >
+                                                <option>ALL</option>
+                                                <option>WORK</option>
+                                                <option>URGENT</option>
+                                                <option>HOME</option>
+                                                <option>SCHOOL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Fecha</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success">
+                            Guardar cambios
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL NUEVA TAREA -->
+        <div class="modal fade" id="nuevaTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Nueva Tarea</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="card" id="card">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Tarea</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                value="Tarea 1"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Usuarios agregados
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    user 2, user 3
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección usuarios
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectUsers"
+                                            >
+                                                <option>user1</option>
+                                                <option>user2</option>
+                                                <option>user3</option>
+                                                <option>user4</option>
+                                                <option>user5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Etiquetas</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    WORK, URGENT
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección etiquetas
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectEtiqueta"
+                                            >
+                                                <option>ALL</option>
+                                                <option>WORK</option>
+                                                <option>URGENT</option>
+                                                <option>HOME</option>
+                                                <option>SCHOOL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Fecha</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success">
+                            Guardar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALERTA DE TAREA COMPLETADA -->
+        <script>
+            function tareaCompletada() {
+                alert("¡Tarea completada con éxito!");
+            }
+        </script>
+    </body>
+</html>
