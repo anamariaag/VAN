@@ -23,6 +23,7 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="./style/home.css" />
+        <link rel="stylesheet" href="./style/calendar.css" />
     </head>
     <body>
         <!-- Optional JavaScript -->
@@ -211,7 +212,7 @@
                     </div>
 
                     <!-- FECHA -->
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <div class="form-group">
                             <div class="input-group">
                                 <input
@@ -223,15 +224,64 @@
                                 />
                             </div>
                         </div>
+                    </div> -->
+                    <br />
+                    <br />
+                    <br />
+                    <div class="col-md-12">
+                        <!-- rounded rounded-pill shadow-sm -->
+                        <div class="month">
+                            <ul>
+                                <li class="prev">
+                                    <a type="button" onclick="changeMonth(-1)"
+                                        >&#10094;</a
+                                    >
+                                </li>
+                                <li class="next">
+                                    <a
+                                        role="button"
+                                        type="button"
+                                        onclick="changeMonth(1)"
+                                        >&#10095;</a
+                                    >
+                                </li>
+                                <li>
+                                    <div id="monthName"></div>
+                                    <br /><span
+                                        style="font-size: 18px"
+                                        id="year"
+                                        >2021</span
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="weekdays">
+                            <li>Mo</li>
+                            <li>Tu</li>
+                            <li>We</li>
+                            <li>Th</li>
+                            <li>Fr</li>
+                            <li>Sa</li>
+                            <li>Su</li>
+                        </ul>
+
+                        <ul id="days" class="days"></ul>
+                        <a
+                            class="btn todayBtn"
+                            role="button"
+                            onclick="returnToday()"
+                            >RESET</a
+                        >
                     </div>
 
                     <!-- PIE CHART -->
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <center>
                             <div class="pie"></div>
-                        </center>
-                        <!-- etiquetas -->
-                        <div class="legend">
+                        </center> -->
+                    <!-- etiquetas -->
+                    <!-- <div class="legend">
                             <div class="segment1"></div>
                             <div>Completadas</div>
                             <div class="segment2"></div>
@@ -239,8 +289,7 @@
                             <div class="segment3"></div>
                             <div>Urgentes</div>
                         </div>
-                    </div>
-                    
+                    </div> -->
                 </div>
             </div>
 
@@ -931,17 +980,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- FOOTER -->
-        <div class="container">
-            <div class="row">
-                <footer class="page-footer font-small fixed-bottom" id="navbar">
-                    <div class="footer-copyright text-center py-3">
-                        Proyecto Aplicaciones y Servicios WEB <br />ITESO 2022
-                    </div>
-                </footer>
-            </div>
-        </div>
+        <br />
+        <br />
+        <br />
+        <br />
 
         <!-- MODAL CONFIRMACIÓN ELIMINAR -->
         <div class="modal fade" id="eliminarTarea" role="dialog">
@@ -1242,12 +1284,21 @@
                 </div>
             </div>
         </div>
-
+        <div class="container">
+            <div class="row">
+                <footer class="page-footer font-small fixed-bottom" id="navbar">
+                    <div class="footer-copyright text-center py-3">
+                        Proyecto Aplicaciones y Servicios WEB <br />ITESO 2022
+                    </div>
+                </footer>
+            </div>
+        </div>
         <!-- ALERTA DE TAREA COMPLETADA -->
         <script>
             function tareaCompletada() {
                 alert("¡Tarea completada con éxito!");
             }
         </script>
+        <script src="./script/calendar.js"></script>
     </body>
 </html>
