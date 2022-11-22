@@ -79,9 +79,7 @@
                 type="submit"
                 class="btn btn-primary my-3"
                 id="botonLogin"
-                onclick="setTimeout(() => {
-                    window.location.replace('home.html');
-                }, 10)"
+                onclick="login()"
             >
                 Iniciar sesión
             </button>
@@ -142,7 +140,7 @@
                             <input
                                 type="email"
                                 class="form-control my-3"
-                                id="correo"
+                                id="email"
                                 placeholder="Correo"
                                 name="user"
                                 required
@@ -172,6 +170,7 @@
                                 value="2000-01-01"
                                 class="form-control"
                                 max="2025-01-01"
+                                id="date"
                                 requiered
                             />
                             <br />
@@ -211,8 +210,8 @@
                             />
                             <button
                                 id="registrarUsuario"
-                                type="submit"
                                 class="btn btn-success"
+                                onclick="registrarse()"
                             >
                                 Registrarse
                             </button>
@@ -246,5 +245,6 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"
         ></script>
+        <script src="./script/login.js"></script>
     </body>
 </html>
