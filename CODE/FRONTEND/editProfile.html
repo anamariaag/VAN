@@ -115,23 +115,14 @@
                             <i class="fas fa-bell"></i>
                             <span
                                 class="badge rounded-pill badge-notification bg-danger"
-                                >3</span
-                            >
+                                id="numNotif"
+                            ></span>
                         </a>
                         <ul
                             class="dropdown-menu"
                             aria-labelledby="navbarDropdown"
-                        >
-                            <li>
-                                <a class="dropdown-item" href="#">Notif 1</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Notif 2</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Notif 3</a>
-                            </li>
-                        </ul>
+                            id="notifList"
+                        ></ul>
                     </li>
                     <!-- User Profile -->
                     <li class="nav-item dropleft">
@@ -173,6 +164,8 @@
             </nav>
         </div>
 
+        <div id="infoUpdatePerfil"></div>
+
         <div class="container">
             <div class="main-body">
                 <br />
@@ -208,10 +201,10 @@
                                         <h6 class="mb-0">Nombre Completo</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input
+                                        <input id="updateNombre"
                                             type="text"
                                             class="form-control"
-                                            value="John Doe"
+                                            value="Valeria Ramirez"
                                         />
                                     </div>
                                 </div>
@@ -220,10 +213,10 @@
                                         <h6 class="mb-0">Usuario</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input
+                                        <input  id="updateUsuario"
                                             type="text"
                                             class="form-control"
-                                            value="(239) 816-9029"
+                                            value="valrmzl"
                                         />
                                     </div>
                                 </div>
@@ -232,10 +225,10 @@
                                         <h6 class="mb-0">Contraseña</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input
+                                        <input id="updateContraseña"
                                             type="text"
                                             class="form-control"
-                                            value="(320) 380-4539"
+                                            value="valeria12345"
                                         />
                                     </div>
                                 </div>
@@ -244,10 +237,10 @@
                                         <h6 class="mb-0">URL</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input
+                                        <input id="updateImagen"
                                             type="text"
                                             class="form-control"
-                                            value="hhtp"
+                                            value="https://randomuser.me/api/portraits/women/3.jpg"
                                         />
                                     </div>
                                 </div>
@@ -418,5 +411,7 @@
             </div>
         </div>
         <script src="./script/users.js"></script>
+        <script src="./script/editProfile.js"></script>
+        <script src="./script/notifications.js"></script>
     </body>
 </html>

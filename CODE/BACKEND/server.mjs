@@ -95,13 +95,48 @@ app.post("/api/login", (req, res) => {
 
 
 
-//registrar usuario
+
 app.post("/api/users", (req, res) => {
     console.table(req.body);
     res.status(201);
     res.send();
 });
 
+app.get("/api/notif", (req, res) => {
+    res.status(201);
+    res.send(["notif1", "notif2", "notif3", "naim"]);
+});
+
+app.delete("/api/notif", (req, res) => {
+    res.status(200);
+    res.send();
+});
+
+//editar profile
+app.put("/api/profile",(req,res)=>{
+    
+})
+
+//visualizar profile
+app.get("/api/profile",(req,res)=>{
+    res.send(
+        {
+            "nombre": "valeria yeya",
+            "correo": "valeria.ramirez@iteso.mx",
+            "usuario": "valrmzl",
+            "contraseña": "*****",
+            "fecha": "23/11/2022",
+            "imagen": "https://randomuser.me/api/portraits/women/3.jpg"
+
+        }
+    );
+    
+})
+
+
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
 });
+
+
+
