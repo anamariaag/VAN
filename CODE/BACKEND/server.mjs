@@ -58,13 +58,31 @@ app.delete("/api/notif", (req, res) => {
     res.send();
 });
 
+//editar profile
+app.put("/api/profile",(req,res)=>{
+    
+})
+
+//visualizar profile
+app.get("/api/profile",(req,res)=>{
+    res.send(
+        {
+            "nombre": "valeria yeya",
+            "correo": "valeria.ramirez@iteso.mx",
+            "usuario": "valrmzl",
+            "contraseña": "*****",
+            "fecha": "23/11/2022",
+            "imagen": "https://randomuser.me/api/portraits/women/3.jpg"
+
+        }
+    );
+    
+})
+
+
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
 });
 
 
 
-//editar profile
-app.put("/api/users",(req,res)=>{
-    
-})

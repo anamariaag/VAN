@@ -133,7 +133,7 @@ const updateProfile = () => {
 
 
     let xhr = new XMLHttpRequest();
-    xhr.open("PUT", "http://localhost:3000/api/users");
+    xhr.open("PUT", "http://localhost:3000/api/profile");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-auth-user", localStorage.token);
 

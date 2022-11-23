@@ -2,17 +2,35 @@
 //trae los datos por default al mostrar
 //del usuario
 const showProfile=()=>{
+    let infoProfile=[];
     console.log("mostrando datos guardados");
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:3000/api/users");
+    xhr.open("GET", "http://localhost:3000/api/profile");
     xhr.setRequestHeader("x-auth-user", localStorage.token);
     xhr.send();
+
+    xhr.onload = function () {
+        if (xhr.status == 401) {
+            alert(xhr.response);
+        } else if (xhr.status != 200) {
+            alert(xhr.status + ": " + xhr.statusText);
+        } else {
+          infoProfile=JSON.parse(xhr.response);
+          console.log("Datos traidos desde el backend");
+          console.table(infoProfile);
+          document.getElementById("frontProfile").innerHTML=``;
+          profileToHTML(infoProfile);
+
+         
+        }
+    };
 
 }
 
 //funcion que permite visualizar los campos
 //de un usuario en la página de perfil
-function profileToHTML(){
+function profileToHTML(profile){
+
     console.log("mostrando pagina de perfil")
     informacionPerfil.innerHTML=`
     <div class="container">
@@ -31,13 +49,13 @@ function profileToHTML(){
                                     class="d-flex flex-column align-items-center text-center"
                                 >
                                     <img
-                                        src="https://randomuser.me/api/portraits/women/3.jpg"
+                                        src="${profile.imagen}"
                                         alt="Admin"
                                         class="rounded-circle"
                                         width="270"
                                     />
                                     <div class="mt-3">
-                                        <h4 id="usuarioInfoProfile">@valrmzl</h4>
+                                        <h4 id="usuarioInfoProfile">${profile.usuario}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +70,7 @@ function profileToHTML(){
                                         <h6 class="mb-0">Nombre Completo</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Valeria Ramírez
+                                    ${profile.nombre}
                                     </div>
                                 </div>
                                 <hr />
@@ -61,7 +79,7 @@ function profileToHTML(){
                                         <h6 class="mb-0">Email</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        valeria.ramirez@iteso.mx
+                                    ${profile.correo}
                                     </div>
                                 </div>
                                 <hr />
@@ -70,7 +88,7 @@ function profileToHTML(){
                                         <h6 class="mb-0">Usuario</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        @valrmzl
+                                    ${profile.usuario}
                                     </div>
                                 </div>
                                 <hr />
@@ -79,14 +97,14 @@ function profileToHTML(){
                                         <h6 class="mb-0">Contraseña</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        *******
+                                    ${profile.contraseña}
                                     </div>
                                 </div>
                                 <hr />
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">
-                                            Fecha de nacimiento
+                                        ${profile.fecha}
                                         </h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
