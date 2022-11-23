@@ -35,7 +35,25 @@ app.get("/api/users", (req, res) => {
 //filtros para obtener tareas
 app.get("/api/tarea", (req, res) => {
     res.status(200);
-    res.send();
+    res.send([{
+        "id": "1",
+        "name": "Proyecto WEB",
+        "date": "24/11/2022",
+        "users": [
+            "Naim",
+            "Ana",
+            "Vale"],
+        "tags": ["SCHOOL", "WORK", "URGENT"]
+    },
+    {"id": "2",
+    "name": "Proyecto GBD",
+    "date": "24/11/2022",
+    "users": [
+        "Naim",
+        "Jaz",
+        "Vale"],
+    "tags": ["SCHOOL", "URGENT", "PENDING"]}]
+    );
 });
 
 

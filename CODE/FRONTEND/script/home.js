@@ -1,4 +1,4 @@
-let listTarea;
+//let listTarea;
 const colors = {
     WORK: "primary",
     SCHOOL: "secondary",
@@ -9,18 +9,23 @@ const colors = {
     FAMILY: "info"
 }
 
-function tareasListToHTML(){
+function tareasListToHTML(listTarea){
+    //console.log(listTarea);
+    //listArray = [listTarea]
     document.getElementById("tareas").innerHTML = listTarea.map(tarea =>{
         let users = tarea.users.join(", ");
         let tags = "";
         let colorTag;
-        for(let i = 0; i < tarea.tags.length(); i++){
+        //console.log(tarea.tags);
+        for(let i = 0; i < tarea.tags.length; i++){
             colorTag = tarea.tags[i];
-            tags.append(`<div class="badge badge-${colors.colorTag} ml-2"
+            //console.log(colors[colorTag], tarea.tags[i]);
+            tags+=`<div class="badge badge-${colors[colorTag]} ml-2"
             >
                 ${tarea.tags[i]}
-            </div>`);
+            </div>`;
         }
+        //console.log(tags);
         return tareaToHTML(tarea, users, tags);
     }).join("");
 }
@@ -108,7 +113,25 @@ function tareaToHTML(tarea, users, tags){
     `)
 }
 
-
+async function loadTareasJSON(){
+    let url = "http://localhost:3000/api/tarea"
+    let resp = await fetch(url, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-user': localStorage.token
+        }
+    })
+    if (resp.ok) {
+        let toHtml = await resp.json();
+        //console.log(toHtml);
+        tareasListToHTML(toHtml);
+    } else {
+        document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Surgio un error al momento de cargar los datos.
+      </div>`
+    }
+}
 
 
 async function deleteTarea(id){
