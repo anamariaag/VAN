@@ -90,6 +90,7 @@
                     href=""
                     data-toggle="modal"
                     data-target="#nuevaTarea"
+                    onclick="getUsers('selectUsers', 'addedUsers')"
                 >
                     <img
                         src="imagenes/plus.png"
@@ -322,9 +323,10 @@
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <ul class="list-group">
-                                                <li class="list-group-item">
-                                                    user 2, user 3
-                                                </li>
+                                                <li
+                                                    class="list-group-item"
+                                                    id="addedUsers"
+                                                ></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -338,12 +340,16 @@
                                             <select
                                                 class="form-control"
                                                 id="selectUsers"
+                                                onchange="selectUser('selectUsers', 'addedUsers')"
                                             >
-                                                <option>user1</option>
+                                                <option>
+                                                    -- SELECCIONAR --
+                                                </option>
+                                                <!-- <option>user1</option>
                                                 <option>user2</option>
                                                 <option>user3</option>
                                                 <option>user4</option>
-                                                <option>user5</option>
+                                                <option>user5</option> -->
                                             </select>
                                         </div>
                                     </div>
@@ -411,5 +417,6 @@
                 </div>
             </div>
         </div>
+        <script src="./script/users.js"></script>
     </body>
 </html>

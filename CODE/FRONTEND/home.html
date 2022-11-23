@@ -87,6 +87,7 @@
                     href="#"
                     data-toggle="modal"
                     data-target="#nuevaTarea"
+                    onclick="getUsers('selectUsersNueva', 'editselectUsersEditar')"
                 >
                     <img
                         src="imagenes/plus.png"
@@ -380,6 +381,7 @@
                                                             class="border-0 btn-transition btn btn-outline-success"
                                                             data-toggle="modal"
                                                             data-target="#editarTarea"
+                                                            onclick="getUsers('selectUsersEditar', 'addselectUsersEditar')"
                                                         >
                                                             <i
                                                                 class="fa fa-edit"
@@ -1057,15 +1059,14 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">
-                                                Usuarios
-                                            </h6>
+                                            <h6 class="mb-0">Usuarios</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <ul class="list-group">
-                                                <li class="list-group-item">
-                                                    user 2, user 3
-                                                </li>
+                                                <li
+                                                    class="list-group-item"
+                                                    id="addselectUsersEditar"
+                                                ></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1078,13 +1079,12 @@
                                         <div class="col-sm-9 text-secondary">
                                             <select
                                                 class="form-control"
-                                                id="selectUsers"
+                                                id="selectUsersEditar"
+                                                onchange="selectUser('selectUsersEditar', 'addselectUsersEditar')"
                                             >
-                                                <option>user1</option>
-                                                <option>user2</option>
-                                                <option>user3</option>
-                                                <option>user4</option>
-                                                <option>user5</option>
+                                                <option>
+                                                    -- SELECCIONAR --
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -1188,15 +1188,14 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">
-                                                Usuarios
-                                            </h6>
+                                            <h6 class="mb-0">Usuarios</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <ul class="list-group">
-                                                <li class="list-group-item">
-                                                    user 2, user 3
-                                                </li>
+                                                <li
+                                                    class="list-group-item"
+                                                    id="editselectUsersEditar"
+                                                ></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1209,13 +1208,12 @@
                                         <div class="col-sm-9 text-secondary">
                                             <select
                                                 class="form-control"
-                                                id="selectUsers"
+                                                id="selectUsersNueva"
+                                                onchange="selectUser('selectUsersNueva', 'editselectUsersEditar')"
                                             >
-                                                <option>user1</option>
-                                                <option>user2</option>
-                                                <option>user3</option>
-                                                <option>user4</option>
-                                                <option>user5</option>
+                                                <option>
+                                                    -- SELECCIONAR --
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -1300,5 +1298,6 @@
             }
         </script>
         <script src="./script/calendar.js"></script>
+        <script src="./script/users.js"></script>
     </body>
 </html>

@@ -24,8 +24,8 @@ app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 
 app.get("/api/users", (req, res) => {
-    res.status(200);
-    res.send();
+    res.status(201);
+    res.send(["Naim", "Ana", "Vale", "user4"]);
 });
 
 app.get("/api/tarea", (req, res) => {
