@@ -36,6 +36,7 @@ const deleteNotification = (toDel) => {
             alert(xhr.status + ": " + xhr.statusText);
         } else {
             toDel.remove();
+            document.getElementById("numNotif").innerText--;
             // getNotifications();
         }
     };
