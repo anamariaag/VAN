@@ -40,6 +40,8 @@ app.post("/api/login", (req, res) => {
     res.send();
 });
 
+
+
 app.post("/api/users", (req, res) => {
     console.table(req.body);
     res.status(201);
@@ -59,3 +61,10 @@ app.delete("/api/notif", (req, res) => {
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
 });
+
+
+
+//editar profile
+app.put("/api/users",(req,res)=>{
+    
+})

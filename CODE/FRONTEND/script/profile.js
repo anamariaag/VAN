@@ -1,4 +1,14 @@
 
+//trae los datos por default al mostrar
+//del usuario
+const showProfile=()=>{
+    console.log("mostrando datos guardados");
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:3000/api/users");
+    xhr.setRequestHeader("x-auth-user", localStorage.token);
+    xhr.send();
+
+}
 
 //funcion que permite visualizar los campos
 //de un usuario en la página de perfil

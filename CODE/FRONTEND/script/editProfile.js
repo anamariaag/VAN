@@ -1,3 +1,9 @@
+
+
+
+
+
+
 //al querer actualizar informacion
 //del usuario, este primero debe de mostrar de 
 //manera automatica los datos
@@ -110,8 +116,6 @@ function updateProfileToHTML(){
 </div>
     `
 }
-
-
 
 //una vez que ya se tienen los campos actualizados 
 //podemos tomarlos para actualizarlos
