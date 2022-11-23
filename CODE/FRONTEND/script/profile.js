@@ -3,6 +3,7 @@
 //funcion que permite visualizar los campos
 //de un usuario en la página de perfil
 function profileToHTML(){
+    console.log("mostrando pagina de perfil")
     informacionPerfil.innerHTML=`
     <div class="container">
             <div class="main-body">
@@ -110,4 +111,5 @@ function profileToHTML(){
     
     `
 }
+
 
