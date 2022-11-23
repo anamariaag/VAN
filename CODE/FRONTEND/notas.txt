@@ -1,0 +1,7 @@
+tareas{
+    id: "",
+    name: "",
+    date: "",
+    users: {"","",""},
+    tags: {"", "", ""}
+}
