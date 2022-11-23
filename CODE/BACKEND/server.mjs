@@ -51,6 +51,11 @@ app.get("/api/notif", (req, res) => {
     res.send(["notif1", "notif2", "notif3", "naim"]);
 });
 
+app.delete("/api/notif", (req, res) => {
+    res.status(200);
+    res.send();
+});
+
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
 });
