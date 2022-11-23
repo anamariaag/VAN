@@ -46,6 +46,11 @@ app.post("/api/users", (req, res) => {
     res.send();
 });
 
+app.get("/api/notif", (req, res) => {
+    res.status(201);
+    res.send(["notif1", "notif2", "notif3", "naim"]);
+});
+
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
 });
