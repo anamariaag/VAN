@@ -117,15 +117,20 @@ function updateProfileToHTML(){
 //podemos tomarlos para actualizarlos
 const updateProfile = () => {
 
+    debugger;
+
+
     let datosToUpdate={};
-    datosToUpdate.nombre=document.getElementById("updateNombre");
+    datosToUpdate.nombre=document.getElementById("updateNombre").value;
   
-    datosToUpdate.usuario=document.getElementById("updateUsuario");
-    datosToUpdate.contraseña=document.getElementById("updateContraseña");
-    datosToUpdate.imagen=document.getElementById("updateImagen");
+    datosToUpdate.usuario=document.getElementById("updateUsuario").value;
+    datosToUpdate.contraseña=document.getElementById("updateContraseña").value;
+    datosToUpdate.imagen=document.getElementById("updateImagen").value;
 
 
     console.log(datosToUpdate);
+
+
 
     let xhr = new XMLHttpRequest();
     xhr.open("PUT", "http://localhost:3000/api/users");
