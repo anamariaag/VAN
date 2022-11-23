@@ -15,19 +15,29 @@ app.use(
 
 app.use(express.json());
 
-app.listen(port, () => {
-    console.log("Servicio levantado en el puerto " + port);
-});
-
 const autenticar = (req, res, next) => {
     console.log("autenticado");
     next();
 };
 
-// app.use("/api/users", autenticar);
-// app.use("/api/tarea", autenticar);
+app.use("/api/users", autenticar);
+app.use("/api/tarea", autenticar);
 
 app.get("/api/users", (req, res) => {
     res.status(200);
     res.send();
+});
+
+app.get("/api/tarea", (req, res) => {
+    res.status(200);
+    res.send();
+});
+
+app.get("/api/login", (req, res) => {
+    res.status(200);
+    res.send();
+});
+
+app.listen(port, () => {
+    console.log("Servicio levantado en el puerto " + port);
 });
