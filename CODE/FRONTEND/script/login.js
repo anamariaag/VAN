@@ -1,24 +1,26 @@
 const login = () => {
     let xhr = new XMLHttpRequest();
-    // xhr.open("POST", "http://localhost:3000/api/login");
-    // xhr.setRequestHeader("content-type", "application/json");
+    xhr.open("POST", "http://localhost:3000/api/login");
+    xhr.setRequestHeader("content-type", "application/json");
     let datos = {};
     datos.correo = document.getElementById("uname").value;
     datos.pass = document.getElementById("passwd").value;
-    // xhr.send([JSON.stringify(datos)]);
+    xhr.send([JSON.stringify(datos)]);
     console.log(datos);
-    // xhr.onload = function () {
-    //     if (xhr.status == 401) {
-    //         alert(xhr.response);
-    //     } else if (xhr.status != 201) {
-    //         alert(xhr.status + ": " + xhr.statusText);
-    //     } else {
-    // localStorage.setItem("token", xhr.getResponseHeader("x-user-token"));
-    localStorage.setItem("token", "un token chilo");
-    console.log("Sesion iniciada");
-    window.location.href = "home.html";
-    //         }
-    //     };
+    xhr.onload = function () {
+        if (xhr.status == 401) {
+            alert(xhr.response);
+        } else if (xhr.status != 201) {
+            alert(xhr.status + ": " + xhr.statusText);
+        } else {
+            localStorage.setItem(
+                "token",
+                xhr.getResponseHeader("x-user-token")
+            );
+            console.log("Sesion iniciada");
+            window.location.href = "home.html";
+        }
+    };
 };
 
 const registrarse = () => {
@@ -43,23 +45,23 @@ const registrarse = () => {
     if (document.getElementById("user").value != "")
         datos.user = document.getElementById("user").value;
 
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("POST", "http://localhost:3000/api/users");
-    // xhr.setRequestHeader("content-type", "application/json");
-    // xhr.setRequestHeader("x-auth-user", localStorage.token);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:3000/api/users");
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("x-auth-user", localStorage.token);
 
-    // xhr.send([JSON.stringify(datos)]);
+    xhr.send([JSON.stringify(datos)]);
 
-    // xhr.onload = () => {
-    //     if (xhr.status == 400) {
-    //         alert(xhr.response);
-    //     } else if (xhr.status == 401) alert(xhr.response);
-    //     else if (xhr.status != 201) {
-    //         alert(xhr.status + ": " + xhr.statusText);
-    //     } else {
-    console.log("se guardó el usuario:");
-    console.table(datos);
-    //         alert("Se guardó el usuario");
-    //     }
-    // };
+    xhr.onload = () => {
+        if (xhr.status == 400) {
+            alert(xhr.response);
+        } else if (xhr.status == 401) alert(xhr.response);
+        else if (xhr.status != 201) {
+            alert(xhr.status + ": " + xhr.statusText);
+        } else {
+            console.log("se guardó el usuario:");
+            console.table(datos);
+            window.location.href = "login.html";
+        }
+    };
 };

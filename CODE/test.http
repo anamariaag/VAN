@@ -3,3 +3,5 @@
 # GET http://localhost:3000/api/tarea HTTP/1.1
 
 # GET http://localhost:3000/api/login HTTP/1.1
+
+# POST http://localhost:3000/api/users HTTP/1.1 

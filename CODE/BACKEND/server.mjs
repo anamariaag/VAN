@@ -33,8 +33,16 @@ app.get("/api/tarea", (req, res) => {
     res.send();
 });
 
-app.get("/api/login", (req, res) => {
-    res.status(200);
+app.post("/api/login", (req, res) => {
+    res.status(201);
+    res.set("x-user-token", "token chido");
+    res.set("Access-Control-Expose-Headers", "x-user-token");
+    res.send();
+});
+
+app.post("/api/users", (req, res) => {
+    console.table(req.body);
+    res.status(201);
     res.send();
 });
 
