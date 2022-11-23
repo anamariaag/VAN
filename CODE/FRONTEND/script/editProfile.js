@@ -116,10 +116,6 @@ function updateProfileToHTML(){
 //una vez que ya se tienen los campos actualizados 
 //podemos tomarlos para actualizarlos
 const updateProfile = () => {
-
-    debugger;
-
-
     let datosToUpdate={};
     datosToUpdate.nombre=document.getElementById("updateNombre").value;
   
@@ -128,7 +124,7 @@ const updateProfile = () => {
     datosToUpdate.imagen=document.getElementById("updateImagen").value;
 
 
-    console.log(datosToUpdate);
+    console.table(datosToUpdate);
 
 
 
