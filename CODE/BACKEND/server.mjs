@@ -33,41 +33,41 @@ mongoose.connect(mongoConnectionUsers,{useNewUrlParser: true});
 let userSchema=mongoose.Schema({
     id: {
         type: Number,
-        requiered: true
+        required: true
     },
     usuario: {
         type: String,
-        requiered: true
+        required: true
     },
     nombre: {
         type: String,
-        requiered: true
+        required: true
     },
     apellido: {
         type: String,
-        requiered: true
+        required: true
     },
     correo: {
         type: String,
-        requiered: true
+        required: true
     },
     password: {
         type: String,
-        requiered: true
+        required: true
     },
     sexo: {
         type: String,
         enum: ['H','M'],
-        requiered: true
+        required: true
     },
     fecha: {
         type: String,
-        requiered: true
+        required: true
     },
     imagen: {
         type: String,
-        requiered: true
-    },
+        required: true
+    }
 
 });
 
@@ -85,6 +85,30 @@ const autenticar = (req, res, next) => {
 
 app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
+
+
+app.post("/api/users", (req, res) => {
+
+    res.send('Haciendo un POST de un nuevo usuario');
+
+    let id=req.body.id;
+    let usuario=req.body.usuario;
+    let nombre=req.body.nombre;
+    let apellido=req.body.apellido;
+    let correo=req.body.correo;
+    let password=req.body.password;
+    let fecha=req.body.fecha;
+    let sexo=req.body.sexo;
+    let imagen=req.body.imagen;
+
+    let newUser={id,usuario,nombre, apellido,correo, password, sexo,fecha,imagen};
+
+    let user=User(newUser);
+    console.table(newUser);
+
+    //guardar
+    user.save().then((doc)=>console.log(chalk.green("Usuario creado!!: ")+ doc));
+});
 
 
 //obtener lista de usuarios
@@ -159,11 +183,6 @@ app.post("/api/login", (req, res) => {
 
 
 
-app.post("/api/users", (req, res) => {
-    console.table(req.body);
-    res.status(201);
-    res.send();
-});
 
 app.get("/api/notif", (req, res) => {
     res.status(201);
@@ -200,6 +219,3 @@ app.get("/api/profile",(req,res)=>{
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
 });
-
-
-

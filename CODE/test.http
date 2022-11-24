@@ -6,6 +6,24 @@ GET http://localhost:3000/api/login HTTP/1.1
 ###
 POST http://localhost:3000/api/users HTTP/1.1 
 
+###
+
+POST http://localhost:3000/api/users/
+Content-Type: application/json
+
+  {
+  "id": 1,
+  "usuario": "cinthya1",
+  "nombre": "Cinthya",
+  "Apellido": "Gonzalez",
+  "correo": "cinthya.gonzalez@iteso.mx",
+  "fecha": "04/03/2002",
+  "sexo": "M",
+  "imagen": "https://randomuser.me/api/portraits/women/5.jpg",
+  "password": "gupi"
+}
+  
+
 # GET http://localhost:3000/api/tarea HTTP/1.1
 
 # GET http://localhost:3000/api/login HTTP/1.1
