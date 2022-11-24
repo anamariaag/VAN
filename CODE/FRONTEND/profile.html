@@ -160,9 +160,7 @@
             </nav>
         </div>
 
-        <div id="informacionPerfil">
-
-        </div>
+        <div id="informacionPerfil"></div>
 
         <div class="container" id="frontProfile">
             <div class="main-body">
@@ -352,21 +350,7 @@
                                             />
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">
-                                                Usuarios agregados
-                                            </h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <ul class="list-group">
-                                                <li
-                                                    class="list-group-item"
-                                                    id="addedUsers"
-                                                ></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">
@@ -382,24 +366,22 @@
                                                 <option>
                                                     -- SELECCIONAR --
                                                 </option>
-                                                <!-- <option>user1</option>
-                                                <option>user2</option>
-                                                <option>user3</option>
-                                                <option>user4</option>
-                                                <option>user5</option> -->
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Etiquetas</h6>
+                                            <h6 class="mb-0">
+                                                Usuarios agregados
+                                            </h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <ul class="list-group">
-                                                <li class="list-group-item">
-                                                    WORK, URGENT
-                                                </li>
+                                                <li
+                                                    class="list-group-item"
+                                                    id="addedUsers"
+                                                ></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -414,15 +396,38 @@
                                             <select
                                                 class="form-control"
                                                 id="selectEtiqueta"
+                                                onchange="selectUser('selectEtiqueta', 'etiquetasAgregadas')"
                                             >
-                                                <option>ALL</option>
-                                                <option>WORK</option>
-                                                <option>URGENT</option>
-                                                <option>HOME</option>
-                                                <option>SCHOOL</option>
+                                                <option>
+                                                    -- SELECCIONAR --
+                                                </option>
+                                                <option id="ALL">ALL</option>
+                                                <option id="WORK">WORK</option>
+                                                <option id="URGENT">
+                                                    URGENT
+                                                </option>
+                                                <option id="HOME">HOME</option>
+                                                <option id="SCHOOL">
+                                                    SCHOOL
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Etiquetas</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li
+                                                    class="list-group-item"
+                                                    id="etiquetasAgregadas"
+                                                ></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">Fecha</h6>
