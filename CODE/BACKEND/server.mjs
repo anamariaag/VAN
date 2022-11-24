@@ -1,4 +1,7 @@
 import express from "express";
+import mongoose from "mongoose";
+let mongoConnection= "mongodb+srv://admin:van12210@myapp.dxmsu6q.mongodb.net/ProyectoFinal";
+let db=mongoose.connection;
 import chalk from "chalk";
 import * as fs from "node:fs";
 import cors from "cors";
@@ -12,6 +15,64 @@ app.use(
         methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
     })
 );
+
+// D A T A B A S E //
+db.on('connecting',()=>{
+    console.log(chalk.blue('Conectando...'));
+    console.log(mongoose.connection.readyState);
+});
+
+db.on('connected',()=>{
+    console.log(chalk.green('Conectado correctamente!!   :D'));
+    console.log(mongoose.connection.readyState);
+});
+
+mongoose.connect(mongoConnection,{useNewUrlParser: true});
+
+//definiendo esquema de USUARIO
+let userSchema=mongoose.Schema({
+    id: {
+        type: Number,
+        requiered: true
+    },
+    usuario: {
+        type: String,
+        requiered: true
+    },
+    nombre: {
+        type: String,
+        requiered: true
+    },
+    apellido: {
+        type: String,
+        requiered: true
+    },
+    correo: {
+        type: String,
+        requiered: true
+    },
+    password: {
+        type: String,
+        requiered: true
+    },
+    sexo: {
+        type: String,
+        enum: ['H','M'],
+        requiered: true
+    },
+    fecha: {
+        type: String,
+        requiered: true
+    },
+    imagen: {
+        type: String,
+        requiered: true
+    },
+
+});
+
+// D A T A B A S E 
+
 
 app.use(express.json());
 
