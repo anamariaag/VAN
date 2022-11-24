@@ -15,7 +15,7 @@ Content-Type: application/json
   "id": 1,
   "usuario": "cinthya1",
   "nombre": "Cinthya",
-  "Apellido": "Gonzalez",
+  "apellido": "Gonzalez",
   "correo": "cinthya.gonzalez@iteso.mx",
   "fecha": "04/03/2002",
   "sexo": "M",
