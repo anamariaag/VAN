@@ -69,6 +69,9 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    token: {
+        type: String
+    }
 });
 
 // D A T A B A S E
@@ -100,6 +103,7 @@ app.post("/api/users", (req, res) => {
     let fecha = req.body.fecha;
     let sexo = req.body.sexo;
     let imagen = req.body.imagen;
+    let token=req.body.token;
 
     let newUser = {
         id,

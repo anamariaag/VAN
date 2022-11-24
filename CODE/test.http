@@ -20,7 +20,8 @@ Content-Type: application/json
   "fecha": "04/03/2002",
   "sexo": "M",
   "imagen": "https://randomuser.me/api/portraits/women/5.jpg",
-  "password": "gupi"
+  "password": "gupi",
+  "token": "token",
 }
   
 
