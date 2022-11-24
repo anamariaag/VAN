@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-let mongoConnection= "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoFinal";
+let mongoConnectionUsers= "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoFinal";
 let db=mongoose.connection;
 import chalk from "chalk";
 import * as fs from "node:fs";
@@ -27,7 +27,7 @@ db.on('connected',()=>{
     console.log(mongoose.connection.readyState);
 });
 
-mongoose.connect(mongoConnection,{useNewUrlParser: true});
+mongoose.connect(mongoConnectionUsers,{useNewUrlParser: true});
 
 //definiendo esquema de USUARIO
 let userSchema=mongoose.Schema({
@@ -72,6 +72,8 @@ let userSchema=mongoose.Schema({
 });
 
 // D A T A B A S E 
+let User= mongoose.model('users', userSchema);
+
 
 
 app.use(express.json());
