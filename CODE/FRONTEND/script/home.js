@@ -160,6 +160,53 @@ async function deleteTarea(id){
     }
 }
 
+function editTarea(){
+    
+}
+
+async function postTarea(datos){
+    let url = "http://localhost:3000/api/tarea"
+    let resp = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+    })
+    if (resp.ok) {
+        /*
+        document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-success" style="text-align: center;">
+   <strong>Generado!</strong> Usuario generado.
+ </div>`;
+        setTimeout(() => {
+            document.getElementById("modalalertsM").innerHTML = ``;
+            window.location.href = "usuarios.html";
+        }, 5000);
+        */
+        window.location.href = "home.html";
+        alert("¡Registro exitoso!");
+    } else {
+        if(resp.status == 400){
+            document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+            <strong>Error!</strong> El usuario ya se ha registrado antes. Intenta con otro nombre o correo.
+            </div>`;
+            setTimeout(() => {
+                document.getElementById("modalalertsM").innerHTML = ``
+            }, 5000);
+        }else{
+            document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+            <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
+            </div>`;
+            setTimeout(() => {
+                document.getElementById("modalalertsM").innerHTML = ``
+            }, 5000);
+        }
+        
+    }
+}
+
+
+
 
 const agregarTarea = () => {
     

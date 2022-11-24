@@ -289,6 +289,13 @@
                 </div>
             </div>
 
+
+            <script>
+                window.addEventListener("load", function(event){
+                    loadTareasJSON();
+                })
+            </script>
+            
             <!-- TASKS LISTS -->
             <div class="col-md-8">
                 <div class="card-hover-shadow-2x mb-3 card">
@@ -302,11 +309,7 @@
                             <div style="position: static" class="ps ps--active-y">
                                 <div class="ps-content">
                                     <ul class="list-group list-group-flush" id="tareas">
-                                        <script>
-                                            window.addEventListener("load", function(event){
-                                                loadTareasJSON();
-                                            })
-                                        </script>
+                                        
                                     </ul>
                                 </div>
                             </div>
