@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-let mongoConnection= "mongodb+srv://admin:van12210@myapp.dxmsu6q.mongodb.net/ProyectoFinal";
+let mongoConnection= "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoFinal";
 let db=mongoose.connection;
 import chalk from "chalk";
 import * as fs from "node:fs";
