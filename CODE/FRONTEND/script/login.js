@@ -3,7 +3,7 @@ const login = () => {
     xhr.open("POST", "http://localhost:3000/api/login");
     xhr.setRequestHeader("content-type", "application/json");
     let datos = {};
-    datos.correo = document.getElementById("uname").value;
+    datos.user = document.getElementById("uname").value;
     datos.pass = document.getElementById("passwd").value;
     xhr.send([JSON.stringify(datos)]);
     console.log(datos);

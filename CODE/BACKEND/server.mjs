@@ -171,6 +171,31 @@ app.put("/api/tarea/:done", (req, res) => {
 
 //validar usuario y contraseña
 app.post("/api/login", (req, res) => {
+    let user = req.body.user;
+    let contraseña = req.body.pass;
+    if (user == undefined) {
+        res.status(404);
+        res.send("Correo faltante");
+    }
+    if (contraseña == undefined) {
+        res.status(404);
+        res.send("Contraseña faltante");
+    }
+
+    User.find(
+        {
+            usuario: req.body.user,
+        },
+        (err, docs) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(req.body.user);
+                console.log(docs);
+            }
+        }
+    );
+
     res.status(201);
     res.set("x-user-token", "token chido");
     res.set("Access-Control-Expose-Headers", "x-user-token");
