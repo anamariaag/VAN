@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-let mongoConnectionUsers= "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoFinal";
+let mongoConnectionUsers= "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoDB";
 let db=mongoose.connection;
 import chalk from "chalk";
 import * as fs from "node:fs";
@@ -70,12 +70,6 @@ let userSchema=mongoose.Schema({
     }
 
 });
-
-// D A T A B A S E 
-let User= mongoose.model('users', userSchema);
-
-
-
 app.use(express.json());
 
 const autenticar = (req, res, next) => {
@@ -85,8 +79,11 @@ const autenticar = (req, res, next) => {
 
 app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
+// D A T A B A S E 
 
 
+///POST DE UN NIEVO USUARIO A LA BASE DE DATOS 
+let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/users", (req, res) => {
 
     res.send('Haciendo un POST de un nuevo usuario');
