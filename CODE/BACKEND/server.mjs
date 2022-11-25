@@ -127,10 +127,11 @@ app.post("/api/users", (req, res) => {
 });
 
 //obtener lista de usuarios
+/*
 app.get("/api/users", (req, res) => {
     res.status(201);
     res.send(["Naim", "Ana", "Vale", "user4"]);
-});
+});*/
 
 //filtros para obtener tareas
 app.get("/api/tarea", (req, res) => {
@@ -209,6 +210,24 @@ app.get("/api/profile", (req, res) => {
         imagen: "https://randomuser.me/api/portraits/women/3.jpg",
     });
 });
+
+
+
+//REGRESA UN USUARIO DE LA BD
+//A PARTIR DE SU ID
+app.get('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    let ID=req.params.id;
+    User.find(({id:ID}),function(error,val){
+        if(val.length==0){
+            res.send("no existe el usuario con ese id");
+        }else{
+            res.send(val);
+        }
+    })
+
+})
+
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
