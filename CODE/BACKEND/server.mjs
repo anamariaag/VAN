@@ -74,6 +74,31 @@ let userSchema = mongoose.Schema({
     }
 });
 
+
+//definiendo esquema de TAREA
+let tareaSchema = mongoose.Schema({
+    fecha: {
+        type: Date,
+        required: true,
+    },
+    usuarios: {
+        type: [String],
+        required: true,
+    },
+    tags: {
+        type: [String],
+    },
+    completed: {
+        type: Boolean, 
+        required: true,
+    }, 
+    descripcion: {
+        type: String,
+        required: true,
+    }
+
+
+});
 // D A T A B A S E
 app.use(express.json());
 
@@ -86,7 +111,7 @@ app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 
 
-///POST DE UN NIEVO USUARIO A LA BASE DE DATOS 
+///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
 let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
@@ -123,6 +148,37 @@ app.post("/api/users", (req, res) => {
     );
 });
 
+
+//POST DE NUEVA TAREA A LA BASE DE DATOS
+let Tarea= mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
+app.post("/api/tarea", (req, res) => {
+    res.send("Tarea creada.");
+    let fecha = req.body.fecha;
+    let tags = req.body.tags;
+    let completed = req.body.completed;
+    let usuarios = req.body.usuarios;
+    let descripcion = req.body.descripcion;
+    
+
+    let newTarea = {
+        fecha, 
+        tags,
+        completed,
+        usuarios,
+        descripcion,
+    };
+
+    let tarea = Tarea(newTarea);
+    console.table(newTarea);
+
+    //guardar
+    tarea.save().then((doc) =>
+        console.log(chalk.green("Tarea creada! "))
+    );
+});
+
+
+
 //obtener lista de usuarios
 app.get("/api/users", (req, res) => {
     res.status(201);
@@ -156,11 +212,6 @@ app.delete("/api/tarea", (req, res) => {
     res.send();
 });
 
-//agregar tarea - ana
-app.post("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send();
-});
 
 //editar tarea - ana
 app.put("/api/tarea", (req, res) => {
