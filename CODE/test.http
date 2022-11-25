@@ -23,6 +23,9 @@ Content-Type: application/json
   "password": "gupi",
   "token": "token",
 }
+
+###
+GET http://localhost:3000/api/users/1
   
 ###
 GET http://localhost:3000/api/tarea HTTP/1.1
