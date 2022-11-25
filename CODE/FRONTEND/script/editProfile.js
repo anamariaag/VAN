@@ -13,7 +13,7 @@
 //para que en caso de que  no quiera actualzar todos los campos
 //guarde y se quede el que ya tenia 
 
-function updateProfileToHTML(){
+function updateProfileToHTML(profile){
     console.log("mostrando pagina de actualizar perfil");
     infoUpdatePerfil.innerHTML=`
     <div class="container" id="updatePerfil">
@@ -48,13 +48,25 @@ function updateProfileToHTML(){
                         <br /><br /><br />
                         <div class="row mb-3">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Nombre Completo</h6>
+                                <h6 class="mb-0">Nombre</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 <input id="updateNombre"
                                     type="text"
                                     class="form-control"
-                                    value="John Doe"
+                                    value="Lupita"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Apellido</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input id="updateNombre"
+                                    type="text"
+                                    class="form-control"
+                                    value="Lopez"
                                 />
                             </div>
                         </div>
@@ -119,10 +131,48 @@ function updateProfileToHTML(){
 
 //una vez que ya se tienen los campos actualizados 
 //podemos tomarlos para actualizarlos
+
+async function loadProfileJSON(){
+    console.log("CARGANDO VENTANA DE EDITAR");
+    let datosToUpdate={};
+    
+    datosToUpdate.nombre=document.getElementById("updateNombre").value;
+    datosToUpdate.apellido=document.getElementById("updateApellido").value;
+    datosToUpdate.usuario=document.getElementById("updateUsuario").value;
+    datosToUpdate.contraseña=document.getElementById("updateContraseña").value;
+    datosToUpdate.imagen=document.getElementById("updateImagen").value;
+    console.table(datosToUpdate);
+    let url = "http://localhost:3000/api/profile"
+    let resp = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-user': localStorage.token
+        }
+    })
+    if (resp.ok) {
+        let toHtml = await resp.json();
+        //console.log(toHtml);
+        updateProfileToHTML(toHtml);
+    } else {
+        document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Surgio un error al momento de cargar los datos.
+      </div>`
+    }
+
+    
+
+       
+   
+
+
+
+}
+
 const updateProfile = () => {
     let datosToUpdate={};
     datosToUpdate.nombre=document.getElementById("updateNombre").value;
-  
+    datosToUpdate.apellido=document.getElementById("updateApellido").value;
     datosToUpdate.usuario=document.getElementById("updateUsuario").value;
     datosToUpdate.contraseña=document.getElementById("updateContraseña").value;
     datosToUpdate.imagen=document.getElementById("updateImagen").value;
