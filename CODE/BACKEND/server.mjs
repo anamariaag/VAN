@@ -75,8 +75,6 @@ let userSchema = mongoose.Schema({
 });
 
 // D A T A B A S E
-
-
 app.use(express.json());
 
 const autenticar = (req, res, next) => {
@@ -86,7 +84,6 @@ const autenticar = (req, res, next) => {
 
 app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
-// D A T A B A S E 
 
 
 ///POST DE UN NIEVO USUARIO A LA BASE DE DATOS 
