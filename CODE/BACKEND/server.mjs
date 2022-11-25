@@ -154,9 +154,9 @@ let Tarea= mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qe
 app.post("/api/tarea", (req, res) => {
     res.send("Tarea creada.");
     let fecha = req.body.fecha;
-    let tags = req.body.tags;
+    let tags = req.body.tags.split(", ");
     let completed = req.body.completed;
-    let usuarios = req.body.usuarios;
+    let usuarios = req.body.usuarios.split(", ");
     let descripcion = req.body.descripcion;
     
 
@@ -177,34 +177,21 @@ app.post("/api/tarea", (req, res) => {
     );
 });
 
-
-
 //obtener lista de usuarios
-/*
 app.get("/api/users", (req, res) => {
     res.status(201);
     res.send(["Naim", "Ana", "Vale", "user4"]);
-});*/
+});
 
 //filtros para obtener tareas
 app.get("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send([
-        {
-            id: "1",
-            name: "Proyecto WEB",
-            date: "24/11/2022",
-            users: ["Naim", "Ana", "Vale"],
-            tags: ["SCHOOL", "WORK", "URGENT"],
-        },
-        {
-            id: "2",
-            name: "Proyecto GBD",
-            date: "24/11/2022",
-            users: ["Naim", "Jaz", "Vale"],
-            tags: ["SCHOOL", "URGENT", "PENDING"],
-        },
-    ]);
+    Tarea.find({}, function(err, result){
+        if(err){
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
 });
 
 //eliminar tarea - ana

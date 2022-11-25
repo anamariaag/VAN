@@ -540,7 +540,7 @@
                                             <input
                                                 type="text"
                                                 class="form-control"
-                                                value="Tarea 1"
+                                                id="descripcionTarea"
                                             />
                                         </div>
                                     </div>
@@ -589,15 +589,18 @@
                                                 id="selectEtiquetaNew"
                                                 onchange="selectUser('selectEtiquetaNew', 'etiquetasAgregadasNew')"
                                             >
+
                                                 <option>
                                                     -- SELECCIONAR --
                                                 </option>
-                                                <option id="ALL">ALL</option>
                                                 <option id="WORK">WORK</option>
                                                 <option id="URGENT">
                                                     URGENT
                                                 </option>
                                                 <option id="HOME">HOME</option>
+                                                <option id="FRIENDS">FRIENDS</option>
+                                                <option id="FAMILY">FAMILY</option>
+                                                <option id="PENDING">PENDING</option>
                                                 <option id="SCHOOL">
                                                     SCHOOL
                                                 </option>
@@ -627,6 +630,7 @@
                                             <input
                                                 type="date"
                                                 class="form-control"
+                                                id="fechaTarea"
                                             />
                                         </div>
                                     </div>
@@ -636,7 +640,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success">
+                        <button type="button" class="btn btn-success" onclick="addTarea()">
                             Guardar
                         </button>
                         <button

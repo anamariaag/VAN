@@ -49,3 +49,7 @@ Content-Type: application/json
   "usuarios": ["Ana", "Naim", "Val"],
   "descripcion": "Proyecto final web"
 }
+
+###
+
+GET http://localhost:3000/api/tarea HTTP/1.1
