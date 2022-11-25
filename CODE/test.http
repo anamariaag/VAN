@@ -12,17 +12,27 @@ POST http://localhost:3000/api/users/
 Content-Type: application/json
 
   {
-  "id": 1,
-  "usuario": "cinthya1",
-  "nombre": "Cinthya",
-  "apellido": "Gonzalez",
-  "correo": "cinthya.gonzalez@iteso.mx",
-  "fecha": "04/03/2002",
-  "sexo": "M",
-  "imagen": "https://randomuser.me/api/portraits/women/5.jpg",
-  "password": "gupi"
+  "id": 2,
+  "usuario": "naim2206",
+  "nombre": "Naim",
+  "apellido": "Towfighian",
+  "correo": "naim@iteso.mx",
+  "fecha": "22/06/2002",
+  "sexo": "H",
+  "imagen": "https://randomuser.me/api/portraits/men/5.jpg",
+  "password": "123"
 }
   
+
+###
+
+POST http://localhost:3000/api/login HTTP/1.1 
+Content-Type: application/json
+
+{
+    "user": "naim2206",
+    "pass": "123" 
+}
 
 # GET http://localhost:3000/api/tarea HTTP/1.1
 

@@ -34,16 +34,16 @@ const registrarse = () => {
         datos.nombre = document.getElementById("name").value;
     if (document.getElementById("last_name").value != "")
         datos.apellido = document.getElementById("last_name").value;
-    datos.pass = contra;
+    datos.password = contra;
     datos.sexo = document.getElementById("Mujer").checked ? "M" : "H";
     if (document.getElementById("date").value != "")
         datos.fecha = document.getElementById("date").value;
     if (document.getElementById("email").value != "")
         datos.correo = document.getElementById("email").value;
     if (document.getElementById("img_perfil").value != "")
-        datos.url = document.getElementById("img_perfil").value;
+        datos.imagen = document.getElementById("img_perfil").value;
     if (document.getElementById("user").value != "")
-        datos.user = document.getElementById("user").value;
+        datos.usuario = document.getElementById("user").value;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:3000/api/users");
