@@ -13,7 +13,7 @@ function tareasListToHTML(listTarea){
     //console.log(listTarea);
     //listArray = [listTarea]
     document.getElementById("tareas").innerHTML = listTarea.map(tarea =>{
-        let users = tarea.users.join(", ");
+        let users = tarea.usuarios.join(", ");
         let tags = "";
         let colorTag;
         //console.log(tarea.tags);
@@ -32,6 +32,7 @@ function tareasListToHTML(listTarea){
 
 function tareaToHTML(tarea, users, tags){
     //html de la tarea
+    let date = new Date(tarea.fecha);
     return (`
     <li class="list-group-item">
     <!--color de tarea: bg-->
@@ -67,7 +68,7 @@ function tareaToHTML(tarea, users, tags){
                 <div
                     class="widget-heading"
                 >
-                ${tarea.name}
+                ${tarea.descripcion}
                 </div>
                 <!--autor-->
                 <div
@@ -80,7 +81,7 @@ function tareaToHTML(tarea, users, tags){
                 <div
                     class="widget-subheading"
                 >
-                    ${tarea.date}
+                    ${date.toDateString()}
                 </div>
             </div>
             <div
@@ -164,6 +165,19 @@ function editTarea(){
     
 }
 
+
+function addTarea(){
+    let tarea = {}
+    tarea.fecha = document.getElementById("fechaTarea").value;
+    tarea.descripcion = document.getElementById("descripcionTarea").value;
+    tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
+    tarea.usuarios = document.getElementById("editselectUsersEditar").innerText;
+    tarea.completed = false;
+    postTarea(tarea);
+    
+}
+
+
 async function postTarea(datos){
     let url = "http://localhost:3000/api/tarea"
     let resp = await fetch(url, {
@@ -174,43 +188,19 @@ async function postTarea(datos){
         body: JSON.stringify(datos)
     })
     if (resp.ok) {
-        /*
-        document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-success" style="text-align: center;">
-   <strong>Generado!</strong> Usuario generado.
- </div>`;
-        setTimeout(() => {
-            document.getElementById("modalalertsM").innerHTML = ``;
-            window.location.href = "usuarios.html";
-        }, 5000);
-        */
         window.location.href = "home.html";
-        alert("¡Registro exitoso!");
+        alert("¡Tarea agregada con éxito!");
     } else {
-        if(resp.status == 400){
-            document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
-            <strong>Error!</strong> El usuario ya se ha registrado antes. Intenta con otro nombre o correo.
-            </div>`;
-            setTimeout(() => {
-                document.getElementById("modalalertsM").innerHTML = ``
-            }, 5000);
-        }else{
-            document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
-            <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
-            </div>`;
-            setTimeout(() => {
-                document.getElementById("modalalertsM").innerHTML = ``
-            }, 5000);
-        }
-        
+        document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
+        </div>`;
+        setTimeout(() => {
+            document.getElementById("modalalertsM").innerHTML = ``
+        }, 5000);
     }
 }
 
 
-
-
-const agregarTarea = () => {
-    
-};
 
 
 const editarTarea = () => {
