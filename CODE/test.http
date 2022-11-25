@@ -12,15 +12,15 @@ POST http://localhost:3000/api/users/
 Content-Type: application/json
 
   {
-  "id": 2,
-  "usuario": "naim2206",
-  "nombre": "Naim",
-  "apellido": "Towfighian",
-  "correo": "naim@iteso.mx",
-  "fecha": "22/06/2002",
-  "sexo": "H",
-  "imagen": "https://randomuser.me/api/portraits/men/5.jpg",
-  "password": "123"
+  "id": 1,
+  "usuario": "cinthya1",
+  "nombre": "Cinthya",
+  "apellido": "Gonzalez",
+  "correo": "cinthya.gonzalez@iteso.mx",
+  "fecha": "04/03/2002",
+  "sexo": "M",
+  "imagen": "https://randomuser.me/api/portraits/women/5.jpg",
+  "password": "gupi"
 }
   
 
