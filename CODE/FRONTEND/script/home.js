@@ -13,7 +13,7 @@ function tareasListToHTML(listTarea){
     //console.log(listTarea);
     //listArray = [listTarea]
     document.getElementById("tareas").innerHTML = listTarea.map(tarea =>{
-        let users = tarea.usuarios.join(", ");
+        let users = tarea.users.join(", ");
         let tags = "";
         let colorTag;
         //console.log(tarea.tags);
@@ -32,7 +32,8 @@ function tareasListToHTML(listTarea){
 
 function tareaToHTML(tarea, users, tags){
     //html de la tarea
-    let date = new Date(tarea.fecha);
+    let date = new Date(String(tarea.date).slice(0,-1));
+    //console.log(date);
     return (`
     <li class="list-group-item">
     <!--color de tarea: bg-->
@@ -68,7 +69,7 @@ function tareaToHTML(tarea, users, tags){
                 <div
                     class="widget-heading"
                 >
-                ${tarea.descripcion}
+                ${tarea.description}
                 </div>
                 <!--autor-->
                 <div
@@ -168,10 +169,11 @@ function editTarea(){
 
 function addTarea(){
     let tarea = {}
-    tarea.fecha = document.getElementById("fechaTarea").value;
-    tarea.descripcion = document.getElementById("descripcionTarea").value;
+    tarea.date = document.getElementById("fechaTarea").value;
+    //console.log(tarea.fecha);
+    tarea.description = document.getElementById("descripcionTarea").value;
     tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
-    tarea.usuarios = document.getElementById("editselectUsersEditar").innerText;
+    tarea.users = document.getElementById("editselectUsersEditar").innerText =="" ? "admin": document.getElementById("editselectUsersEditar").innerText;
     tarea.completed = false;
     postTarea(tarea);
     

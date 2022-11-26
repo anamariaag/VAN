@@ -77,11 +77,11 @@ let userSchema = mongoose.Schema({
 
 //definiendo esquema de TAREA
 let tareaSchema = mongoose.Schema({
-    fecha: {
+    date: {
         type: Date,
         required: true,
     },
-    usuarios: {
+    users: {
         type: [String],
         required: true,
     },
@@ -92,12 +92,10 @@ let tareaSchema = mongoose.Schema({
         type: Boolean, 
         required: true,
     }, 
-    descripcion: {
+    description: {
         type: String,
         required: true,
-    }
-
-
+    },
 });
 // D A T A B A S E
 app.use(express.json());
@@ -153,19 +151,19 @@ app.post("/api/users", (req, res) => {
 let Tarea= mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/tarea", (req, res) => {
     res.send("Tarea creada.");
-    let fecha = req.body.fecha;
+    let date = req.body.date;
     let tags = req.body.tags.split(", ");
     let completed = req.body.completed;
-    let usuarios = req.body.usuarios.split(", ");
-    let descripcion = req.body.descripcion;
+    let users = req.body.users.split(", ");
+    let description = req.body.description;
     
 
     let newTarea = {
-        fecha, 
+        date, 
         tags,
         completed,
-        usuarios,
-        descripcion,
+        users,
+        description,
     };
 
     let tarea = Tarea(newTarea);
