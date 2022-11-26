@@ -160,14 +160,7 @@
             </nav>
         </div>
 
-        <div id="informacionPerfil"></div>
-
-        <div class="container" id="frontProfile">
-            <div class="main-body">
-                <br />
-                <br />
-                <br />
-                <br />
+        <div id="informacionPerfil">
 
                 <!-- /Breadcrumb -->
                 <div class="row gutters-sm">
@@ -216,7 +209,7 @@
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">Usuario</h6>
                                     </div>
-                                    <div class="col-sm-9 text-secondary" id="username">
+                                    <div class="col-sm-9 text-secondary">
                                         @valrmzl
                                     </div>
                                 </div>
@@ -264,6 +257,14 @@
                 </div>
             </div>
         </div>
+        <script>
+            window.addEventListener("load", function(event){
+                loadProfileJSON();
+            })
+        </script>
+
+        
+
 
         <!-- FOOTER -->
         <div class="container">

@@ -164,110 +164,15 @@
             </nav>
         </div>
 
-        <div id="infoUpdatePerfil"></div>
-
-        <div class="container">
-            <div class="main-body">
-                <br />
-                <br />
-                <br />
-                <br />
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card" id="card">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex flex-column align-items-center text-center"
-                                >
-                                    <img
-                                        src="https://randomuser.me/api/portraits/women/3.jpg"
-                                        alt="Admin"
-                                        class="rounded-circle"
-                                        width="270"
-                                    />
-                                    <div class="mt-3">
-                                        <h4>@valrmzl</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card" id="card">
-                            <div class="card-body">
-                                <br /><br /><br />
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Nombre Completo</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input
-                                            id="updateNombre"
-                                            type="text"
-                                            class="form-control"
-                                            value="Valeria Ramirez"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Usuario</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input
-                                            id="updateUsuario"
-                                            type="text"
-                                            class="form-control"
-                                            value="valrmzl"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Contraseña</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input
-                                            id="updateContraseña"
-                                            type="text"
-                                            class="form-control"
-                                            value="valeria12345"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">URL</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input
-                                            id="updateImagen"
-                                            type="text"
-                                            class="form-control"
-                                            value="https://randomuser.me/api/portraits/women/3.jpg"
-                                        />
-                                    </div>
-                                </div>
-
-                                <br /><br />
-
-                                <div class="row">
-                                    <div class="col-sm-3"></div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <a
-                                            class="btn btn-info"
-                                            id="btn_guardarCambios"
-                                            href="profile.html"
-                                            >Guardar cambios</a
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="infoUpdatePerfil">
         </div>
+        <script>
+            window.addEventListener("load", function(event){
+                loadProfileJSON();
+            })
+        </script>
+
+        
 
         <!-- FOOTER -->
         <div class="container">

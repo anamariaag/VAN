@@ -247,7 +247,7 @@ app.get("/api/profile", (req, res) => {
 
 
 //REGRESA UN USUARIO DE LA BD
-//A PARTIR DE SU ID
+//A PARTIR DE SU ID  FUNCIONA
 app.get('/api/users/:id', (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     let ID=req.params.id;

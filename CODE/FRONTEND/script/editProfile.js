@@ -13,7 +13,7 @@
 //para que en caso de que  no quiera actualzar todos los campos
 //guarde y se quede el que ya tenia 
 
-function updateProfileToHTML(){
+function updateProfileToHTML(profile){
     console.log("mostrando pagina de actualizar perfil");
     infoUpdatePerfil.innerHTML=`
     <div class="container" id="updatePerfil">
@@ -30,13 +30,13 @@ function updateProfileToHTML(){
                             class="d-flex flex-column align-items-center text-center"
                         >
                             <img
-                                src="https://randomuser.me/api/portraits/women/3.jpg"
+                                src="${profile.imagen}"
                                 alt="Admin"
                                 class="rounded-circle"
                                 width="270"
                             />
                             <div class="mt-3">
-                                <h4>@valrmzl</h4>
+                                <h4>@${profile.usuario}</h4>
                             </div>
                         </div>
                     </div>
@@ -48,13 +48,25 @@ function updateProfileToHTML(){
                         <br /><br /><br />
                         <div class="row mb-3">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Nombre Completo</h6>
+                                <h6 class="mb-0">Nombre</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 <input id="updateNombre"
                                     type="text"
                                     class="form-control"
-                                    value="John Doe"
+                                    value=${profile.nombre}
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Apellido</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input id="updateNombre"
+                                    type="text"
+                                    class="form-control"
+                                    value=${profile.apellido}
                                 />
                             </div>
                         </div>
@@ -66,7 +78,7 @@ function updateProfileToHTML(){
                                 <input  id="updateUsuario"
                                     type="text"
                                     class="form-control"
-                                    value="(239) 816-9029"
+                                    value=${profile.usuario}
                                 />
                             </div>
                         </div>
@@ -78,7 +90,7 @@ function updateProfileToHTML(){
                                 <input id="updateContraseña"
                                     type="text"
                                     class="form-control"
-                                    value="(320) 380-4539"
+                                    value=${profile.password}
                                 />
                             </div>
                         </div>
@@ -90,7 +102,7 @@ function updateProfileToHTML(){
                                 <input id="updateImagen"
                                     type="text"
                                     class="form-control"
-                                    value="hhtp"
+                                    value=${profile.imagen}
                                 />
                             </div>
                         </div>
@@ -119,37 +131,29 @@ function updateProfileToHTML(){
 
 //una vez que ya se tienen los campos actualizados 
 //podemos tomarlos para actualizarlos
-const updateProfile = () => {
-    let datosToUpdate={};
-    datosToUpdate.nombre=document.getElementById("updateNombre").value;
-  
-    datosToUpdate.usuario=document.getElementById("updateUsuario").value;
-    datosToUpdate.contraseña=document.getElementById("updateContraseña").value;
-    datosToUpdate.imagen=document.getElementById("updateImagen").value;
 
-
-    console.table(datosToUpdate);
-
-
+async function loadProfileJSON(){
+    console.log("CARGANDO VENTANA DE EDITAR");
+    let datosToUpdate=[];
 
     let xhr = new XMLHttpRequest();
-    xhr.open("PUT", "http://localhost:3000/api/profile");
+            
+    xhr.open('GET', 'http://localhost:3000/api/users/10');
     xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("x-auth-user", localStorage.token);
+    xhr.setRequestHeader("x-user-token", localStorage.token);
+    xhr.send();
 
-
-    xhr.send([JSON.stringify(datosToUpdate)]);
-
-    xhr.onload = () => {
-        if (xhr.status == 400) {
-            alert(xhr.response);
-        } else if (xhr.status == 401) alert(xhr.response);
-        else if (xhr.status != 201) {
-            alert(xhr.status + ": " + xhr.statusText);
-        } else {
-            console.log("los datos fueron actualizados");
-            console.table(datosToUpdate);
-            window.location.href = "profile.html";
+    xhr.onload = function () {   
+        if(xhr.status != 200){
+            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
+        }else {
+            datosToUpdate =JSON.parse(xhr.response);
+            console.table(datosToUpdate); 
+            let profile=datosToUpdate[0];
+            updateProfileToHTML(profile);
         }
     };
-};
+
+
+}
+
