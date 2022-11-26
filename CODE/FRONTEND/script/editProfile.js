@@ -30,13 +30,13 @@ function updateProfileToHTML(profile){
                             class="d-flex flex-column align-items-center text-center"
                         >
                             <img
-                                src="https://randomuser.me/api/portraits/women/3.jpg"
+                                src="${profile.imagen}"
                                 alt="Admin"
                                 class="rounded-circle"
                                 width="270"
                             />
                             <div class="mt-3">
-                                <h4>@valrmzl</h4>
+                                <h4>@${profile.usuario}</h4>
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@ function updateProfileToHTML(profile){
                                 <input id="updateNombre"
                                     type="text"
                                     class="form-control"
-                                    value="Lupita"
+                                    value=${profile.nombre}
                                 />
                             </div>
                         </div>
@@ -66,7 +66,7 @@ function updateProfileToHTML(profile){
                                 <input id="updateNombre"
                                     type="text"
                                     class="form-control"
-                                    value="Lopez"
+                                    value=${profile.apellido}
                                 />
                             </div>
                         </div>
@@ -78,7 +78,7 @@ function updateProfileToHTML(profile){
                                 <input  id="updateUsuario"
                                     type="text"
                                     class="form-control"
-                                    value="(239) 816-9029"
+                                    value=${profile.usuario}
                                 />
                             </div>
                         </div>
@@ -90,7 +90,7 @@ function updateProfileToHTML(profile){
                                 <input id="updateContraseña"
                                     type="text"
                                     class="form-control"
-                                    value="(320) 380-4539"
+                                    value=${profile.password}
                                 />
                             </div>
                         </div>
@@ -102,7 +102,7 @@ function updateProfileToHTML(profile){
                                 <input id="updateImagen"
                                     type="text"
                                     class="form-control"
-                                    value="hhtp"
+                                    value=${profile.imagen}
                                 />
                             </div>
                         </div>
@@ -134,72 +134,26 @@ function updateProfileToHTML(profile){
 
 async function loadProfileJSON(){
     console.log("CARGANDO VENTANA DE EDITAR");
-    let datosToUpdate={};
-    
-    datosToUpdate.nombre=document.getElementById("updateNombre").value;
-    datosToUpdate.apellido=document.getElementById("updateApellido").value;
-    datosToUpdate.usuario=document.getElementById("updateUsuario").value;
-    datosToUpdate.contraseña=document.getElementById("updateContraseña").value;
-    datosToUpdate.imagen=document.getElementById("updateImagen").value;
-    console.table(datosToUpdate);
-    let url = "http://localhost:3000/api/profile"
-    let resp = await fetch(url, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'x-auth-user': localStorage.token
+    let datosToUpdate=[];
+
+    let xhr = new XMLHttpRequest();
+            
+    xhr.open('GET', 'http://localhost:3000/api/users/10');
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("x-user-token", localStorage.token);
+    xhr.send();
+
+    xhr.onload = function () {   
+        if(xhr.status != 200){
+            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
+        }else {
+            datosToUpdate =JSON.parse(xhr.response);
+            console.table(datosToUpdate); 
+            let profile=datosToUpdate[0];
+            updateProfileToHTML(profile);
         }
-    })
-    if (resp.ok) {
-        let toHtml = await resp.json();
-        //console.log(toHtml);
-        updateProfileToHTML(toHtml);
-    } else {
-        document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
-        <strong>Error!</strong> Surgio un error al momento de cargar los datos.
-      </div>`
-    }
-
-    
-
-       
-   
-
+    };
 
 
 }
 
-const updateProfile = () => {
-    let datosToUpdate={};
-    datosToUpdate.nombre=document.getElementById("updateNombre").value;
-    datosToUpdate.apellido=document.getElementById("updateApellido").value;
-    datosToUpdate.usuario=document.getElementById("updateUsuario").value;
-    datosToUpdate.contraseña=document.getElementById("updateContraseña").value;
-    datosToUpdate.imagen=document.getElementById("updateImagen").value;
-
-
-    console.table(datosToUpdate);
-
-
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("PUT", "http://localhost:3000/api/profile");
-    xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("x-auth-user", localStorage.token);
-
-
-    xhr.send([JSON.stringify(datosToUpdate)]);
-
-    xhr.onload = () => {
-        if (xhr.status == 400) {
-            alert(xhr.response);
-        } else if (xhr.status == 401) alert(xhr.response);
-        else if (xhr.status != 201) {
-            alert(xhr.status + ": " + xhr.statusText);
-        } else {
-            console.log("los datos fueron actualizados");
-            console.table(datosToUpdate);
-            window.location.href = "profile.html";
-        }
-    };
-};
