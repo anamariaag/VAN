@@ -53,3 +53,8 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/api/tarea HTTP/1.1
+
+
+###
+DELETE  http://localhost:3000/api/tarea/6383ef6eb6f46b1e78ab586c HTTP/1.1
+Content-Type: application/json
