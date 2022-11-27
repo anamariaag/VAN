@@ -338,41 +338,7 @@
         <br />
 
         <!-- MODAL CONFIRMACIÓN ELIMINAR -->
-        <div class="modal fade" id="eliminarTarea" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Eliminar tarea</h4>
-                        <button type="button" class="close">&times;</button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <p class="text-center">
-                            ¿Estas seguro que deseas eliminar esta tarea?
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-danger"
-                            data-dismiss="modal"
-                            onclick="deleteTarea()"
-                        >
-                            Si, eliminar
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-light"
-                            data-dismiss="modal"
-                        >
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id = "modalDelete"></div>
 
         <!-- MODAL EDITAR TAREA -->
         <div class="modal fade" id="editarTarea" role="dialog">
