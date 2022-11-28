@@ -69,13 +69,16 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    token: {
+        type: String,
+        required: false,
+    },
 });
-
 
 //definiendo esquema de TAREA
 let tareaSchema = mongoose.Schema({
     id: {
-        type: String, 
+        type: String,
         required: true,
         unique: true,
     },
@@ -91,9 +94,9 @@ let tareaSchema = mongoose.Schema({
         type: [String],
     },
     completed: {
-        type: Boolean, 
+        type: Boolean,
         required: true,
-    }, 
+    },
     description: {
         type: String,
         required: true,
@@ -113,8 +116,7 @@ app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 // D A T A B A S E
 
-
-///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
+///POST DE UN NUEVO USUARIO A LA BASE DE DATOS
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
     let id = req.body.id;
@@ -126,7 +128,7 @@ app.post("/api/users", (req, res) => {
     let fecha = req.body.fecha;
     let sexo = req.body.sexo;
     let imagen = req.body.imagen;
-    let token = req.body.token;
+    let token = "";
 
     let newUser = {
         id,
@@ -138,6 +140,7 @@ app.post("/api/users", (req, res) => {
         sexo,
         fecha,
         imagen,
+        token,
     };
 
     let user = User(newUser);
@@ -149,7 +152,7 @@ app.post("/api/users", (req, res) => {
     );
 });
 
-let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar 
+let Tarea = mongoose.model("tarea", tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
 app.post("/api/tarea", (req, res) => {
@@ -163,7 +166,7 @@ app.post("/api/tarea", (req, res) => {
 
     let newTarea = {
         id,
-        date, 
+        date,
         tags,
         completed,
         users,
@@ -174,9 +177,7 @@ app.post("/api/tarea", (req, res) => {
     console.table(newTarea);
 
     //guardar
-    tarea.save().then((doc) =>
-        console.log(chalk.green("Tarea creada! "))
-    );
+    tarea.save().then((doc) => console.log(chalk.green("Tarea creada! ")));
 });
 
 //obtener lista de usuarios
@@ -187,8 +188,8 @@ app.get("/api/users", (req, res) => {
 
 //FILTRO PARA OBTENER TAREAS
 app.get("/api/tarea", (req, res) => {
-    Tarea.find({}, function(err, result){
-        if(err){
+    Tarea.find({}, function (err, result) {
+        if (err) {
             res.send(err);
         } else {
             res.send(result);
@@ -201,27 +202,29 @@ app.delete("/api/tarea/:id", (req, res) => {
     let idTarea = req.params.id;
     //console.log("hola");
     //console.log(req.params.id)
-    Tarea.deleteOne({id : idTarea}, function(err, result){
-        if(err){
+    Tarea.deleteOne({ id: idTarea }, function (err, result) {
+        if (err) {
             res.send(err);
-        }else{
+        } else {
             console.log(chalk.red("Tarea eliminada."));
             res.send(result);
         }
     });
 });
 
-
-//EDITAR TAREA 
+//EDITAR TAREA
 app.put("/api/tarea", (req, res) => {
     console.table(req.body);
     let idTarea = req.body.id;
-    
-    const {id, date, description, users, completed, tags} = req.body;
 
-    Tarea.updateOne({id:idTarea},{$set: {id, date, description, users, completed, tags}})
-    .then((data) => res.json(data))
-    .catch((error) => res.json({message: error}))
+    const { id, date, description, users, completed, tags } = req.body;
+
+    Tarea.updateOne(
+        { id: idTarea },
+        { $set: { id, date, description, users, completed, tags } }
+    )
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
 });
 
 //marcar tarea como completada - ana
@@ -257,9 +260,9 @@ app.post("/api/login", (req, res) => {
                 if (docs.length != 0) {
                     docs = docs[0];
                     if (docs.password == password) {
-                        if (docs.token != undefined) {
+                        if (docs.token != "") {
                             res.status(201);
-                            res.set("x-user-token", docs.token);
+                            res.set("x-user-token", [docs.token, docs.id]);
                             res.set(
                                 "Access-Control-Expose-Headers",
                                 "x-user-token"
@@ -267,17 +270,22 @@ app.post("/api/login", (req, res) => {
                             res.send();
                             return;
                         } else {
-                            let tok = randomize("Aa0", "10") + "-" + docs.id;
-                            docs.token = tok;
+                            let token = randomize("Aa0", "10") + "-" + docs.id;
+                            docs.token = token;
                             console.log(docs);
-                            docs.save().then(() => console.log("token"));
-                            res.status(201);
-                            res.set("x-user-token", tok);
-                            res.set(
-                                "Access-Control-Expose-Headers",
-                                "x-user-token"
-                            );
-                            res.send();
+
+                            User.updateOne(
+                                { id: docs.id },
+                                { $set: { token } }
+                            ).then((data) => {
+                                res.status(201);
+                                res.set("x-user-token", [token, docs.id]);
+                                res.set(
+                                    "Access-Control-Expose-Headers",
+                                    "x-user-token"
+                                );
+                                res.send();
+                            });
                         }
                     } else {
                         res.status(401);
@@ -309,65 +317,55 @@ app.delete("/api/notif", (req, res) => {
     res.send();
 });
 
-
-
-
-
-
-
 //REGRESA UN USUARIO DE LA BD
 //A PARTIR DE SU ID  FUNCIONA
-app.get('/api/users/:id', (req, res) => {
+app.get("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
-    let ID=req.params.id;
-    User.find(({id:ID}),function(error,val){
-        if(val.length==0){
+    let ID = req.params.id;
+    User.find({ id: ID }, function (error, val) {
+        if (val.length == 0) {
             res.send("no existe el usuario con ese id");
-        }else{
+        } else {
             res.send(val);
         }
-    })
+    });
 });
 
 //ELIMINAR USUARIO A PARTIR DE SU ID
-app.delete('/api/users/:id', (req, res) => {
+app.delete("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
-    let ID=req.params.id;
-    User.deleteOne(({id:ID}),function(error,val){
-        if(val.length==0){
+    let ID = req.params.id;
+    User.deleteOne({ id: ID }, function (error, val) {
+        if (val.length == 0) {
             res.send("no existe el usuario con ese id");
-        }else{
+        } else {
             console.log(chalk.red("Se elimino al usuario"));
             res.send(val);
         }
-    })
-
-})
-
+    });
+});
 
 //EDITAR USUARIO A PARTIR DE SU ID
-app.put('/api/users/:id', (req, res) => {
+app.put("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
-    console.log(chalk.yellowBright("Actualizando información..."))
-    let update={};
-    let ID=req.params.id;
-    update.nombre=req.body.nombre,
-    update.apellido=req.body.apellido,
-    update.usuario=req.body.usuario,
-    update.password=req.body.password,
-    update.imagen=req.body.imagen;
-    const {nombre,apellido,usuario,password,imagen}= req.body;
+    console.log(chalk.yellowBright("Actualizando información..."));
+    let update = {};
+    let ID = req.params.id;
+    (update.nombre = req.body.nombre),
+        (update.apellido = req.body.apellido),
+        (update.usuario = req.body.usuario),
+        (update.password = req.body.password),
+        (update.imagen = req.body.imagen);
+    const { nombre, apellido, usuario, password, imagen } = req.body;
 
     console.table(update);
-    User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
-    .then((data)=> res.json(data))
-    .catch((error)=>res.json({message: error}))
-})
-
-
-
-
-
+    User.updateOne(
+        { id: ID },
+        { $set: { nombre, apellido, usuario, password, imagen } }
+    )
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
