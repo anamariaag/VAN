@@ -113,7 +113,6 @@ app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 // D A T A B A S E
 
-let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
 app.post("/api/users", (req, res) => {
