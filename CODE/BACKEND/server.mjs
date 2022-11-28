@@ -77,6 +77,11 @@ let userSchema = mongoose.Schema({
 
 //definiendo esquema de TAREA
 let tareaSchema = mongoose.Schema({
+    id: {
+        type: String, 
+        required: true,
+        unique: true,
+    },
     date: {
         type: Date,
         required: true,
@@ -149,9 +154,10 @@ app.post("/api/users", (req, res) => {
 
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
-let Tarea= mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
+let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/tarea", (req, res) => {
     res.send("Tarea creada.");
+    let id = Math.floor(Date.now() * Math.random());
     let date = req.body.date;
     let tags = req.body.tags.split(", ");
     let completed = req.body.completed;
@@ -160,6 +166,7 @@ app.post("/api/tarea", (req, res) => {
     
 
     let newTarea = {
+        id,
         date, 
         tags,
         completed,
@@ -194,9 +201,18 @@ app.get("/api/tarea", (req, res) => {
 });
 
 //eliminar tarea - ana
-app.delete("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send();
+app.delete("/api/tarea/:id", (req, res) => {
+    let idTarea = req.params.id;
+    //console.log("hola");
+    //console.log(req.params.id)
+    Tarea.deleteOne({id : idTarea}, function(err, result){
+        if(err){
+            res.send(err);
+        }else{
+            console.log(chalk.red("Tarea eliminada."));
+            res.send(result);
+        }
+    });
 });
 
 

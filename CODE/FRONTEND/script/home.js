@@ -103,6 +103,7 @@ function tareaToHTML(tarea, users, tags){
                     class="border-0 btn-transition btn btn-outline-danger"
                     data-toggle="modal"
                     data-target="#eliminarTarea"
+                    onclick="confirmarDeleteTarea('${tarea.id}')"
                 >
                     <i
                         class="fa fa-trash"
@@ -136,8 +137,49 @@ async function loadTareasJSON(){
 }
 
 
-async function deleteTarea(id){
-    let url = "http://localhost:3000/api/tarea/"+ id
+function confirmarDeleteTarea(idTarea){
+    //console.log(idTarea);
+    document.getElementById("modalDelete").innerHTML = `
+        <div class="modal fade" id="eliminarTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar tarea</h4>
+                        <button type="button" class="close">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p class="text-center">
+                            ¿Estas seguro que deseas eliminar esta tarea?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            data-dismiss="modal"
+                            onclick="deleteTarea('${idTarea}')"
+                        >
+                            Si, eliminar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+}
+
+async function deleteTarea(idTarea){
+    let url = "http://localhost:3000/api/tarea/" + idTarea
     let resp = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -146,9 +188,11 @@ async function deleteTarea(id){
         }
     })
     if (resp.ok) {
-        let toHtml = await resp.json();
+        loadTareasJSON();
+        //let toHtml = await resp.json();
+        //console.log("tareas");
         //console.log(toHtml);
-        tareasListToHTML(toHtml);
+        //tareasListToHTML(toHtml);
     } else {
         if(resp.status == 404){
             document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
