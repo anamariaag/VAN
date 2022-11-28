@@ -182,8 +182,14 @@ app.post("/api/tarea", (req, res) => {
 
 //obtener lista de usuarios
 app.get("/api/users", (req, res) => {
-    res.status(201);
-    res.send(["Naim", "Ana", "Vale", "user4"]);
+   
+    User.find({}, function(err, result){
+        if(err){
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
 });
 
 //FILTRO PARA OBTENER TAREAS
@@ -348,24 +354,26 @@ app.delete("/api/users/:id", (req, res) => {
 //EDITAR USUARIO A PARTIR DE SU ID
 app.put("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
-    console.log(chalk.yellowBright("Actualizando información..."));
-    let update = {};
-    let ID = req.params.id;
-    (update.nombre = req.body.nombre),
-        (update.apellido = req.body.apellido),
-        (update.usuario = req.body.usuario),
-        (update.password = req.body.password),
-        (update.imagen = req.body.imagen);
-    const { nombre, apellido, usuario, password, imagen } = req.body;
+    console.log(chalk.yellowBright("Actualizando información..."))
+    let update={};
+    let ID=req.params.id;
+    update.nombre=req.body.nombre,
+    update.apellido=req.body.apellido,
+    update.usuario=req.body.usuario,
+    update.password=req.body.password,
+    update.imagen=req.body.imagen;
+    const {nombre,apellido,usuario,password,imagen}= req.body;
 
     console.table(update);
-    User.updateOne(
-        { id: ID },
-        { $set: { nombre, apellido, usuario, password, imagen } }
-    )
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-});
+    User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
+    .then((data)=> res.json(data))
+    .catch((error)=>res.json({message: error}))
+})
+
+
+
+
+
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
