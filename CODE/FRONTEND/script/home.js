@@ -26,11 +26,15 @@ function tareasListToHTML(listTarea){
             </div>`;
         }
         //console.log(tags);
-        return tareaToHTML(tarea, users, tags);
+        if(tarea.completed == true){
+            return tareaCompleteToHTML(tarea, users, tags);
+        }else{
+            return tareaIncompleteToHTML(tarea, users, tags)
+        }
     }).join("");
 }
 
-function tareaToHTML(tarea, users, tags){
+function tareaIncompleteToHTML(tarea, users, tags){
     //html de la tarea
     let date = new Date(String(tarea.date).slice(0,-1));
     //console.log(date);
@@ -39,6 +43,7 @@ function tareaToHTML(tarea, users, tags){
     <!--color de tarea: bg-->
     <div
         class="todo-indicator bg-primary"
+        
     ></div>
     <div class="widget-content p-0">
         <div
@@ -54,7 +59,7 @@ function tareaToHTML(tarea, users, tags){
                         class="custom-control-input"
                         id="task${tarea.id}"
                         type="checkbox"
-                        onclick="tareaCompletada()"
+                        onclick="completeTarea('${tarea.id}')"
                     />
                     <label
                         class="custom-control-label"
@@ -65,9 +70,101 @@ function tareaToHTML(tarea, users, tags){
             </div>
             <div
                 class="widget-content-left"
+                id = "containerIncomplete"
             >
                 <div
                     class="widget-heading"
+                    id = "title${tarea.id}"
+                >
+                ${tarea.description}
+                </div>
+                <!--autor-->
+                <div
+                    class="widget-subheading"
+                >
+                    ${users}
+                    <!--etiquetas color: badge-->
+                    ${tags}
+                </div>
+                <div
+                    class="widget-subheading"
+                >
+                    ${date.toDateString()}
+                </div>
+            </div>
+            <div
+                class="widget-content-right"
+            >
+                <!--editar y eliminar tareas-->
+                <button
+                    class="border-0 btn-transition btn btn-outline-success"
+                    data-toggle="modal"
+                    data-target="#editarTarea"
+                    onclick="editTareaModal('${tarea.description}', '${tarea.date}', '${tarea.id}')"
+                >
+                    <i
+                        class="fa fa-edit"
+                    ></i>
+                </button>
+                <button
+                    class="border-0 btn-transition btn btn-outline-danger"
+                    data-toggle="modal"
+                    data-target="#eliminarTarea"
+                    onclick="confirmarDeleteTarea('${tarea.id}')"
+                >
+                    <i
+                        class="fa fa-trash"
+                    ></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</li>
+    `)
+}
+
+function tareaCompleteToHTML(tarea, users, tags){
+    //html de la tarea
+    let date = new Date(String(tarea.date).slice(0,-1));
+    //console.log(date);
+    return (`
+    <li class="list-group-item">
+    <!--color de tarea: bg-->
+    <div
+        class="todo-indicator bg-primary"
+        
+    ></div>
+    <div class="widget-content p-0">
+        <div
+            class="widget-content-wrapper"
+        >
+            <div
+                class="widget-content-left mr-2"
+            >
+                <div
+                    class="custom-checkbox custom-control"
+                >
+                    <input
+                        class="custom-control-input"
+                        id="task${tarea.id}"
+                        type="checkbox"
+                        checked
+                        onclick="completeTarea('${tarea.id}')"
+                    />
+                    <label
+                        class="custom-control-label"
+                        for="task${tarea.id}"
+                        >&nbsp;</label
+                    >
+                </div>
+            </div>
+            <div
+                class="widget-content-left"
+                id = "containerComplete"
+            >
+                <div
+                    class="widget-heading"
+                    id = "title${tarea.id}"
                 >
                 ${tarea.description}
                 </div>
@@ -136,7 +233,6 @@ async function loadTareasJSON(){
     }
 }
 
-
 function confirmarDeleteTarea(idTarea){
     //console.log(idTarea);
     document.getElementById("modalDelete").innerHTML = `
@@ -146,7 +242,7 @@ function confirmarDeleteTarea(idTarea){
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">Eliminar tarea</h4>
-                        <button type="button" class="close">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -205,7 +301,6 @@ async function deleteTarea(idTarea){
         }
     }
 }
-
 
 function addTarea(){
     let tarea = {}
@@ -430,7 +525,20 @@ async function postEditTarea(datos){
     }
 }
 
-
-const completeTarea = () => {
-    
+async function completeTarea(idtarea) {
+    let url = "http://localhost:3000/api/tarea/done/"+idtarea
+    let resp = await fetch(url, {
+        method: "PUT",
+    })
+    //console.log(datos);
+    if (resp.ok) {
+        loadTareasJSON();
+    } else {
+        document.getElementById("modalalertsE").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Surgio un error al momento de editar los datos. Vuelve a intentarlo.
+        </div>`;
+        setTimeout(() => {
+            document.getElementById("modalalertsM").innerHTML = ``
+        }, 5000);
+    }
 };

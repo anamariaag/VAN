@@ -225,9 +225,14 @@ app.put("/api/tarea", (req, res) => {
 });
 
 //marcar tarea como completada - ana
-app.put("/api/tarea/:done", (req, res) => {
-    res.status(200);
-    res.send();
+app.put("/api/tarea/done/:id", (req, res) => {
+    //console.table(req.params.id);
+    let idTarea = req.params.id;
+    
+    Tarea.updateOne({id:idTarea},{$set: {completed : true}})
+    .then((data) => res.json(data))
+    .catch((error) => res.json({message: error}))
+    
 });
 
 //validar usuario y contraseña

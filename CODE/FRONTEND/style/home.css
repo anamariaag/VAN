@@ -1,3 +1,8 @@
+#containerComplete {
+    color: gray;
+}
+
+
 .containertasks{
     margin-top:100px;
     margin-left: 25px;
@@ -25,7 +30,7 @@
     background-color: #fff;
 }
 .widget-subheading{
-    color: #858a8e;
+    
     font-size: 10px;
 }
 .card-header.card-header-tab .card-header-title {
