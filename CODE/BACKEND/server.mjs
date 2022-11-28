@@ -246,8 +246,7 @@ app.delete("/api/notif", (req, res) => {
     res.send();
 });
 
-//editar profile
-app.put("/api/profile", (req, res) => {});
+
 
 
 
@@ -301,10 +300,9 @@ app.put('/api/users/:id', (req, res) => {
     User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
     .then((data)=> res.json(data))
     .catch((error)=>res.json({message: error}))
-
-
-
 })
+
+
 
 
 

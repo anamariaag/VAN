@@ -160,13 +160,20 @@ async function loadProfileJSON(){
 async function updateProfileJSON(){
     console.log("CARGANDO VENTANA DE EDITAR");
     let update={};
+    //primero hay que revisar que no exista
+    //algun usuario en la BD 
+    //con el mismo usuario
+
+    //obtener todos los usuarios
+    update.usuario=document.getElementById("updateUsuario").value;
+
+    
     update.nombre=document.getElementById("updateNombre").value;
     update.apellido=document.getElementById("updateApellido").value;
-    update.usuario=document.getElementById("updateUsuario").value;
     update.password=document.getElementById("updatePassword").value;
     update.imagen=document.getElementById("updateImagen").value;
 
-    console.log()
+
 
    
     let xhr = new XMLHttpRequest();
