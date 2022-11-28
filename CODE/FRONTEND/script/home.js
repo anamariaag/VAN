@@ -32,6 +32,8 @@ function tareasListToHTML(listTarea){
 
 function tareaToHTML(tarea, users, tags){
     //html de la tarea
+    let date = new Date(String(tarea.date).slice(0,-1));
+    //console.log(date);
     return (`
     <li class="list-group-item">
     <!--color de tarea: bg-->
@@ -67,7 +69,7 @@ function tareaToHTML(tarea, users, tags){
                 <div
                     class="widget-heading"
                 >
-                ${tarea.name}
+                ${tarea.description}
                 </div>
                 <!--autor-->
                 <div
@@ -80,7 +82,7 @@ function tareaToHTML(tarea, users, tags){
                 <div
                     class="widget-subheading"
                 >
-                    ${tarea.date}
+                    ${date.toDateString()}
                 </div>
             </div>
             <div
@@ -101,6 +103,7 @@ function tareaToHTML(tarea, users, tags){
                     class="border-0 btn-transition btn btn-outline-danger"
                     data-toggle="modal"
                     data-target="#eliminarTarea"
+                    onclick="confirmarDeleteTarea('${tarea.id}')"
                 >
                     <i
                         class="fa fa-trash"
@@ -134,8 +137,49 @@ async function loadTareasJSON(){
 }
 
 
-async function deleteTarea(id){
-    let url = "http://localhost:3000/api/tarea/"+ id
+function confirmarDeleteTarea(idTarea){
+    //console.log(idTarea);
+    document.getElementById("modalDelete").innerHTML = `
+        <div class="modal fade" id="eliminarTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar tarea</h4>
+                        <button type="button" class="close">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p class="text-center">
+                            ¿Estas seguro que deseas eliminar esta tarea?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            data-dismiss="modal"
+                            onclick="deleteTarea('${idTarea}')"
+                        >
+                            Si, eliminar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+}
+
+async function deleteTarea(idTarea){
+    let url = "http://localhost:3000/api/tarea/" + idTarea
     let resp = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -144,9 +188,11 @@ async function deleteTarea(id){
         }
     })
     if (resp.ok) {
-        let toHtml = await resp.json();
+        loadTareasJSON();
+        //let toHtml = await resp.json();
+        //console.log("tareas");
         //console.log(toHtml);
-        tareasListToHTML(toHtml);
+        //tareasListToHTML(toHtml);
     } else {
         if(resp.status == 404){
             document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
@@ -164,6 +210,20 @@ function editTarea(){
     
 }
 
+
+function addTarea(){
+    let tarea = {}
+    tarea.date = document.getElementById("fechaTarea").value;
+    //console.log(tarea.fecha);
+    tarea.description = document.getElementById("descripcionTarea").value;
+    tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
+    tarea.users = document.getElementById("editselectUsersEditar").innerText =="" ? "admin": document.getElementById("editselectUsersEditar").innerText;
+    tarea.completed = false;
+    postTarea(tarea);
+    
+}
+
+
 async function postTarea(datos){
     let url = "http://localhost:3000/api/tarea"
     let resp = await fetch(url, {
@@ -174,43 +234,19 @@ async function postTarea(datos){
         body: JSON.stringify(datos)
     })
     if (resp.ok) {
-        /*
-        document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-success" style="text-align: center;">
-   <strong>Generado!</strong> Usuario generado.
- </div>`;
-        setTimeout(() => {
-            document.getElementById("modalalertsM").innerHTML = ``;
-            window.location.href = "usuarios.html";
-        }, 5000);
-        */
         window.location.href = "home.html";
-        alert("¡Registro exitoso!");
+        alert("¡Tarea agregada con éxito!");
     } else {
-        if(resp.status == 400){
-            document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
-            <strong>Error!</strong> El usuario ya se ha registrado antes. Intenta con otro nombre o correo.
-            </div>`;
-            setTimeout(() => {
-                document.getElementById("modalalertsM").innerHTML = ``
-            }, 5000);
-        }else{
-            document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
-            <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
-            </div>`;
-            setTimeout(() => {
-                document.getElementById("modalalertsM").innerHTML = ``
-            }, 5000);
-        }
-        
+        document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
+        </div>`;
+        setTimeout(() => {
+            document.getElementById("modalalertsM").innerHTML = ``
+        }, 5000);
     }
 }
 
 
-
-
-const agregarTarea = () => {
-    
-};
 
 
 const editarTarea = () => {

@@ -22,7 +22,25 @@ Content-Type: application/json
   "imagen": "https://randomuser.me/api/portraits/women/5.jpg",
   "password": "gupi"
 }
-  
+
+###
+GET http://localhost:3000/api/users/10
+###
+DELETE  http://localhost:3000/api/users/11
+###
+PUT  http://localhost:3000/api/users/10
+Content-Type: application/json
+
+  {
+    "id":"10",
+    "nombre": "lupeee",
+    "apellido": "lopez",
+    "usuario": "valrmzl",
+    "password": "pepee<3",
+    "imagen":"https://randomuser.me/api/portraits/women/5.jpg"
+
+  }
+
 
 ###
 
@@ -38,4 +56,22 @@ Content-Type: application/json
 
 # GET http://localhost:3000/api/login HTTP/1.1
 
-# POST http://localhost:3000/api/users HTTP/1.1 
+
+###
+POST http://localhost:3000/api/users HTTP/1.1 
+
+###
+POST  http://localhost:3000/api/tarea  
+Content-Type: application/json
+
+{
+  "fecha": "2022-11-25",
+  "tags": ["URGENT", "REQUIRED"],
+  "completed": "false",
+  "usuarios": ["Ana", "Naim", "Val"],
+  "descripcion": "Proyecto final web"
+}
+
+###
+
+GET http://localhost:3000/api/tarea HTTP/1.1

@@ -71,6 +71,34 @@ let userSchema = mongoose.Schema({
     },
 });
 
+
+//definiendo esquema de TAREA
+let tareaSchema = mongoose.Schema({
+    id: {
+        type: String, 
+        required: true,
+        unique: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    },
+    users: {
+        type: [String],
+        required: true,
+    },
+    tags: {
+        type: [String],
+    },
+    completed: {
+        type: Boolean, 
+        required: true,
+    }, 
+    description: {
+        type: String,
+        required: true,
+    },
+});
 // D A T A B A S E
 let User = mongoose.model("users", userSchema);
 
@@ -85,7 +113,7 @@ app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 // D A T A B A S E
 
-///POST DE UN NIEVO USUARIO A LA BASE DE DATOS
+///POST DE UN NIEVO USUARIO A LA BASE DE DATOS 
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
     let id = req.body.id;
@@ -120,6 +148,37 @@ app.post("/api/users", (req, res) => {
     );
 });
 
+
+//POST DE NUEVA TAREA A LA BASE DE DATOS
+let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
+app.post("/api/tarea", (req, res) => {
+    res.send("Tarea creada.");
+    let id = Math.floor(Date.now() * Math.random());
+    let date = req.body.date;
+    let tags = req.body.tags.split(", ");
+    let completed = req.body.completed;
+    let users = req.body.users.split(", ");
+    let description = req.body.description;
+    
+
+    let newTarea = {
+        id,
+        date, 
+        tags,
+        completed,
+        users,
+        description,
+    };
+
+    let tarea = Tarea(newTarea);
+    console.table(newTarea);
+
+    //guardar
+    tarea.save().then((doc) =>
+        console.log(chalk.green("Tarea creada! "))
+    );
+});
+
 //obtener lista de usuarios
 app.get("/api/users", (req, res) => {
     res.status(201);
@@ -128,36 +187,30 @@ app.get("/api/users", (req, res) => {
 
 //filtros para obtener tareas
 app.get("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send([
-        {
-            id: "1",
-            name: "Proyecto WEB",
-            date: "24/11/2022",
-            users: ["Naim", "Ana", "Vale"],
-            tags: ["SCHOOL", "WORK", "URGENT"],
-        },
-        {
-            id: "2",
-            name: "Proyecto GBD",
-            date: "24/11/2022",
-            users: ["Naim", "Jaz", "Vale"],
-            tags: ["SCHOOL", "URGENT", "PENDING"],
-        },
-    ]);
+    Tarea.find({}, function(err, result){
+        if(err){
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
 });
 
 //eliminar tarea - ana
-app.delete("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send();
+app.delete("/api/tarea/:id", (req, res) => {
+    let idTarea = req.params.id;
+    //console.log("hola");
+    //console.log(req.params.id)
+    Tarea.deleteOne({id : idTarea}, function(err, result){
+        if(err){
+            res.send(err);
+        }else{
+            console.log(chalk.red("Tarea eliminada."));
+            res.send(result);
+        }
+    });
 });
 
-//agregar tarea - ana
-app.post("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send();
-});
 
 //editar tarea - ana
 app.put("/api/tarea", (req, res) => {
@@ -253,17 +306,65 @@ app.delete("/api/notif", (req, res) => {
 //editar profile
 app.put("/api/profile", (req, res) => {});
 
-//visualizar profile
-app.get("/api/profile", (req, res) => {
-    res.send({
-        nombre: "valeria yeya",
-        correo: "valeria.ramirez@iteso.mx",
-        usuario: "valrmzl",
-        contraseña: "*****",
-        fecha: "23/11/2022",
-        imagen: "https://randomuser.me/api/portraits/women/3.jpg",
-    });
-});
+
+
+
+
+//REGRESA UN USUARIO DE LA BD
+//A PARTIR DE SU ID  FUNCIONA
+app.get('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    let ID=req.params.id;
+    User.find(({id:ID}),function(error,val){
+        if(val.length==0){
+            res.send("no existe el usuario con ese id");
+        }else{
+            res.send(val);
+        }
+    })
+
+})
+
+//ELIMINAR USUARIO A PARTIR DE SU ID
+app.delete('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    let ID=req.params.id;
+    User.deleteOne(({id:ID}),function(error,val){
+        if(val.length==0){
+            res.send("no existe el usuario con ese id");
+        }else{
+            console.log(chalk.red("Se elimino al usuario"));
+            res.send(val);
+        }
+    })
+
+})
+
+
+//EDITAR USUARIO A PARTIR DE SU ID
+app.put('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    console.log(chalk.yellowBright("Actualizando información..."))
+    let update={};
+    let ID=req.params.id;
+    update.nombre=req.body.nombre,
+    update.apellido=req.body.apellido,
+    update.usuario=req.body.usuario,
+    update.password=req.body.password,
+    update.imagen=req.body.imagen;
+    const {nombre,apellido,usuario,password,imagen}= req.body;
+
+    console.table(update);
+    User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
+    .then((data)=> res.json(data))
+    .catch((error)=>res.json({message: error}))
+
+
+
+})
+
+
+
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
