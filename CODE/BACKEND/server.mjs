@@ -1,5 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
+let mongoConnectionUsers =
+    "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoDB";
+let db = mongoose.connection;
 import chalk from "chalk";
 import * as fs from "node:fs";
 import cors from "cors";
@@ -7,9 +10,6 @@ import randomize from "randomatic";
 
 const app = express();
 const port = 3000;
-let mongoConnectionUsers =
-    "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoDB";
-let db = mongoose.connection;
 
 app.use(
     cors({
@@ -69,9 +69,6 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    token: {
-        type: String
-    }
 });
 
 
@@ -103,6 +100,8 @@ let tareaSchema = mongoose.Schema({
     },
 });
 // D A T A B A S E
+let User = mongoose.model("users", userSchema);
+
 app.use(express.json());
 
 const autenticar = (req, res, next) => {
@@ -112,14 +111,12 @@ const autenticar = (req, res, next) => {
 
 app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
-
+// D A T A B A S E
 
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
-let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
-
     let id = req.body.id;
     let usuario = req.body.usuario;
     let nombre = req.body.nombre;
@@ -129,7 +126,7 @@ app.post("/api/users", (req, res) => {
     let fecha = req.body.fecha;
     let sexo = req.body.sexo;
     let imagen = req.body.imagen;
-    let token=req.body.token;
+    let token = req.body.token;
 
     let newUser = {
         id,
@@ -152,9 +149,9 @@ app.post("/api/users", (req, res) => {
     );
 });
 
+let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar 
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
-let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/tarea", (req, res) => {
     res.send("Tarea creada.");
     let id = Math.floor(Date.now() * Math.random());
@@ -163,7 +160,6 @@ app.post("/api/tarea", (req, res) => {
     let completed = req.body.completed;
     let users = req.body.users.split(", ");
     let description = req.body.description;
-    
 
     let newTarea = {
         id,
@@ -189,7 +185,7 @@ app.get("/api/users", (req, res) => {
     res.send(["Naim", "Ana", "Vale", "user4"]);
 });
 
-//filtros para obtener tareas
+//FILTRO PARA OBTENER TAREAS
 app.get("/api/tarea", (req, res) => {
     Tarea.find({}, function(err, result){
         if(err){
@@ -200,7 +196,7 @@ app.get("/api/tarea", (req, res) => {
     });
 });
 
-//eliminar tarea - ana
+//ELIMINAR TAREA
 app.delete("/api/tarea/:id", (req, res) => {
     let idTarea = req.params.id;
     //console.log("hola");
@@ -216,10 +212,16 @@ app.delete("/api/tarea/:id", (req, res) => {
 });
 
 
-//editar tarea - ana
+//EDITAR TAREA 
 app.put("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send();
+    console.table(req.body);
+    let idTarea = req.body.id;
+    
+    const {id, date, description, users, completed, tags} = req.body;
+
+    Tarea.updateOne({id:idTarea},{$set: {id, date, description, users, completed, tags}})
+    .then((data) => res.json(data))
+    .catch((error) => res.json({message: error}))
 });
 
 //marcar tarea como completada - ana
@@ -230,10 +232,71 @@ app.put("/api/tarea/:done", (req, res) => {
 
 //validar usuario y contraseña
 app.post("/api/login", (req, res) => {
-    res.status(201);
-    res.set("x-user-token", "token chido");
-    res.set("Access-Control-Expose-Headers", "x-user-token");
-    res.send();
+    let user = req.body.user;
+    let password = req.body.pass;
+
+    if (user == "") {
+        res.status(401);
+        res.send("Usuario faltante");
+        return;
+    } else if (password == "") {
+        res.status(401);
+        res.send("Contraseña faltante");
+        return;
+    }
+
+    User.find(
+        {
+            usuario: req.body.user,
+        },
+        (err, docs) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(docs.length);
+                if (docs.length != 0) {
+                    docs = docs[0];
+                    if (docs.password == password) {
+                        if (docs.token != undefined) {
+                            res.status(201);
+                            res.set("x-user-token", docs.token);
+                            res.set(
+                                "Access-Control-Expose-Headers",
+                                "x-user-token"
+                            );
+                            res.send();
+                            return;
+                        } else {
+                            let tok = randomize("Aa0", "10") + "-" + docs.id;
+                            docs.token = tok;
+                            console.log(docs);
+                            docs.save().then(() => console.log("token"));
+                            res.status(201);
+                            res.set("x-user-token", tok);
+                            res.set(
+                                "Access-Control-Expose-Headers",
+                                "x-user-token"
+                            );
+                            res.send();
+                        }
+                    } else {
+                        res.status(401);
+                        res.send("contraseña incorrecta");
+                        return;
+                    }
+                } else {
+                    res.status(401);
+                    res.send("no se encontró el usuario");
+                    return;
+                }
+            }
+        }
+    );
+
+    // res.status(201);
+    // res.set("x-user-token", "token chido");
+    // res.set("Access-Control-Expose-Headers", "x-user-token");
+    // res.send();
 });
 
 app.get("/api/notif", (req, res) => {
@@ -264,8 +327,7 @@ app.get('/api/users/:id', (req, res) => {
             res.send(val);
         }
     })
-
-})
+});
 
 //ELIMINAR USUARIO A PARTIR DE SU ID
 app.delete('/api/users/:id', (req, res) => {

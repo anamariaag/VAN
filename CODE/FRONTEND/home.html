@@ -87,7 +87,7 @@
                     href="#"
                     data-toggle="modal"
                     data-target="#nuevaTarea"
-                    onclick="getUsers('selectUsersNueva', 'editselectUsersEditar')"
+                    onclick="getUsers('selectUsersNew', 'editselectUsersNew')"
                 >
                     <img
                         src="imagenes/plus.png"
@@ -341,142 +341,7 @@
         <div id = "modalDelete"></div>
 
         <!-- MODAL EDITAR TAREA -->
-        <div class="modal fade" id="editarTarea" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Editar Tarea</h4>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                        >
-                            &times;
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-lg-12">
-                            <div class="card" id="card">
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Tarea</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                value="Tarea 1"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">
-                                                Selección usuarios
-                                            </h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <select
-                                                class="form-control"
-                                                id="selectUsersEditar"
-                                                onchange="selectUser('selectUsersEditar', 'addselectUsersEditar')"
-                                            >
-                                                <option>
-                                                    -- SELECCIONAR --
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Usuarios</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <ul class="list-group">
-                                                <li
-                                                    class="list-group-item"
-                                                    id="addselectUsersEditar"
-                                                ></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">
-                                                Selección etiquetas
-                                            </h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <select
-                                                class="form-control"
-                                                id="selectEtiquetaEdit"
-                                                onchange="selectUser('selectEtiquetaEdit', 'etiquetasAgregadasEdit')"
-                                            >
-                                                <option>
-                                                    -- SELECCIONAR --
-                                                </option>
-                                                <option id="ALL">ALL</option>
-                                                <option id="WORK">WORK</option>
-                                                <option id="URGENT">
-                                                    URGENT
-                                                </option>
-                                                <option id="HOME">HOME</option>
-                                                <option id="SCHOOL">
-                                                    SCHOOL
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Etiquetas</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <ul class="list-group">
-                                                <li
-                                                    class="list-group-item"
-                                                    id="etiquetasAgregadasEdit"
-                                                ></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Fecha</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <input
-                                                type="date"
-                                                class="form-control"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success">
-                            Guardar cambios
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-light"
-                            data-dismiss="modal"
-                        >
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id = "modalEditarTarea"></div>
 
         <!-- MODAL NUEVA TAREA -->
         <div class="modal fade" id="nuevaTarea" role="dialog">
@@ -520,8 +385,8 @@
                                         <div class="col-sm-9 text-secondary">
                                             <select
                                                 class="form-control"
-                                                id="selectUsersNueva"
-                                                onchange="selectUser('selectUsersNueva', 'editselectUsersEditar')"
+                                                id="selectUsersNew"
+                                                onchange="selectUser('selectUsersNew', 'editselectUsersNew')"
                                             >
                                                 <option>
                                                     -- SELECCIONAR --
@@ -537,7 +402,7 @@
                                             <ul class="list-group">
                                                 <li
                                                     class="list-group-item"
-                                                    id="editselectUsersEditar"
+                                                    id="editselectUsersNew"
                                                 ></li>
                                             </ul>
                                         </div>
@@ -620,6 +485,8 @@
                 </div>
             </div>
         </div>
+
+
         <div class="container">
             <div class="row">
                 <footer class="page-footer font-small fixed-bottom" id="navbar">
