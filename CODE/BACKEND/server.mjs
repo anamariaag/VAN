@@ -113,9 +113,9 @@ const autenticar = (req, res, next) => {
 app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 
+let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
-let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
 
@@ -151,9 +151,9 @@ app.post("/api/users", (req, res) => {
     );
 });
 
+let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar 
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
-let Tarea = mongoose.model('tarea', tareaSchema); //la tarea hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/tarea", (req, res) => {
     res.send("Tarea creada.");
     let id = Math.floor(Date.now() * Math.random());
@@ -162,7 +162,6 @@ app.post("/api/tarea", (req, res) => {
     let completed = req.body.completed;
     let users = req.body.users.split(", ");
     let description = req.body.description;
-    
 
     let newTarea = {
         id,
@@ -188,7 +187,7 @@ app.get("/api/users", (req, res) => {
     res.send(["Naim", "Ana", "Vale", "user4"]);
 });
 
-//filtros para obtener tareas
+//FILTRO PARA OBTENER TAREAS
 app.get("/api/tarea", (req, res) => {
     Tarea.find({}, function(err, result){
         if(err){
@@ -199,7 +198,7 @@ app.get("/api/tarea", (req, res) => {
     });
 });
 
-//eliminar tarea - ana
+//ELIMINAR TAREA
 app.delete("/api/tarea/:id", (req, res) => {
     let idTarea = req.params.id;
     //console.log("hola");
@@ -215,10 +214,16 @@ app.delete("/api/tarea/:id", (req, res) => {
 });
 
 
-//editar tarea - ana
+//EDITAR TAREA 
 app.put("/api/tarea", (req, res) => {
-    res.status(200);
-    res.send();
+    console.table(req.body);
+    let idTarea = req.body.id;
+    
+    const {id, date, description, users, completed, tags} = req.body;
+
+    Tarea.updateOne({id:idTarea},{$set: {id, date, description, users, completed, tags}})
+    .then((data) => res.json(data))
+    .catch((error) => res.json({message: error}))
 });
 
 //marcar tarea como completada - ana
@@ -274,8 +279,7 @@ app.get('/api/users/:id', (req, res) => {
             res.send(val);
         }
     })
-
-})
+});
 
 
 app.listen(port, () => {

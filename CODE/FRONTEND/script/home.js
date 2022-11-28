@@ -93,7 +93,7 @@ function tareaToHTML(tarea, users, tags){
                     class="border-0 btn-transition btn btn-outline-success"
                     data-toggle="modal"
                     data-target="#editarTarea"
-                    onclick="getUsers('selectUsersEditar', 'addselectUsersEditar')"
+                    onclick="editTareaModal('${tarea.description}', '${tarea.date}', '${tarea.id}')"
                 >
                     <i
                         class="fa fa-edit"
@@ -206,10 +206,6 @@ async function deleteTarea(idTarea){
     }
 }
 
-function editTarea(){
-    
-}
-
 
 function addTarea(){
     let tarea = {}
@@ -217,12 +213,12 @@ function addTarea(){
     //console.log(tarea.fecha);
     tarea.description = document.getElementById("descripcionTarea").value;
     tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
-    tarea.users = document.getElementById("editselectUsersEditar").innerText =="" ? "admin": document.getElementById("editselectUsersEditar").innerText;
+    //falta poner el default user
+    tarea.users = document.getElementById("editselectUsersNew").innerText =="" ? "admin": document.getElementById("editselectUsersNew").innerText;
     tarea.completed = false;
     postTarea(tarea);
     
 }
-
 
 async function postTarea(datos){
     let url = "http://localhost:3000/api/tarea"
@@ -246,12 +242,193 @@ async function postTarea(datos){
     }
 }
 
+function editTareaModal(tareadescription, tareadate, tareaid){
+    let date = new Date(String(tareadate).slice(0,-1));
+    date = date.toISOString().slice(0,10);
+    document.getElementById("modalEditarTarea").innerHTML =`
+        <div class="modal fade" id="editarTarea" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editar Tarea</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="card" id="card">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Tarea</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                value = "${tareadescription}"
+                                                id= "descripcionTareaEdit"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección usuarios
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectUsersEdit"
+                                                onchange="selectUser('selectUsersEdit', 'addselectUsersEditar')"
+                                            >
+                                                <option>
+                                                    -- SELECCIONAR --
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Usuarios</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li
+                                                    class="list-group-item"
+                                                    id="addselectUsersEditar"
+                                                ></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">
+                                                Selección etiquetas
+                                            </h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select
+                                                class="form-control"
+                                                id="selectEtiquetaEdit"
+                                                onchange="selectUser('selectEtiquetaEdit', 'etiquetasAgregadasEdit')"
+                                            >
+                                                <option>
+                                                    -- SELECCIONAR --
+                                                </option>
+                                                <option id="WORK">WORK</option>
+                                                <option id="URGENT">
+                                                    URGENT
+                                                </option>
+                                                <option id="HOME">HOME</option>
+                                                <option id="FRIENDS">FRIENDS</option>
+                                                <option id="FAMILY">FAMILY</option>
+                                                <option id="PENDING">PENDING</option>
+                                                <option id="SCHOOL">
+                                                    SCHOOL
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
 
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Etiquetas</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <ul class="list-group">
+                                                <li
+                                                    class="list-group-item"
+                                                    id="etiquetasAgregadasEdit"
+                                                ></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-const editarTarea = () => {
-    
-};
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Fecha</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                                value="${date}"
+                                                id="fechaTareaEdit"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="editTarea('${tareaid}')">
+                            Guardar cambios
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+    getUsers("selectUsersEdit", "addselectUsersEditar");
+}
+
+function editTarea(tareaid){
+    let tareaEdit = {}
+    tareaEdit.id = tareaid;
+    tareaEdit.date = document.getElementById("fechaTareaEdit").value;
+    //console.log(tarea.fecha);
+    tareaEdit.description = document.getElementById("descripcionTareaEdit").value;
+    tareaEdit.tags = document.getElementById("etiquetasAgregadasEdit").innerText.split(", ");
+    //falta poner default user
+    tareaEdit.users = document.getElementById("addselectUsersEditar").innerText =="" ? "admin": document.getElementById("addselectUsersEditar").innerText.split(", ");
+    tareaEdit.completed = false;
+    //console.table(tareaEdit);
+    postEditTarea(tareaEdit);
+
+}
+
+async function postEditTarea(datos){
+    let url = "http://localhost:3000/api/tarea"
+    let resp = await fetch(url, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+        
+    })
+    //console.log(datos);
+    if (resp.ok) {
+        loadTareasJSON();
+        window.location.href = "home.html";
+    } else {
+        document.getElementById("modalalertsE").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Surgio un error al momento de editar los datos. Vuelve a intentarlo.
+        </div>`;
+        setTimeout(() => {
+            document.getElementById("modalalertsM").innerHTML = ``
+        }, 5000);
+    }
+}
 
 
 const completeTarea = () => {
