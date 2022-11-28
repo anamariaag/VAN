@@ -284,6 +284,30 @@ app.delete('/api/users/:id', (req, res) => {
 })
 
 
+//EDITAR USUARIO A PARTIR DE SU ID
+app.put('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    console.log(chalk.yellowBright("Actualizando información..."))
+    let update={};
+    let ID=req.params.id;
+    update.nombre=req.body.nombre,
+    update.apellido=req.body.apellido,
+    update.usuario=req.body.usuario,
+    update.password=req.body.password,
+    update.imagen=req.body.imagen;
+    const {nombre,apellido,usuario,password,imagen}= req.body;
+
+    console.table(update);
+    User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
+    .then((data)=> res.json(data))
+    .catch((error)=>res.json({message: error}))
+
+
+
+})
+
+
+
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);

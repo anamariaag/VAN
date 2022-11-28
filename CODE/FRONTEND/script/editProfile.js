@@ -63,7 +63,7 @@ function updateProfileToHTML(profile){
                                 <h6 class="mb-0">Apellido</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input id="updateNombre"
+                                <input id="updateApellido"
                                     type="text"
                                     class="form-control"
                                     value=${profile.apellido}
@@ -87,7 +87,7 @@ function updateProfileToHTML(profile){
                                 <h6 class="mb-0">Contraseña</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input id="updateContraseña"
+                                <input id="updatePassword"
                                     type="text"
                                     class="form-control"
                                     value=${profile.password}
@@ -116,6 +116,7 @@ function updateProfileToHTML(profile){
                                     class="btn btn-info"
                                     id="btn_guardarCambios"
                                     href="profile.html"
+                                    onclick="updateProfileJSON()",
                                     >Guardar cambios</a
                                 >
                             </div>
@@ -153,7 +154,38 @@ async function loadProfileJSON(){
             updateProfileToHTML(profile);
         }
     };
+}
+
+
+async function updateProfileJSON(){
+    console.log("CARGANDO VENTANA DE EDITAR");
+    let update={};
+    update.nombre=document.getElementById("updateNombre").value;
+    update.apellido=document.getElementById("updateApellido").value;
+    update.usuario=document.getElementById("updateUsuario").value;
+    update.password=document.getElementById("updatePassword").value;
+    update.imagen=document.getElementById("updateImagen").value;
+
+    console.log()
+
+   
+    let xhr = new XMLHttpRequest();
+            
+    xhr.open('PUT', 'http://localhost:3000/api/users/10');
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("x-user-token", localStorage.token);
+    xhr.send(JSON.stringify(update));
+
+    xhr.onload = function () {   
+        if(xhr.status != 200){
+            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
+        }else {
+            datosToUpdate =JSON.parse(xhr.response);
+            console.table(datosToUpdate); 
+            let profile=datosToUpdate[0];
+            updateProfileToHTML(profile);
+        }
+    };
 
 
 }
-

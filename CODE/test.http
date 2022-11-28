@@ -26,8 +26,22 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/api/users/10
-  ###
+###
 DELETE  http://localhost:3000/api/users/11
+###
+PUT  http://localhost:3000/api/users/10
+Content-Type: application/json
+
+  {
+    "id":"10",
+    "nombre": "lupeee",
+    "apellido": "lopez",
+    "usuario": "valrmzl",
+    "password": "pepee<3",
+    "imagen":"https://randomuser.me/api/portraits/women/5.jpg"
+
+  }
+
 
 # GET http://localhost:3000/api/tarea HTTP/1.1
 
