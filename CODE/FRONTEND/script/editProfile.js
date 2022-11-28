@@ -88,7 +88,8 @@ function updateProfileToHTML(profile){
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 <input id="updatePassword"
-                                    type="text"
+                                
+                                    type="password"
                                     class="form-control"
                                     value=${profile.password}
                                 />
@@ -127,7 +128,12 @@ function updateProfileToHTML(profile){
         </div>
     </div>
 </div>
-    `
+    `;
+    document.getElementById("updateNombre").value = profile.nombre;
+    document.getElementById("updateApellido").value = profile.apellido;
+    document.getElementById("updateUsuario").value = profile.usuario;
+    document.getElementById("updatePassword").value = profile.password;
+    document.getElementById("updateImagen").value = profile.imagen;
 }
 
 //una vez que ya se tienen los campos actualizados 
@@ -156,17 +162,54 @@ async function loadProfileJSON(){
     };
 }
 
+let profiles=[];
+async function allProfiles(){
 
-async function updateProfileJSON(){
+    let xhr = new XMLHttpRequest();
+            
+    xhr.open('GET', 'http://localhost:3000/api/users');
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("x-user-token", localStorage.token);
+    xhr.send();
+
+    xhr.onload = function () {   
+        if(xhr.status != 200){
+            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
+        }else {
+            profiles =JSON.parse(xhr.response);
+            console.table(profiles); 
+        
+        }
+
+    };
+
+}
+
+
+async function updateProfileJSON(arreglo){
+    
     console.log("CARGANDO VENTANA DE EDITAR");
     let update={};
+    //primero hay que revisar que no exista
+    //algun usuario en la BD 
+    //con el mismo usuario
+
+    //obtener todos los usuarios
+    let allUsers=allProfiles;
+    console.log("TODOS LOS USUARIOS");
+    console.table(allUsers);
+    
+
+ 
+    update.usuario=document.getElementById("updateUsuario").value;
+
+    
     update.nombre=document.getElementById("updateNombre").value;
     update.apellido=document.getElementById("updateApellido").value;
-    update.usuario=document.getElementById("updateUsuario").value;
     update.password=document.getElementById("updatePassword").value;
     update.imagen=document.getElementById("updateImagen").value;
 
-    console.log()
+
 
    
     let xhr = new XMLHttpRequest();

@@ -5,6 +5,12 @@
 function profileToHTML(profile){
 
     console.log("mostrando pagina de perfil")
+
+    let oculto="";
+ 
+    for(let i=0;i<profile.password.length;i++){
+        oculto+="*"
+    }
     informacionPerfil.innerHTML=`
     <div class="container" id="frontProfile">
             <div class="main-body">
@@ -12,7 +18,6 @@ function profileToHTML(profile){
                 <br />
                 <br />
                 <br />
-
                 <!-- /Breadcrumb -->
                 <div class="row gutters-sm">
                     <div class="col-md-4 mb-3">
@@ -78,8 +83,8 @@ function profileToHTML(profile){
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">Contraseña</h6>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
-                                    ${profile.password}
+                                    <div class="col-sm-9 text-secondary type="password"">
+                                    ${oculto}
                                     </div>
                                 </div>
                                 <hr />
@@ -119,7 +124,6 @@ function profileToHTML(profile){
         </div>
     `
 }
-
 
 async function loadProfileJSON(){
     console.log("CARGANDO VENTANA DE PERFIL");

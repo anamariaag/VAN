@@ -15,9 +15,20 @@ const login = () => {
         } else {
             localStorage.setItem(
                 "token",
-                xhr.getResponseHeader("x-user-token")
+                xhr
+                    .getResponseHeader("x-user-token")
+                    .substring(
+                        0,
+                        xhr.getResponseHeader("x-user-token").indexOf(",")
+                    )
             );
-            console.log("Sesion iniciada");
+            localStorage.setItem(
+                "id",
+                xhr
+                    .getResponseHeader("x-user-token")
+                    .substring(14, xhr.getResponseHeader("x-user-token").length)
+            );
+
             window.location.href = "home.html";
         }
     };
