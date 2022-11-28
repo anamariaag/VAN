@@ -146,3 +146,24 @@ async function loadProfileJSON(){
 
 }
 
+async function deleteProfileJSON(){
+
+
+    let xhr = new XMLHttpRequest();
+            
+    xhr.open('DELETE', 'http://localhost:3000/api/users/11');
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("x-user-token", localStorage.token);
+    xhr.send();
+
+    xhr.onload = function () {   
+        if(xhr.status != 200){
+            
+        }else {
+            console.log("se elimino al usuario");
+        }
+    };
+
+
+}
+

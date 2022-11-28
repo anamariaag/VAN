@@ -1,5 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
+let mongoConnectionUsers =
+    "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoDB";
+let db = mongoose.connection;
 import chalk from "chalk";
 import * as fs from "node:fs";
 import cors from "cors";
@@ -7,9 +10,6 @@ import randomize from "randomatic";
 
 const app = express();
 const port = 3000;
-let mongoConnectionUsers =
-    "mongodb+srv://admin:van12210@proyectofinal.hx0n1h1.mongodb.net/ProyectoDB";
-let db = mongoose.connection;
 
 app.use(
     cors({
@@ -69,9 +69,6 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    token: {
-        type: String
-    }
 });
 
 
@@ -103,6 +100,8 @@ let tareaSchema = mongoose.Schema({
     },
 });
 // D A T A B A S E
+let User = mongoose.model("users", userSchema);
+
 app.use(express.json());
 
 const autenticar = (req, res, next) => {
@@ -112,13 +111,13 @@ const autenticar = (req, res, next) => {
 
 app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
+// D A T A B A S E
 
 let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
-
     let id = req.body.id;
     let usuario = req.body.usuario;
     let nombre = req.body.nombre;
@@ -128,7 +127,7 @@ app.post("/api/users", (req, res) => {
     let fecha = req.body.fecha;
     let sexo = req.body.sexo;
     let imagen = req.body.imagen;
-    let token=req.body.token;
+    let token = req.body.token;
 
     let newUser = {
         id,
@@ -234,10 +233,71 @@ app.put("/api/tarea/:done", (req, res) => {
 
 //validar usuario y contraseña
 app.post("/api/login", (req, res) => {
-    res.status(201);
-    res.set("x-user-token", "token chido");
-    res.set("Access-Control-Expose-Headers", "x-user-token");
-    res.send();
+    let user = req.body.user;
+    let password = req.body.pass;
+
+    if (user == "") {
+        res.status(401);
+        res.send("Usuario faltante");
+        return;
+    } else if (password == "") {
+        res.status(401);
+        res.send("Contraseña faltante");
+        return;
+    }
+
+    User.find(
+        {
+            usuario: req.body.user,
+        },
+        (err, docs) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(docs.length);
+                if (docs.length != 0) {
+                    docs = docs[0];
+                    if (docs.password == password) {
+                        if (docs.token != undefined) {
+                            res.status(201);
+                            res.set("x-user-token", docs.token);
+                            res.set(
+                                "Access-Control-Expose-Headers",
+                                "x-user-token"
+                            );
+                            res.send();
+                            return;
+                        } else {
+                            let tok = randomize("Aa0", "10") + "-" + docs.id;
+                            docs.token = tok;
+                            console.log(docs);
+                            docs.save().then(() => console.log("token"));
+                            res.status(201);
+                            res.set("x-user-token", tok);
+                            res.set(
+                                "Access-Control-Expose-Headers",
+                                "x-user-token"
+                            );
+                            res.send();
+                        }
+                    } else {
+                        res.status(401);
+                        res.send("contraseña incorrecta");
+                        return;
+                    }
+                } else {
+                    res.status(401);
+                    res.send("no se encontró el usuario");
+                    return;
+                }
+            }
+        }
+    );
+
+    // res.status(201);
+    // res.set("x-user-token", "token chido");
+    // res.set("Access-Control-Expose-Headers", "x-user-token");
+    // res.send();
 });
 
 app.get("/api/notif", (req, res) => {
@@ -253,17 +313,7 @@ app.delete("/api/notif", (req, res) => {
 //editar profile
 app.put("/api/profile", (req, res) => {});
 
-//visualizar profile
-app.get("/api/profile", (req, res) => {
-    res.send({
-        nombre: "valeria yeya",
-        correo: "valeria.ramirez@iteso.mx",
-        usuario: "valrmzl",
-        contraseña: "*****",
-        fecha: "23/11/2022",
-        imagen: "https://randomuser.me/api/portraits/women/3.jpg",
-    });
-});
+
 
 
 
@@ -280,6 +330,46 @@ app.get('/api/users/:id', (req, res) => {
         }
     })
 });
+
+//ELIMINAR USUARIO A PARTIR DE SU ID
+app.delete('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    let ID=req.params.id;
+    User.deleteOne(({id:ID}),function(error,val){
+        if(val.length==0){
+            res.send("no existe el usuario con ese id");
+        }else{
+            console.log(chalk.red("Se elimino al usuario"));
+            res.send(val);
+        }
+    })
+
+})
+
+
+//EDITAR USUARIO A PARTIR DE SU ID
+app.put('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    console.log(chalk.yellowBright("Actualizando información..."))
+    let update={};
+    let ID=req.params.id;
+    update.nombre=req.body.nombre,
+    update.apellido=req.body.apellido,
+    update.usuario=req.body.usuario,
+    update.password=req.body.password,
+    update.imagen=req.body.imagen;
+    const {nombre,apellido,usuario,password,imagen}= req.body;
+
+    console.table(update);
+    User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
+    .then((data)=> res.json(data))
+    .catch((error)=>res.json({message: error}))
+
+
+
+})
+
+
 
 
 app.listen(port, () => {
