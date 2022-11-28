@@ -268,6 +268,22 @@ app.get('/api/users/:id', (req, res) => {
 
 })
 
+//ELIMINAR USUARIO A PARTIR DE SU ID
+app.delete('/api/users/:id', (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    let ID=req.params.id;
+    User.deleteOne(({id:ID}),function(error,val){
+        if(val.length==0){
+            res.send("no existe el usuario con ese id");
+        }else{
+            console.log(chalk.red("Se elimino al usuario"));
+            res.send(val);
+        }
+    })
+
+})
+
+
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
