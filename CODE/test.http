@@ -96,5 +96,30 @@ Content-Type: application/json
 }
 
 
+###
 
 
+
+POST http://localhost:3000/api/users/
+Content-Type: application/json
+
+  {
+  "id": 2,
+  "usuario": "naim2",
+  "nombre": "naim2",
+  "apellido": "naim2",
+  "correo": "naim@naim.com",
+  "fecha": "04/03/2002",
+  "sexo": "H",
+  "imagen": "https://randomuser.me/api/portraits/women/5.jpg",
+  "password": "123"
+}
+
+###
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+  {
+  "user": "naim2",
+  "pass": "123"
+}
