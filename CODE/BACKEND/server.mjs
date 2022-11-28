@@ -117,7 +117,7 @@ app.use("/api/tarea", autenticar);
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
 app.post("/api/users", (req, res) => {
     res.send("Haciendo un POST de un nuevo usuario");
-    let id = req.body.id;
+    let id = Math.floor(Date.now() * Math.random());
     let usuario = req.body.usuario;
     let nombre = req.body.nombre;
     let apellido = req.body.apellido;
