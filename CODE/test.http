@@ -94,6 +94,11 @@ Content-Type: application/json
   "users": "Naim",
   "completed": "false"
 }
+###
+
+PUT  http://localhost:3000/api/tarea/done/345516675356  HTTP/1.1
+
+
 
 
 
