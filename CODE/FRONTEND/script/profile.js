@@ -127,7 +127,7 @@ async function loadProfileJSON(){
 
     let xhr = new XMLHttpRequest();
             
-    xhr.open('GET', 'http://localhost:3000/api/users/10');
+    xhr.open('GET', 'http://localhost:3000/api/users/11');
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();

@@ -109,6 +109,7 @@ app.use("/api/users", autenticar);
 app.use("/api/tarea", autenticar);
 
 
+
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS 
 let User= mongoose.model('users', userSchema); //el User hace referencia a qen que parte de la base se va a gaurdar 
 app.post("/api/users", (req, res) => {
@@ -232,17 +233,7 @@ app.delete("/api/notif", (req, res) => {
 //editar profile
 app.put("/api/profile", (req, res) => {});
 
-//visualizar profile
-app.get("/api/profile", (req, res) => {
-    res.send({
-        nombre: "valeria yeya",
-        correo: "valeria.ramirez@iteso.mx",
-        usuario: "valrmzl",
-        contraseña: "*****",
-        fecha: "23/11/2022",
-        imagen: "https://randomuser.me/api/portraits/women/3.jpg",
-    });
-});
+
 
 
 
