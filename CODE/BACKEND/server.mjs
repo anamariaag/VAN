@@ -244,117 +244,60 @@ app.put("/api/tarea/done/:id", (req, res) => {
 
 //validar usuario y contraseña
 app.post("/api/login", async (req, res) => {
-    let user = req.body.user;
-    let password = req.body.pass;
+    try {
+        let user = req.body.user;
+        let password = req.body.pass;
 
-    if (user == "") {
-        res.status(401);
-        res.send("Usuario faltante");
-        return;
-    } else if (password == "") {
-        res.status(401);
-        res.send("Contraseña faltante");
-        return;
-    }
+        if (user == "") {
+            res.status(401);
+            res.send("Usuario faltante");
+            return;
+        } else if (password == "") {
+            res.status(401);
+            res.send("Contraseña faltante");
+            return;
+        }
 
-    const userFound = await User.findOne({
-        usuario: req.body.user,
-    });
+        const userFound = await User.findOne({
+            usuario: req.body.user,
+        });
 
-    // console.log(userFound);
-
-    if (userFound != undefined) {
-        if (userFound.password == password) {
-            if (userFound.token != "") {
-                res.status(201);
-                res.set("x-user-token", [userFound.token, userFound.id]);
-                res.set("Access-Control-Expose-Headers", "x-user-token");
-                res.send();
-                return;
+        if (userFound != undefined) {
+            if (userFound.password == password) {
+                if (userFound.token != "") {
+                    res.status(201);
+                    res.set("x-user-token", [userFound.token, userFound.id]);
+                    res.set("Access-Control-Expose-Headers", "x-user-token");
+                    res.send();
+                    return;
+                } else {
+                    let token =
+                        randomize("Aa0", "10") + "-" + (userFound.id % 10);
+                    userFound.token = token;
+                    await userFound.save();
+                    console.log(userFound);
+                    res.status(201);
+                    res.set("x-user-token", [userFound.token, userFound.id]);
+                    res.set("Access-Control-Expose-Headers", "x-user-token");
+                    res.send();
+                    return;
+                }
             } else {
-                let token = randomize("Aa0", "10") + "-" + (userFound.id % 10);
-                userFound.token = token;
-                await userFound.save();
-                console.log(userFound);
-                res.status(201);
-                res.set("x-user-token", [userFound.token, userFound.id]);
-                res.set("Access-Control-Expose-Headers", "x-user-token");
-                res.send();
+                res.status(401);
+                res.send("contraseña incorrecta");
                 return;
             }
         } else {
             res.status(401);
-            res.send("contraseña incorrecta");
+            res.send("no se encontró el usuario");
             return;
         }
-    } else {
-        res.status(401);
-        res.send("no se encontró el usuario");
-        return;
+    } catch (e) {
+        res.status(400).json({
+            status: "error",
+            message: e.message,
+        });
     }
-
-    // (err, docs) => {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         console.log(docs.length);
-    //         if (docs) {
-    //             if (docs.password == password) {
-    //                 if (docs.token != "") {
-    //                     res.status(201);
-    //                     res.set("x-user-token", [docs.token, docs.id]);
-    //                     res.set(
-    //                         "Access-Control-Expose-Headers",
-    //                         "x-user-token"
-    //                     );
-    //                     res.send();
-    //                     return;
-    //                 } else {
-    //                     let token = randomize("Aa0", "10") + "-" + docs.id;
-    //                     docs.token = token;
-    //                     console.log(docs);
-
-    // User.updateOne(
-    //     { id: docs.id },
-    //     { $set: { token } }
-    // ).then((data) => {
-    //     res.status(201);
-    //     res.set("x-user-token", [token, docs.id]);
-    //     res.set(
-    //         "Access-Control-Expose-Headers",
-    //         "x-user-token"
-    //     );
-    //     res.send();
-    // });
-    //                     console.log("escribe token ?");
-    //                     docs.save().then((data) => {
-    //                         res.status(201);
-    //                         res.set("x-user-token", [token, docs.id]);
-    //                         res.set(
-    //                             "Access-Control-Expose-Headers",
-    //                             "x-user-token"
-    //                         );
-    //                         res.send();
-    //                     });
-    //                 }
-    //             } else {
-    //                 res.status(401);
-    //                 res.send("contraseña incorrecta");
-    //                 return;
-    //             }
-    //         } else {
-    //             res.status(401);
-    //             res.send("no se encontró el usuario");
-    //             return;
-    //         }
-    //     }
-    // }
-    // );
-
-    // res.status(201);
-    // res.set("x-user-token", "token chido");
-    // res.set("Access-Control-Expose-Headers", "x-user-token");
-    // res.send();
 });
 
 app.get("/api/notif", (req, res) => {
