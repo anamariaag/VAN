@@ -154,8 +154,9 @@ async function deleteProfileJSON(){
 
 
     let xhr = new XMLHttpRequest();
+    let actualID=localStorage.id;
             
-    xhr.open('DELETE', 'http://localhost:3000/api/users/11');
+    xhr.open('DELETE', 'http://localhost:3000/api/users/10');
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
