@@ -182,9 +182,8 @@ app.post("/api/tarea", (req, res) => {
 
 //obtener lista de usuarios
 app.get("/api/users", (req, res) => {
-   
-    User.find({}, function(err, result){
-        if(err){
+    User.find({}, function (err, result) {
+        if (err) {
             res.send(err);
         } else {
             res.send(result);
@@ -237,15 +236,14 @@ app.put("/api/tarea", (req, res) => {
 app.put("/api/tarea/done/:id", (req, res) => {
     //console.table(req.params.id);
     let idTarea = req.params.id;
-    
-    Tarea.updateOne({id:idTarea},{$set: {completed : true}})
-    .then((data) => res.json(data))
-    .catch((error) => res.json({message: error}))
-    
+
+    Tarea.updateOne({ id: idTarea }, { $set: { completed: true } })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
 });
 
 //validar usuario y contraseña
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
     let user = req.body.user;
     let password = req.body.pass;
 
@@ -259,58 +257,99 @@ app.post("/api/login", (req, res) => {
         return;
     }
 
-    User.find(
-        {
-            usuario: req.body.user,
-        },
-        (err, docs) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(docs.length);
-                if (docs.length != 0) {
-                    docs = docs[0];
-                    if (docs.password == password) {
-                        if (docs.token != "") {
-                            res.status(201);
-                            res.set("x-user-token", [docs.token, docs.id]);
-                            res.set(
-                                "Access-Control-Expose-Headers",
-                                "x-user-token"
-                            );
-                            res.send();
-                            return;
-                        } else {
-                            let token = randomize("Aa0", "10") + "-" + docs.id;
-                            docs.token = token;
-                            console.log(docs);
+    const userFound = await User.findOne({
+        usuario: req.body.user,
+    });
 
-                            User.updateOne(
-                                { id: docs.id },
-                                { $set: { token } }
-                            ).then((data) => {
-                                res.status(201);
-                                res.set("x-user-token", [token, docs.id]);
-                                res.set(
-                                    "Access-Control-Expose-Headers",
-                                    "x-user-token"
-                                );
-                                res.send();
-                            });
-                        }
-                    } else {
-                        res.status(401);
-                        res.send("contraseña incorrecta");
-                        return;
-                    }
-                } else {
-                    res.status(401);
-                    res.send("no se encontró el usuario");
-                    return;
-                }
+    // console.log(userFound);
+
+    if (userFound != undefined) {
+        if (userFound.password == password) {
+            if (userFound.token != "") {
+                res.status(201);
+                res.set("x-user-token", [userFound.token, userFound.id]);
+                res.set("Access-Control-Expose-Headers", "x-user-token");
+                res.send();
+                return;
+            } else {
+                let token = randomize("Aa0", "10") + "-" + (userFound.id % 10);
+                userFound.token = token;
+                await userFound.save();
+                console.log(userFound);
+                res.status(201);
+                res.set("x-user-token", [userFound.token, userFound.id]);
+                res.set("Access-Control-Expose-Headers", "x-user-token");
+                res.send();
+                return;
             }
+        } else {
+            res.status(401);
+            res.send("contraseña incorrecta");
+            return;
         }
-    );
+    } else {
+        res.status(401);
+        res.send("no se encontró el usuario");
+        return;
+    }
+
+    // (err, docs) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         console.log(docs.length);
+    //         if (docs) {
+    //             if (docs.password == password) {
+    //                 if (docs.token != "") {
+    //                     res.status(201);
+    //                     res.set("x-user-token", [docs.token, docs.id]);
+    //                     res.set(
+    //                         "Access-Control-Expose-Headers",
+    //                         "x-user-token"
+    //                     );
+    //                     res.send();
+    //                     return;
+    //                 } else {
+    //                     let token = randomize("Aa0", "10") + "-" + docs.id;
+    //                     docs.token = token;
+    //                     console.log(docs);
+
+    // User.updateOne(
+    //     { id: docs.id },
+    //     { $set: { token } }
+    // ).then((data) => {
+    //     res.status(201);
+    //     res.set("x-user-token", [token, docs.id]);
+    //     res.set(
+    //         "Access-Control-Expose-Headers",
+    //         "x-user-token"
+    //     );
+    //     res.send();
+    // });
+    //                     console.log("escribe token ?");
+    //                     docs.save().then((data) => {
+    //                         res.status(201);
+    //                         res.set("x-user-token", [token, docs.id]);
+    //                         res.set(
+    //                             "Access-Control-Expose-Headers",
+    //                             "x-user-token"
+    //                         );
+    //                         res.send();
+    //                     });
+    //                 }
+    //             } else {
+    //                 res.status(401);
+    //                 res.send("contraseña incorrecta");
+    //                 return;
+    //             }
+    //         } else {
+    //             res.status(401);
+    //             res.send("no se encontró el usuario");
+    //             return;
+    //         }
+    //     }
+    // }
+    // );
 
     // res.status(201);
     // res.set("x-user-token", "token chido");
@@ -359,26 +398,24 @@ app.delete("/api/users/:id", (req, res) => {
 //EDITAR USUARIO A PARTIR DE SU ID
 app.put("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
-    console.log(chalk.yellowBright("Actualizando información..."))
-    let update={};
-    let ID=req.params.id;
-    update.nombre=req.body.nombre,
-    update.apellido=req.body.apellido,
-    update.usuario=req.body.usuario,
-    update.password=req.body.password,
-    update.imagen=req.body.imagen;
-    const {nombre,apellido,usuario,password,imagen}= req.body;
+    console.log(chalk.yellowBright("Actualizando información..."));
+    let update = {};
+    let ID = req.params.id;
+    (update.nombre = req.body.nombre),
+        (update.apellido = req.body.apellido),
+        (update.usuario = req.body.usuario),
+        (update.password = req.body.password),
+        (update.imagen = req.body.imagen);
+    const { nombre, apellido, usuario, password, imagen } = req.body;
 
     console.table(update);
-    User.updateOne({id:ID},{$set: {nombre,apellido,usuario,password,imagen}})
-    .then((data)=> res.json(data))
-    .catch((error)=>res.json({message: error}))
-})
-
-
-
-
-
+    User.updateOne(
+        { id: ID },
+        { $set: { nombre, apellido, usuario, password, imagen } }
+    )
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
 
 app.listen(port, () => {
     console.log("Servicio levantado en el puerto " + port);
