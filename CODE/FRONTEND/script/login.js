@@ -13,6 +13,7 @@ const login = () => {
         } else if (xhr.status != 201) {
             alert(xhr.status + ": " + xhr.statusText);
         } else {
+           
             localStorage.setItem(
                 "token",
                 xhr
@@ -25,8 +26,8 @@ const login = () => {
             localStorage.setItem(
                 "id",
                 xhr
-                    .getResponseHeader("x-user-token")
-                    .substring(14, xhr.getResponseHeader("x-user-token").length)
+                .getResponseHeader("x-user-token")
+                .substring(14, xhr.getResponseHeader("x-user-token").length)
             );
 
             window.location.href = "home.html";
