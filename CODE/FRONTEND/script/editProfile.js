@@ -210,12 +210,11 @@ async function updateProfileJSON(arreglo){
     update.password=document.getElementById("updatePassword").value;
     update.imagen=document.getElementById("updateImagen").value;
 
-
-
-   
     let xhr = new XMLHttpRequest();
+    let currentUser=localStorage.id;
             
-    xhr.open('PUT', 'http://localhost:3000/api/users/10');
+    xhr.open('PUT', 'http://localhost:3000/api/users/'+currentUser);
+            
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send(JSON.stringify(update));
