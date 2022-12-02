@@ -1,4 +1,8 @@
 const login = () => {
+
+    
+
+    
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:3000/api/login");
     xhr.setRequestHeader("content-type", "application/json");
@@ -30,10 +34,20 @@ const login = () => {
                 .substring(14, xhr.getResponseHeader("x-user-token").length)
             );
 
-            window.location.href = "home.html";
+            cargando.innerHTML=`
+            <lottie-player src=" https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent"   padding: 10px 15px speed="1"  style="width: 250px; height: 60px;" loop 
+            autoplay></lottie-player>`
+
+            setTimeout(goHome, 1000);
         }
     };
 };
+
+function goHome(){
+    window.location.href = "home.html";
+  }
+  
+
 
 const registrarse = () => {
     let contra = document.getElementById("password1").value;
