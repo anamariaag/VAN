@@ -110,8 +110,8 @@ Content-Type: application/json
 
   {
   "id": 2,
-  "usuario": "naim2",
-  "nombre": "naim2",
+  "usuario": "ana",
+  "nombre": "ana",
   "apellido": "naim2",
   "correo": "naim@naim.com",
   "fecha": "04/03/2002",
