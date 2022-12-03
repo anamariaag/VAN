@@ -186,6 +186,7 @@ app.get("/api/users", (req, res) => {
         if (err) {
             res.send(err);
         } else {
+            console.log(result);
             res.send(result);
         }
     });
