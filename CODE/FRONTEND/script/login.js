@@ -17,7 +17,6 @@ const login = () => {
         } else if (xhr.status != 201) {
             alert(xhr.status + ": " + xhr.statusText);
         } else {
-           
             localStorage.setItem(
                 "token",
                 xhr
