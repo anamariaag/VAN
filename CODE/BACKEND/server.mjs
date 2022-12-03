@@ -117,7 +117,11 @@ app.use("/api/tarea", autenticar);
 // D A T A B A S E
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS
-app.post("/api/users", (req, res) => {
+app.post("/api/users",async (req, res) => {
+
+    
+    
+
     res.send("Haciendo un POST de un nuevo usuario");
     let id = Math.floor(Date.now() * Math.random());
     let usuario = req.body.usuario;
@@ -130,26 +134,55 @@ app.post("/api/users", (req, res) => {
     let imagen = req.body.imagen;
     let token = "";
 
-    let newUser = {
-        id,
-        usuario,
-        nombre,
-        apellido,
-        correo,
-        password,
-        sexo,
-        fecha,
-        imagen,
-        token,
-    };
+    try{
+        const userFound = await User.findOne({
+            usuario: req.body.usuario,
+        });
+        if(userFound.usuario==usuario){
+            console.log("ya existe alguien con ese usuario");
+            res.status(400);
+            //res.send("Ya existe un alguien con ese usuario");
+           
+            return;
 
-    let user = User(newUser);
-    console.table(newUser);
+        }else if(userFound.correo==correo){
+            console.log("ya existe alguien con ese correo");
+            res.status(400);
+            //res.send("Ya existe un usuario con ese correo");
 
-    //guardar
-    user.save().then((doc) =>
-        console.log(chalk.green("Usuario creado!!: ") + doc)
-    );
+            return;
+        }else{
+            let newUser = {
+                id,
+                usuario,
+                nombre,
+                apellido,
+                correo,
+                password,
+                sexo,
+                fecha,
+                imagen,
+                token,
+            };
+        
+            let user = User(newUser);
+            console.table(newUser);
+        
+            //guardar
+            user.save().then((doc) =>
+                console.log(chalk.green("Usuario creado!!: ") + doc)
+            );
+
+        }
+
+    }catch (e) {
+        res.status(400).json({
+            status: "error",
+            message: e.message,
+        });
+    }
+
+  
 });
 
 let Tarea = mongoose.model("tarea", tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar

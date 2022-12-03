@@ -1,8 +1,6 @@
 const login = () => {
 
-    
 
-    
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:3000/api/login");
     xhr.setRequestHeader("content-type", "application/json");
@@ -14,8 +12,8 @@ const login = () => {
     xhr.onload = function () {
         if (xhr.status == 401) {
             alert(xhr.response);
-        } else if (xhr.status != 201) {
-            alert(xhr.status + ": " + xhr.statusText);
+        } else if (xhr.status == 400) {
+            alert(xhr.status + ": ya existe alguien con ese usuario" );
         } else {
             localStorage.setItem(
                 "token",
@@ -83,14 +81,13 @@ const registrarse = () => {
     xhr.setRequestHeader("x-auth-user", localStorage.token);
 
     xhr.send([JSON.stringify(datos)]);
+    debugger;
 
     xhr.onload = () => {
         if (xhr.status == 400) {
-            alert(xhr.response);
+            alert("ya eixste alguein con ese usuario/correo");
         } else if (xhr.status == 401) alert(xhr.response);
-        else if (xhr.status != 201) {
-            alert(xhr.status + ": " + xhr.statusText);
-        } else {
+        else {
             console.log("se guardó el usuario:");
             console.table(datos);
             window.location.href = "login.html";
