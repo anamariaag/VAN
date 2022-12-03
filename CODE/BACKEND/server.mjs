@@ -236,10 +236,25 @@ app.put("/api/tarea", (req, res) => {
 app.put("/api/tarea/done/:id", (req, res) => {
     //console.table(req.params.id);
     let idTarea = req.params.id;
-
-    Tarea.updateOne({ id: idTarea }, { $set: { completed: true } })
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
+    
+    Tarea.find({id: idTarea }, function(err, result){
+        if(err){
+            res.send(err);
+        }else{
+            //console.log(result[0].completed);
+            if(!result[0].completed){
+                Tarea.updateOne({ id: idTarea }, { $set: { completed: true } })
+                .then((data) => res.json(data))
+                .catch((error) => res.json({ message: error }));
+                //console.log("true");
+            }else{
+                Tarea.updateOne({ id: idTarea }, { $set: { completed: false } })
+                .then((data) => res.json(data))
+                .catch((error) => res.json({ message: error }));
+                console.log("false");
+            }
+        }
+    });
 });
 
 //validar usuario y contraseña

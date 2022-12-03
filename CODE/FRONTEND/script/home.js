@@ -12,7 +12,8 @@ const colors = {
 function tareasListToHTML(listTarea){
     //console.log(listTarea);
     //listArray = [listTarea]
-    document.getElementById("tareas").innerHTML = listTarea.map(tarea =>{
+    let tareas = "";
+    listTarea.map(tarea =>{
         let users = tarea.users.join(", ");
         let tags = "";
         let colorTag;
@@ -27,11 +28,12 @@ function tareasListToHTML(listTarea){
         }
         //console.log(tags);
         if(tarea.completed == true){
-            return tareaCompleteToHTML(tarea, users, tags);
+            tareas = tareas + tareaCompleteToHTML(tarea, users, tags);
         }else{
-            return tareaIncompleteToHTML(tarea, users, tags)
+            tareas = tareaIncompleteToHTML(tarea, users, tags)+ tareas;
         }
-    }).join("");
+    });
+    document.getElementById("tareas").innerHTML = tareas;
 }
 
 function tareaIncompleteToHTML(tarea, users, tags){
