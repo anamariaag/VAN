@@ -1,6 +1,4 @@
 const login = () => {
-
-
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:3000/api/login");
     xhr.setRequestHeader("content-type", "application/json");

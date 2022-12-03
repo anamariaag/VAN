@@ -6,7 +6,7 @@ const getUsers = (place, reset) => {
     xhr.setRequestHeader("x-auth-user", localStorage.token);
     xhr.send();
     xhr.onload = function () {
-        if (xhr.status != 201) {
+        if (xhr.status == 400) {
             alert(xhr.status + ": " + xhr.statusText);
         } else {
             let usuarios = JSON.parse(xhr.response);

@@ -216,11 +216,17 @@ app.post("/api/tarea", (req, res) => {
 //obtener lista de usuarios
 app.get("/api/users", (req, res) => {
     User.find({}, function (err, result) {
+        let arrUsers=[];
         if (err) {
+            res.status(400);
             res.send(err);
         } else {
-            console.log(result);
-            res.send(result);
+            for(let i =0; i<result.length;i++){
+                arrUsers.push(result[i].usuario);
+            }
+            //console.log(arrUsers);
+            res.status(201);
+            res.send(arrUsers);
         }
     });
 });

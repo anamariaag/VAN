@@ -27,11 +27,14 @@ function tareasListToHTML(listTarea){
             </div>`;
         }
         //console.log(tags);
-        if(tarea.completed == true){
-            tareas = tareas + tareaCompleteToHTML(tarea, users, tags);
-        }else{
-            tareas = tareaIncompleteToHTML(tarea, users, tags)+ tareas;
+        if(tarea.users.includes(localStorage.usuario)){
+            if(tarea.completed == true){
+                tareas = tareas + tareaCompleteToHTML(tarea, users, tags);
+            }else{
+                tareas = tareaIncompleteToHTML(tarea, users, tags)+ tareas;
+            }
         }
+        
     });
     document.getElementById("tareas").innerHTML = tareas;
 }
@@ -306,12 +309,22 @@ async function deleteTarea(idTarea){
 
 function addTarea(){
     let tarea = {}
-    tarea.date = document.getElementById("fechaTarea").value;
+    tarea.date = document.getElementById("fechaTarea").value == null || document.getElementById("fechaTarea").value ==''? new Date(): document.getElementById("fechaTarea").value;
     //console.log(tarea.fecha);
-    tarea.description = document.getElementById("descripcionTarea").value;
+    
+    if(tarea.description == '' || tarea.description == null){
+        document.getElementById("modalalertsTarea").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        <strong>Error!</strong> Por favor añade una descripción.
+        </div>`;
+        setTimeout(() => {
+            document.getElementById("modalalertsTarea").innerHTML = ``
+        }, 5000);
+    }else{
+        tarea.description = document.getElementById("descripcionTarea").value;
+    }
     tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
-    //falta poner el default user
-    tarea.users = document.getElementById("editselectUsersNew").innerText =="" ? "admin": document.getElementById("editselectUsersNew").innerText;
+    //el default user
+    tarea.users = document.getElementById("editselectUsersNew").innerText =="" ? localStorage.usuario: document.getElementById("editselectUsersNew").innerText;
     tarea.completed = false;
     postTarea(tarea);
     
@@ -327,8 +340,9 @@ async function postTarea(datos){
         body: JSON.stringify(datos)
     })
     if (resp.ok) {
-        window.location.href = "home.html";
+        //window.location.href = "home.html";
         alert("¡Tarea agregada con éxito!");
+        loadTareasJSON();
     } else {
         document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
