@@ -31,8 +31,15 @@ const login = () => {
                 "id",
                 xhr
                 .getResponseHeader("x-user-token")
-                .substring(14, xhr.getResponseHeader("x-user-token").length)
+                .substring(14,27, xhr.getResponseHeader("x-user-token").length)
             );
+            localStorage.setItem(
+                "usuario",
+                xhr
+                .getResponseHeader("x-user-token")
+                .substring(29, xhr.getResponseHeader("x-user-token").length)
+            );
+           
 
             cargando.innerHTML=`
             <lottie-player src=" https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent"   padding: 10px 15px speed="1"  style="width: 250px; height: 60px;" loop 

@@ -266,7 +266,7 @@ app.post("/api/login", async (req, res) => {
             if (userFound.password == password) {
                 if (userFound.token != "") {
                     res.status(201);
-                    res.set("x-user-token", [userFound.token, userFound.id]);
+                    res.set("x-user-token", [userFound.token, userFound.id,userFound.usuario]);
                     res.set("Access-Control-Expose-Headers", "x-user-token");
                     res.send();
                     return;
@@ -277,7 +277,7 @@ app.post("/api/login", async (req, res) => {
                     await userFound.save();
                     console.log(userFound);
                     res.status(201);
-                    res.set("x-user-token", [userFound.token, userFound.id]);
+                    res.set("x-user-token", [userFound.token, userFound.id,userFound.usuario]);
                     res.set("Access-Control-Expose-Headers", "x-user-token");
                     res.send();
                     return;
@@ -343,6 +343,10 @@ app.put("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     console.log(chalk.yellowBright("Actualizando información..."));
     let update = {};
+
+    //VERIFICAR QUE NO EXISTA OTRA PERSONA
+    //CON EL MISMO USUARIO
+   
     let ID = req.params.id;
     (update.nombre = req.body.nombre),
         (update.apellido = req.body.apellido),
