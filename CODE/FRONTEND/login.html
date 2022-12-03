@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <title>@VAN</title>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -63,17 +64,7 @@
                 </div>
             </div>
 
-            <div class="custom-control custom-checkbox">
-                <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="customCheck"
-                    name="example1"
-                />
-                <label class="custom-control-label" for="customCheck"
-                    ><b>Recordar usuario</b></label
-                >
-            </div>
+
             <!-- <a href="home.html"> -->
             <a class="btn btn-primary my-3" id="botonLogin" onclick="login()">
                 Iniciar sesión
@@ -88,8 +79,14 @@
                     class="text-primary"
                     >Regístrate aquí
                 </a>
+    
             </p>
+            <div id="cargando" >
+                   
+            </div>
         </form>
+
+  
 
         <!--Modal formulario de Crear cuenta-->
         <div class="modal fade" id="ModalRegistro" role="dialog">
@@ -207,6 +204,7 @@
                                 id="registrarUsuario"
                                 class="btn btn-success"
                                 onclick="registrarse()"
+                                data-dismiss="modal"
                             >
                                 Registrarse
                             </button>
