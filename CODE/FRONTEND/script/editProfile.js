@@ -224,10 +224,12 @@ async function updateProfileJSON(arreglo) {
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send(JSON.stringify(update));
+    let flag=false;
 
     xhr.onload = function () {
         if(xhr.status==400){
             
+
             alert("El nombre de usuario que se queria actualizar no esta disponible");
         }
         if (xhr.status != 200) {

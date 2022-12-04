@@ -498,6 +498,38 @@ app.delete("/api/users/:id", (req, res) => {
 });
 
 //EDITAR USUARIO A PARTIR DE SU ID
+//EDITAR USUARIO A PARTIR DE SU ID
+app.put("/api/users/:id", (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    console.log(chalk.yellowBright("Actualizando información..."));
+    let update = {};
+
+    //VERIFICAR QUE NO EXISTA OTRA PERSONA
+    //CON EL MISMO USUARIO
+    let password_enc = bcrypt.hashSync(req.body.password, 5);
+    console.log(password_enc);
+    let ID = req.params.id;
+    (update.nombre = req.body.nombre),
+        (update.apellido = req.body.apellido),
+        (update.usuario = req.body.usuario),
+        (update.password = req.body.password),
+        (update.imagen = req.body.imagen);
+    let { nombre, apellido, usuario, password, imagen } = req.body;
+    let test = { nombre, apellido, usuario, password, imagen };
+    if (test.password == "") delete test.password;
+    console.log(test.password);
+
+    if (test.password) {
+        password = bcrypt.hashSync(req.body.password, 5);
+        console.table(update);
+    }
+    console.log("test");
+    console.log(test);
+    User.updateOne({ id: ID }, { $set: test })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 app.put("/api/users/:id", async (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     console.log(chalk.yellowBright("Actualizando información..."));
@@ -535,6 +567,7 @@ app.put("/api/users/:id", async (req, res) => {
 
             return;
         }
+        res.status(201);
 
         User.updateOne({ id: ID }, { $set: test })
         .then((data) => res.json(data))
