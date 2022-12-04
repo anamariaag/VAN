@@ -30,8 +30,15 @@ const getNotifications = async () => {
 };
 
 const deleteNotification = (toDel) => {
+    console.log(toDel.innerText);
     let xhr = new XMLHttpRequest();
-    xhr.open("DELETE", "http://localhost:3000/api/notif");
+    xhr.open(
+        "DELETE",
+        "http://localhost:3000/api/notif?name=" +
+            toDel.innerText +
+            "&user=" +
+            localStorage.usuario
+    );
     xhr.setRequestHeader("x-auth-user", localStorage.token);
     xhr.send();
     xhr.onload = function () {

@@ -160,7 +160,7 @@ app.post("/api/newUser", async (req, res) => {
     if (faltantes != "") {
         res.status(400);
         res.send(faltantes.substring(0, faltantes.length - 2) + " faltantes");
-        
+
         return;
     }
     password = bcrypt.hashSync(password, 5);
@@ -370,11 +370,15 @@ app.delete("/api/tarea/:id", (req, res) => {
 });
 
 //EDITAR TAREA
-app.put("/api/tarea", (req, res) => {
+app.put("/api/tarea", async (req, res) => {
     console.table(req.body);
     let idTarea = req.body.id;
 
-    const { id, date, description, users, completed, tags } = req.body;
+    let { id, date, description, users, completed, tags } = req.body;
+
+    let tarea = await Tarea.findOne({
+        id: id,
+    });
 
     Tarea.updateOne(
         { id: idTarea },
@@ -382,6 +386,29 @@ app.put("/api/tarea", (req, res) => {
     )
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
+
+    let newNotif = [];
+    users = tarea.users;
+    console.log(users.length);
+    for (let i = 0; i < users.length; i++) {
+        console.log(i);
+        newNotif.push({
+            name: description,
+            user: users[i],
+        });
+    }
+    console.log(newNotif);
+
+    for (let i = 0; i < newNotif.length; i++) {
+        console.log(newNotif[i]);
+        let notif = Notificacion(newNotif[i]);
+        try {
+            await notif.save();
+        } catch (e) {
+            console.log(e);
+        }
+        console.log("notificación creada");
+    }
 });
 
 //marcar tarea como completada - ana
@@ -494,7 +521,13 @@ app.get("/api/notif", async (req, res) => {
     res.send(toSend);
 });
 
-app.delete("/api/notif", (req, res) => {
+app.delete("/api/notif", async (req, res) => {
+    let name = req.query.name;
+    let user = req.query.user;
+
+    let found = await Notificacion.deleteOne({ name, user });
+    console.log(found);
+
     res.status(200);
     res.send();
 });
@@ -592,25 +625,25 @@ app.put("/api/users/:id", async (req, res) => {
     }
     console.log("test");
     console.log(test);
-    try{
+    try {
         let userFound = await User.findOne({
             usuario: usuario,
         });
         if (userFound) {
             console.log("ya existe alguien con ese usuario");
             res.status(400);
-            res.send("Ya existe alguien con ese usuario, no se puede actualizar");
+            res.send(
+                "Ya existe alguien con ese usuario, no se puede actualizar"
+            );
 
             return;
         }
         res.status(201);
 
         User.updateOne({ id: ID }, { $set: test })
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-
-    }
-    catch (e) {
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
+    } catch (e) {
         res.status(400).json({
             status: "error",
             message: e.message,
