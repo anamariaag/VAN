@@ -134,7 +134,7 @@ function tareaCompleteToHTML(tarea, users, tags) {
     let date = new Date(String(tarea.date).slice(0, -1));
     //console.log(date);
     return `
-    <li class="list-group-item">
+    <li class="list-group-item" style="background: #eee">
     <!--color de tarea: bg-->
     <div
         class="todo-indicator bg-primary"
@@ -169,10 +169,10 @@ function tareaCompleteToHTML(tarea, users, tags) {
                 id = "containerComplete"
             >
                 <div
-                    class="widget-heading"
+                    class="widget-heading" 
                     id = "title${tarea.id}"
-                >
-                ${tarea.description}
+                ><del>${tarea.description}</del>
+                
                 </div>
                 <!--autor-->
                 <div
@@ -355,8 +355,9 @@ function addTarea() {
     //console.log(tarea.fecha);
     tarea.description = document.getElementById("descripcionTarea").value;
     if (tarea.description == "" || tarea.description == null) {
-        document.getElementById("modalalertsTarea").innerHTML = 
-        `<div class="alert alert-danger" style="text-align: center;">
+        document.getElementById(
+            "modalalertsTarea"
+        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Por favor añade una descripción.
         </div>`;
         setTimeout(() => {
@@ -375,7 +376,6 @@ function addTarea() {
         //console.log(tarea);
         postTarea(tarea);
     }
-    
 }
 
 async function postTarea(datos) {
@@ -626,4 +626,3 @@ async function completeTarea(idtarea) {
         }, 5000);
     }
 }
-
