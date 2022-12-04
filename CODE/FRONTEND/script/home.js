@@ -608,6 +608,9 @@ async function completeTarea(idtarea) {
     let url = "http://localhost:3000/api/tarea/done/" + idtarea;
     let resp = await fetch(url, {
         method: "PUT",
+        headers: {
+            "x-user-token": localStorage.token,
+        },
     });
     //console.log(datos);
     if (resp.ok) {
