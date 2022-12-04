@@ -3,7 +3,7 @@ const getUsers = (place, reset) => {
         "<option>--SELECCIONAR --</option>";
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "http://localhost:3000/api/users");
-    xhr.setRequestHeader("x-auth-user", localStorage.token);
+    xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
     xhr.onload = function () {
         if (xhr.status == 400) {

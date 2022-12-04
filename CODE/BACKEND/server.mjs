@@ -107,9 +107,21 @@ let User = mongoose.model("users", userSchema);
 
 app.use(express.json());
 
-const autenticar = (req, res, next) => {
-    console.log("autenticado");
-    next();
+const autenticar = async (req, res, next) => {
+    let token = req.get("x-user-token");
+    if (token == undefined) {
+        res.status(401);
+        res.send("No se envió el token");
+    } else {
+        let userFound = await User.findOne({ token: token });
+        if (userFound) {
+            console.log("autenticado");
+            next();
+            return;
+        }
+        res.status(401);
+        res.send("Usuario no encontrado");
+    }
 };
 
 app.use("/api/users", autenticar);
@@ -117,7 +129,7 @@ app.use("/api/tarea", autenticar);
 // D A T A B A S E
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS
-app.post("/api/users", async (req, res) => {
+app.post("/api/newUser", async (req, res) => {
     let id = Math.floor(Date.now() * Math.random());
     let faltantes = "";
 
@@ -207,7 +219,6 @@ let Tarea = mongoose.model("tarea", tareaSchema); //la tarea hace referencia a q
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
 app.post("/api/tarea", (req, res) => {
-    res.send("Tarea creada.");
     let id = Math.floor(Date.now() * Math.random());
     let date = req.body.date;
     let tags = req.body.tags.split(", ");
@@ -228,36 +239,88 @@ app.post("/api/tarea", (req, res) => {
     console.table(newTarea);
 
     //guardar
-    tarea.save().then((doc) => console.log(chalk.green("Tarea creada! ")));
+    tarea.save().then((doc) => {
+        console.log(chalk.green("Tarea creada! "));
+        res.status(200);
+        res.send("Tarea creada.");
+    });
 });
 
 //obtener lista de usuarios
-app.get("/api/users", (req, res) => {
-    User.find({}, function (err, result) {
-        let arrUsers = [];
-        if (err) {
-            res.status(400);
-            res.send(err);
-        } else {
-            for (let i = 0; i < result.length; i++) {
-                arrUsers.push(result[i].usuario);
-            }
-            //console.log(arrUsers);
-            res.status(201);
-            res.send(arrUsers);
-        }
-    });
+app.get("/api/users", async (req, res) => {
+    let users = await User.find({});
+
+    let arrUsers = [];
+
+    for (let i = 0; i < users.length; i++) {
+        arrUsers.push(users[i].usuario);
+    }
+    //console.log(arrUsers);
+    res.status(201);
+    res.send(arrUsers);
 });
 
 //FILTRO PARA OBTENER TAREAS
-app.get("/api/tarea", (req, res) => {
-    Tarea.find({}, function (err, result) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(result);
+app.get("/api/tarea", async (req, res) => {
+    let etiquetas = req.query.etiquetas;
+    let desc = req.query.descriptcion;
+    let date = req.query.date;
+
+    let tareas;
+    console.log(date);
+    let next_day;
+    if (date) {
+        date = new Date(Date.parse(date));
+
+        // date.setHours(-6);
+        console.log(date.getHours());
+        if (date.getHours() == 0) {
+            date.setHours(-6);
         }
-    });
+        console.log(date);
+        next_day = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+
+        // next_day.setHours(-6);
+        // date -= 1;
+        // date = new Date(date);
+        console.log(date);
+        console.log(next_day);
+    }
+    if (!desc && !date) tareas = await Tarea.find({});
+    else if (desc && !date)
+        tareas = await Tarea.find({
+            description: { $regex: desc, $options: "i" },
+        });
+    else if (date && !desc)
+        tareas = await Tarea.find({
+            date: { $gte: date, $lt: next_day },
+        });
+    else {
+        tareas = await Tarea.find({
+            date: { $gte: date, $lt: next_day },
+            description: { $regex: desc, $options: "i" },
+        });
+    }
+
+    let arrTareas = [];
+
+    for (let i = 0; i < tareas.length; i++) {
+        if (etiquetas != undefined) {
+            for (let j = 0; j < tareas[i].tags.length; j++)
+                if (
+                    tareas[i].tags[j]
+                        .toUpperCase()
+                        .includes(etiquetas.toUpperCase())
+                ) {
+                    arrTareas.push(tareas[i]);
+                    break;
+                }
+        } else {
+            arrTareas.push(tareas[i]);
+        }
+    }
+    res.status(201);
+    res.send(arrTareas);
 });
 
 //ELIMINAR TAREA
@@ -320,7 +383,8 @@ app.post("/api/login", async (req, res) => {
     try {
         let user = req.body.user;
         let password = req.body.pass;
-
+        console.log("Intento de login");
+        console.log(user);
         if (user == "") {
             res.status(401);
             res.send("Usuario faltante");
@@ -396,10 +460,14 @@ app.delete("/api/notif", (req, res) => {
 app.get("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     let ID = req.params.id;
+    console.log(ID);
     User.find({ id: ID }, function (error, val) {
+        console.log(val);
         if (val.length == 0) {
+            res.status(404);
             res.send("no existe el usuario con ese id");
         } else {
+            res.status(200);
             res.send(val);
         }
     });
@@ -411,9 +479,11 @@ app.delete("/api/users/:id", (req, res) => {
     let ID = req.params.id;
     User.deleteOne({ id: ID }, function (error, val) {
         if (val.length == 0) {
+            res.status(404);
             res.send("no existe el usuario con ese id");
         } else {
             console.log(chalk.red("Se elimino al usuario"));
+            res.status(200);
             res.send(val);
         }
     });

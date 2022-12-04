@@ -1,17 +1,14 @@
-
-
 //funcion que permite visualizar los campos
 //de un usuario en la página de perfil
-function profileToHTML(profile){
+function profileToHTML(profile) {
+    console.log("mostrando pagina de perfil");
 
-    console.log("mostrando pagina de perfil")
+    let oculto = "";
 
-    let oculto="";
- 
-    for(let i=0;i<profile.password.length;i++){
-        oculto+="*"
+    for (let i = 0; i < profile.password.length; i++) {
+        oculto += "*";
     }
-    informacionPerfil.innerHTML=`
+    informacionPerfil.innerHTML = `
     <div class="container" id="frontProfile">
             <div class="main-body">
                 <br />
@@ -122,54 +119,56 @@ function profileToHTML(profile){
                 </div>
             </div>
         </div>
-    `
+    `;
 }
 
-async function loadProfileJSON(){
+async function loadProfileJSON() {
     console.log("CARGANDO VENTANA DE PERFIL");
-    let datosToUpdate=[];
+    let datosToUpdate = [];
 
     let xhr = new XMLHttpRequest();
-    let currentUser=localStorage.id;
-            
-    xhr.open('GET', 'http://localhost:3000/api/users/'+currentUser);
+    let currentUser = localStorage.id;
+
+    xhr.open("GET", "http://localhost:3000/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
 
-    xhr.onload = function () {   
-        if(xhr.status != 200){
-            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
-        }else {
-            datosToUpdate =JSON.parse(xhr.response);
-            console.table(datosToUpdate); 
-            let profile=datosToUpdate[0];
+    xhr.onload = function () {
+        if (xhr.status != 200) {
+            // alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
+            alert(xhr.response);
+        } else {
+            datosToUpdate = JSON.parse(xhr.response);
+            console.table(datosToUpdate);
+            let profile = datosToUpdate[0];
             profileToHTML(profile);
         }
     };
-
-
 }
 
-async function deleteProfileJSON(){
-
-
+async function deleteProfileJSON() {
     let xhr = new XMLHttpRequest();
-    let currentUser=localStorage.id;
-            
-    xhr.open('GET', 'http://localhost:3000/api/users/'+currentUser);
+    let currentUser = localStorage.id;
+
+    xhr.open("DELETE", "http://localhost:3000/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("x-user-token", localStorage.token);
+    xhr.setRequestHeader("x-user-token", loalStorage.token);
     xhr.send();
 
-    xhr.onload = function () {   
-        if(xhr.status != 200){
-            
-        }else {
+    xhr.onload = function () {
+        if (xhr.status != 200) {
+            alert("error");
+        } else {
+            cerrarSesion();
             console.log("se elimino al usuario");
         }
     };
-
-
 }
 
+const cerrarSesion = () => {
+    localStorage.token = null;
+    console.log(localStorage);
+    alert("spera");
+    window.location.href = "login.html";
+};

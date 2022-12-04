@@ -22,16 +22,13 @@ const login = () => {
                         xhr.getResponseHeader("x-user-token").indexOf(",")
                     )
             );
-            localStorage.setItem(
-                "id",
-                xhr
-                    .getResponseHeader("x-user-token")
-                    .substring(
-                        14,
-                        27,
-                        xhr.getResponseHeader("x-user-token").length
-                    )
-            );
+
+            let id = "";
+            for (let i = 14; i < 27; i++) {
+                if (xhr.getResponseHeader("x-user-token")[i] == ",") break;
+                id += xhr.getResponseHeader("x-user-token")[i];
+            }
+            localStorage.setItem("id", id);
             localStorage.setItem(
                 "usuario",
                 xhr
@@ -74,7 +71,7 @@ const registrarse = () => {
     if (document.getElementById("user").value != "")
         datos.usuario = document.getElementById("user").value;
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:3000/api/users");
+    xhr.open("POST", "http://localhost:3000/api/newUser");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-auth-user", localStorage.token);
 

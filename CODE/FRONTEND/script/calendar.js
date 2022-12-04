@@ -1,6 +1,7 @@
 var days = 0;
 var today = new Date();
 var selected = new Date(today.getFullYear(), today.getMonth(), 1);
+let filterDay = undefined;
 const setCalendar = () => {
     days = new Date(
         selected.getFullYear(),
@@ -48,6 +49,15 @@ const setCalendar = () => {
             // li_arr[i].classList.add("activeDay");
             li_arr[i].setAttribute("class", "activeDay");
         });
+
+        li_arr[i].addEventListener("click", () => {
+            filterDay = new Date(
+                selected.getFullYear(),
+                selected.getMonth(),
+                li_arr[i].innerHTML
+            );
+            loadTareasJSON();
+        });
     }
 
     let months = [
@@ -78,6 +88,8 @@ const changeMonth = (num) => {
 const returnToday = () => {
     selected = new Date(today.getFullYear(), today.getMonth(), 1);
     document.getElementById("days").innerHTML = "";
+    filterDay = undefined;
+    loadTareasJSON();
     setCalendar();
 };
 

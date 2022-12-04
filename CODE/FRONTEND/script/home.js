@@ -6,44 +6,43 @@ const colors = {
     URGENT: "warning",
     PENDING: "danger",
     FRIENDS: "light",
-    FAMILY: "info"
-}
+    FAMILY: "info",
+};
 
-function tareasListToHTML(listTarea){
+function tareasListToHTML(listTarea) {
     //console.log(listTarea);
     //listArray = [listTarea]
     let tareas = "";
-    listTarea.map(tarea =>{
+    listTarea.map((tarea) => {
         let users = tarea.users.join(", ");
         let tags = "";
         let colorTag;
         //console.log(tarea.tags);
-        for(let i = 0; i < tarea.tags.length; i++){
+        for (let i = 0; i < tarea.tags.length; i++) {
             colorTag = tarea.tags[i];
             //console.log(colors[colorTag], tarea.tags[i]);
-            tags+=`<div class="badge badge-${colors[colorTag]} ml-2"
+            tags += `<div class="badge badge-${colors[colorTag]} ml-2"
             >
                 ${tarea.tags[i]}
             </div>`;
         }
         //console.log(tags);
-        if(tarea.users.includes(localStorage.usuario)){
-            if(tarea.completed == true){
+        if (tarea.users.includes(localStorage.usuario)) {
+            if (tarea.completed == true) {
                 tareas = tareas + tareaCompleteToHTML(tarea, users, tags);
-            }else{
-                tareas = tareaIncompleteToHTML(tarea, users, tags)+ tareas;
+            } else {
+                tareas = tareaIncompleteToHTML(tarea, users, tags) + tareas;
             }
         }
-        
     });
     document.getElementById("tareas").innerHTML = tareas;
 }
 
-function tareaIncompleteToHTML(tarea, users, tags){
+function tareaIncompleteToHTML(tarea, users, tags) {
     //html de la tarea
-    let date = new Date(String(tarea.date).slice(0,-1));
+    let date = new Date(String(tarea.date).slice(0, -1));
     //console.log(date);
-    return (`
+    return `
     <li class="list-group-item">
     <!--color de tarea: bg-->
     <div
@@ -105,7 +104,9 @@ function tareaIncompleteToHTML(tarea, users, tags){
                     class="border-0 btn-transition btn btn-outline-success"
                     data-toggle="modal"
                     data-target="#editarTarea"
-                    onclick="editTareaModal('${tarea.description}', '${tarea.date}', '${tarea.id}')"
+                    onclick="editTareaModal('${tarea.description}', '${
+        tarea.date
+    }', '${tarea.id}')"
                 >
                     <i
                         class="fa fa-edit"
@@ -125,14 +126,14 @@ function tareaIncompleteToHTML(tarea, users, tags){
         </div>
     </div>
 </li>
-    `)
+    `;
 }
 
-function tareaCompleteToHTML(tarea, users, tags){
+function tareaCompleteToHTML(tarea, users, tags) {
     //html de la tarea
-    let date = new Date(String(tarea.date).slice(0,-1));
+    let date = new Date(String(tarea.date).slice(0, -1));
     //console.log(date);
-    return (`
+    return `
     <li class="list-group-item">
     <!--color de tarea: bg-->
     <div
@@ -195,7 +196,9 @@ function tareaCompleteToHTML(tarea, users, tags){
                     class="border-0 btn-transition btn btn-outline-success"
                     data-toggle="modal"
                     data-target="#editarTarea"
-                    onclick="editTareaModal('${tarea.description}', '${tarea.date}', '${tarea.id}')"
+                    onclick="editTareaModal('${tarea.description}', '${
+        tarea.date
+    }', '${tarea.id}')"
                 >
                     <i
                         class="fa fa-edit"
@@ -215,30 +218,61 @@ function tareaCompleteToHTML(tarea, users, tags){
         </div>
     </div>
 </li>
-    `)
+    `;
 }
 
-async function loadTareasJSON(){
-    let url = "http://localhost:3000/api/tarea"
+async function loadTareasJSON() {
+    let etiquetas = document.getElementById("etiqueta").value;
+    let desc = document.getElementById("search").value;
+    let date = filterDay;
+
+    if (etiquetas == "ALL") etiquetas = undefined;
+    if (desc == "") desc = undefined;
+
+    console.log(date);
+    let url = "http://localhost:3000/api/tarea";
+    let filtro = false;
+    if (etiquetas != undefined) {
+        url = url + "?etiquetas=" + etiquetas + "&";
+        filtro = true;
+    }
+    if (desc != undefined) {
+        url = url + "?descriptcion=" + desc + "&";
+        filtro = true;
+    }
+    if (date != undefined) {
+        date =
+            date.getFullYear() +
+            "-" +
+            (date.getMonth() + 1) +
+            "-" +
+            date.getDate();
+        url = url + "?date=" + date + "&";
+        filtro = true;
+    }
+    if (filtro) url = url.substring(0, url.length - 1);
+    console.log(url);
     let resp = await fetch(url, {
         method: "GET",
         headers: {
-            'Content-Type': 'application/json',
-            'x-auth-user': localStorage.token
-        }
-    })
+            "Content-Type": "application/json",
+            "x-user-token": localStorage.token,
+        },
+    });
     if (resp.ok) {
         let toHtml = await resp.json();
         //console.log(toHtml);
         tareasListToHTML(toHtml);
     } else {
-        document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        document.getElementById(
+            "alerts"
+        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Surgio un error al momento de cargar los datos.
-      </div>`
+      </div>`;
     }
 }
 
-function confirmarDeleteTarea(idTarea){
+function confirmarDeleteTarea(idTarea) {
     //console.log(idTarea);
     document.getElementById("modalDelete").innerHTML = `
         <div class="modal fade" id="eliminarTarea" role="dialog">
@@ -276,18 +310,18 @@ function confirmarDeleteTarea(idTarea){
                 </div>
             </div>
         </div>
-    `
+    `;
 }
 
-async function deleteTarea(idTarea){
-    let url = "http://localhost:3000/api/tarea/" + idTarea
+async function deleteTarea(idTarea) {
+    let url = "http://localhost:3000/api/tarea/" + idTarea;
     let resp = await fetch(url, {
         method: "DELETE",
         headers: {
-            'Content-Type': 'application/json',
-            'x-auth-user': localStorage.token
-        }
-    })
+            "Content-Type": "application/json",
+            "x-user-token": localStorage.token,
+        },
+    });
     if (resp.ok) {
         loadTareasJSON();
         //let toHtml = await resp.json();
@@ -295,68 +329,87 @@ async function deleteTarea(idTarea){
         //console.log(toHtml);
         //tareasListToHTML(toHtml);
     } else {
-        if(resp.status == 404){
-            document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        if (resp.status == 404) {
+            document.getElementById(
+                "alerts"
+            ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
             <strong>Error!</strong> No se puede eliminar esa tarea.
-            </div>`
-        }else{
-            document.getElementById("alerts").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+            </div>`;
+        } else {
+            document.getElementById(
+                "alerts"
+            ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
             <strong>Error!</strong> Surgio un error.
-            </div>`
+            </div>`;
         }
     }
 }
 
-function addTarea(){
-    let tarea = {}
-    tarea.date = document.getElementById("fechaTarea").value == null || document.getElementById("fechaTarea").value ==''? new Date(): document.getElementById("fechaTarea").value;
+function addTarea() {
+    let tarea = {};
+    tarea.date =
+        document.getElementById("fechaTarea").value == null ||
+        document.getElementById("fechaTarea").value == ""
+            ? new Date()
+            : document.getElementById("fechaTarea").value;
     //console.log(tarea.fecha);
-    
-    if(tarea.description == '' || tarea.description == null){
-        document.getElementById("modalalertsTarea").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+
+    if (tarea.description == "" || tarea.description == null) {
+        document.getElementById(
+            "modalalertsTarea"
+        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Por favor añade una descripción.
         </div>`;
         setTimeout(() => {
-            document.getElementById("modalalertsTarea").innerHTML = ``
+            document.getElementById("modalalertsTarea").innerHTML = ``;
         }, 5000);
-    }else{
+    } else {
+        console.log("?");
         tarea.description = document.getElementById("descripcionTarea").value;
     }
     tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
     //el default user
-    tarea.users = document.getElementById("editselectUsersNew").innerText =="" ? localStorage.usuario: document.getElementById("editselectUsersNew").innerText;
+    tarea.users =
+        document.getElementById("editselectUsersNew").innerText == ""
+            ? localStorage.usuario
+            : document.getElementById("editselectUsersNew").innerText;
     tarea.completed = false;
+    console.log(tarea);
     postTarea(tarea);
-    
 }
 
-async function postTarea(datos){
-    let url = "http://localhost:3000/api/tarea"
+async function postTarea(datos) {
+    let url = "http://localhost:3000/api/tarea";
     let resp = await fetch(url, {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
+            "x-user-token": localStorage.token,
         },
-        body: JSON.stringify(datos)
-    })
+        body: JSON.stringify(datos),
+    });
     if (resp.ok) {
         //window.location.href = "home.html";
         alert("¡Tarea agregada con éxito!");
         loadTareasJSON();
     } else {
-        document.getElementById("modalalertsM").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
-        <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
-        </div>`;
-        setTimeout(() => {
-            document.getElementById("modalalertsM").innerHTML = ``
-        }, 5000);
+        // document.getElementById(
+        //     "modalalertsM"
+        // ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        // <strong>Error!</strong> Surgio un error al momento de cargar los datos. Vuelve a intentarlo
+        // </div>`;
+        // setTimeout(() => {
+        //     document.getElementById("modalalertsM").innerHTML = ``;
+        // }, 5000);
+        console.log(JSON.stringify(resp));
+        alert(resp);
     }
 }
 
-function editTareaModal(tareadescription, tareadate, tareaid){
-    let date = new Date(String(tareadate).slice(0,-1));
-    date = date.toISOString().slice(0,10);
-    document.getElementById("modalEditarTarea").innerHTML =`
+function editTareaModal(tareadescription, tareadate, tareaid) {
+    let date = new Date(String(tareadate).slice(0, -1));
+    date = date.toISOString().slice(0, 10);
+    document.getElementById("modalEditarTarea").innerHTML = `
         <div class="modal fade" id="editarTarea" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -498,63 +551,80 @@ function editTareaModal(tareadescription, tareadate, tareaid){
                 </div>
             </div>
         </div>
-    `
+    `;
     getUsers("selectUsersEdit", "addselectUsersEditar");
 }
 
-function editTarea(tareaid){
-    let tareaEdit = {}
+function editTarea(tareaid) {
+    let tareaEdit = {};
     tareaEdit.id = tareaid;
     tareaEdit.date = document.getElementById("fechaTareaEdit").value;
     //console.log(tarea.fecha);
-    tareaEdit.description = document.getElementById("descripcionTareaEdit").value;
-    tareaEdit.tags = document.getElementById("etiquetasAgregadasEdit").innerText.split(", ");
+    tareaEdit.description = document.getElementById(
+        "descripcionTareaEdit"
+    ).value;
+    tareaEdit.tags = document
+        .getElementById("etiquetasAgregadasEdit")
+        .innerText.split(", ");
     //falta poner default user
-    tareaEdit.users = document.getElementById("addselectUsersEditar").innerText =="" ? "admin": document.getElementById("addselectUsersEditar").innerText.split(", ");
+    tareaEdit.users =
+        document.getElementById("addselectUsersEditar").innerText == ""
+            ? "admin"
+            : document
+                  .getElementById("addselectUsersEditar")
+                  .innerText.split(", ");
     tareaEdit.completed = false;
     //console.table(tareaEdit);
     postEditTarea(tareaEdit);
-
 }
 
-async function postEditTarea(datos){
-    let url = "http://localhost:3000/api/tarea"
+async function postEditTarea(datos) {
+    let url = "http://localhost:3000/api/tarea";
     let resp = await fetch(url, {
         method: "PUT",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(datos)
-        
-    })
+        body: JSON.stringify(datos),
+    });
     //console.log(datos);
     if (resp.ok) {
         loadTareasJSON();
         window.location.href = "home.html";
     } else {
-        document.getElementById("modalalertsE").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        document.getElementById(
+            "modalalertsE"
+        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Surgio un error al momento de editar los datos. Vuelve a intentarlo.
         </div>`;
         setTimeout(() => {
-            document.getElementById("modalalertsM").innerHTML = ``
+            document.getElementById("modalalertsM").innerHTML = ``;
         }, 5000);
     }
 }
 
 async function completeTarea(idtarea) {
-    let url = "http://localhost:3000/api/tarea/done/"+idtarea
+    let url = "http://localhost:3000/api/tarea/done/" + idtarea;
     let resp = await fetch(url, {
         method: "PUT",
-    })
+    });
     //console.log(datos);
     if (resp.ok) {
         loadTareasJSON();
     } else {
-        document.getElementById("modalalertsE").innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        document.getElementById(
+            "modalalertsE"
+        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Surgio un error al momento de editar los datos. Vuelve a intentarlo.
         </div>`;
         setTimeout(() => {
-            document.getElementById("modalalertsM").innerHTML = ``
+            document.getElementById("modalalertsM").innerHTML = ``;
         }, 5000);
     }
+}
+
+const cerrarSesion = () => {
+    localStorage.token = null;
+    console.log(localStorage);
+    window.location.href = "login.html";
 };
