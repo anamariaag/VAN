@@ -134,7 +134,7 @@ function tareaCompleteToHTML(tarea, users, tags) {
     let date = new Date(String(tarea.date).slice(0, -1));
     //console.log(date);
     return `
-    <li class="list-group-item">
+    <li class="list-group-item" style="background: #eee">
     <!--color de tarea: bg-->
     <div
         class="todo-indicator bg-primary"
@@ -169,7 +169,7 @@ function tareaCompleteToHTML(tarea, users, tags) {
                 id = "containerComplete"
             >
                 <div
-                    class="widget-heading"
+                    class="widget-heading" 
                     id = "title${tarea.id}"
                 ><del>${tarea.description}</del>
                 
