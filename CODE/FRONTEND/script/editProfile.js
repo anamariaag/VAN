@@ -108,7 +108,7 @@ function updateProfileToHTML(profile) {
                                 <a
                                     class="btn btn-info"
                                     id="btn_guardarCambios"
-                                    href="profile.html"
+                                    
                                     onclick="updateProfileJSON()",
                                     >Guardar cambios</a
                                 >
@@ -213,12 +213,23 @@ async function updateProfileJSON(arreglo) {
     update.password = document.getElementById("updatePassword").value;
     update.imagen = document.getElementById("updateImagen").value;
 
-  
+  if( update.usuario.length=='' ||  update.nombre.length==''
+    || update.apellido.length==''
+    || update.imagen.length==''){
+        
+        alert("no se pueden dejar campos vacios");
+        
+  }else{
+    saveDatos(update);
+  }
 
 
+}
+
+
+function saveDatos(update){
     let xhr = new XMLHttpRequest();
     let currentUser = localStorage.id;
-
     xhr.open("PUT", "http://localhost:3000/api/users/" + currentUser);
 
     xhr.setRequestHeader("content-type", "application/json");
@@ -240,7 +251,10 @@ async function updateProfileJSON(arreglo) {
             datosToUpdate = JSON.parse(xhr.response);
             console.table(datosToUpdate);
             let profile = datosToUpdate[0];
-            updateProfileToHTML(profile);
+            //updateProfileToHTML(profile);
+            window.location.href = "profile.html";
         }
-    };
+    
+  }
+
 }
