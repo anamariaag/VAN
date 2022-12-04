@@ -50,6 +50,7 @@ function goHome() {
 }
 
 const registrarse = () => {
+    console.log("intento de registro")
     let contra = document.getElementById("password1").value;
     if (contra != document.getElementById("password2").value) {
         alert("Las contraseñas no coinciden");
@@ -89,3 +90,8 @@ const registrarse = () => {
         }
     };
 };
+document.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        document.getElementById("botonLogin").click();
+    }
+});

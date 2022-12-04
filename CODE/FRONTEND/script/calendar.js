@@ -34,21 +34,8 @@ const setCalendar = () => {
             li_arr[i].innerText == today.getDate() &&
             selected.getMonth() == today.getMonth() &&
             selected.getFullYear() == today.getFullYear()
-        ) {
+        )
             li_arr[i].setAttribute("class", "today");
-            li_arr[i].addEventListener("mouseout", () => {
-                li_arr[i].setAttribute("class", "today");
-            });
-        } else {
-            li_arr[i].addEventListener("mouseout", () => {
-                li_arr[i].classList.remove("activeDay");
-            });
-        }
-
-        li_arr[i].addEventListener("mouseover", () => {
-            // li_arr[i].classList.add("activeDay");
-            li_arr[i].setAttribute("class", "activeDay");
-        });
 
         li_arr[i].addEventListener("click", () => {
             filterDay = new Date(
@@ -56,6 +43,17 @@ const setCalendar = () => {
                 selected.getMonth(),
                 li_arr[i].innerHTML
             );
+            for (let j = 0; j < li_arr.length; j++)
+                li_arr[j].classList.remove("activeDay");
+            for (let j = 0; j < li_arr.length; j++)
+                if (
+                    li_arr[j].innerText == today.getDate() &&
+                    selected.getMonth() == today.getMonth() &&
+                    selected.getFullYear() == today.getFullYear()
+                ) {
+                    li_arr[j].setAttribute("class", "today");
+                }
+            li_arr[i].setAttribute("class", "activeDay");
             loadTareasJSON();
         });
     }

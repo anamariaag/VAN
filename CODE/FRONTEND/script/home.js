@@ -623,8 +623,3 @@ async function completeTarea(idtarea) {
     }
 }
 
-const cerrarSesion = () => {
-    localStorage.token = null;
-    console.log(localStorage);
-    window.location.href = "login.html";
-};
