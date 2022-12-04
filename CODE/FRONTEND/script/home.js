@@ -171,8 +171,8 @@ function tareaCompleteToHTML(tarea, users, tags) {
                 <div
                     class="widget-heading"
                     id = "title${tarea.id}"
-                >
-                ${tarea.description}
+                ><del>${tarea.description}</del>
+                
                 </div>
                 <!--autor-->
                 <div
@@ -355,8 +355,9 @@ function addTarea() {
     //console.log(tarea.fecha);
     tarea.description = document.getElementById("descripcionTarea").value;
     if (tarea.description == "" || tarea.description == null) {
-        document.getElementById("modalalertsTarea").innerHTML = 
-        `<div class="alert alert-danger" style="text-align: center;">
+        document.getElementById(
+            "modalalertsTarea"
+        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Por favor añade una descripción.
         </div>`;
         setTimeout(() => {
@@ -375,7 +376,6 @@ function addTarea() {
         //console.log(tarea);
         postTarea(tarea);
     }
-    
 }
 
 async function postTarea(datos) {
@@ -626,4 +626,3 @@ async function completeTarea(idtarea) {
         }, 5000);
     }
 }
-
