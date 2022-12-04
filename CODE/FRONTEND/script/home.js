@@ -229,7 +229,7 @@ async function loadTareasJSON() {
     if (etiquetas == "ALL") etiquetas = undefined;
     if (desc == "") desc = undefined;
 
-    console.log(date);
+    //console.log(date);
     let url = "http://localhost:3000/api/tarea";
     let filtro = false;
     if (etiquetas != undefined) {
@@ -251,7 +251,7 @@ async function loadTareasJSON() {
         filtro = true;
     }
     if (filtro) url = url.substring(0, url.length - 1);
-    console.log(url);
+    //console.log(url);
     let resp = await fetch(url, {
         method: "GET",
         headers: {
@@ -353,29 +353,29 @@ function addTarea() {
             ? new Date()
             : document.getElementById("fechaTarea").value;
     //console.log(tarea.fecha);
-
+    tarea.description = document.getElementById("descripcionTarea").value;
     if (tarea.description == "" || tarea.description == null) {
-        document.getElementById(
-            "modalalertsTarea"
-        ).innerHTML = `<div class="alert alert-danger" style="text-align: center;">
+        document.getElementById("modalalertsTarea").innerHTML = 
+        `<div class="alert alert-danger" style="text-align: center;">
         <strong>Error!</strong> Por favor añade una descripción.
         </div>`;
         setTimeout(() => {
             document.getElementById("modalalertsTarea").innerHTML = ``;
         }, 5000);
     } else {
-        console.log("?");
-        tarea.description = document.getElementById("descripcionTarea").value;
+        //console.log("?");
+        //tarea.description = document.getElementById("descripcionTarea").value;
+        tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
+        //el default user
+        tarea.users =
+            document.getElementById("editselectUsersNew").innerText == ""
+                ? localStorage.usuario
+                : document.getElementById("editselectUsersNew").innerText;
+        tarea.completed = false;
+        //console.log(tarea);
+        postTarea(tarea);
     }
-    tarea.tags = document.getElementById("etiquetasAgregadasNew").innerText;
-    //el default user
-    tarea.users =
-        document.getElementById("editselectUsersNew").innerText == ""
-            ? localStorage.usuario
-            : document.getElementById("editselectUsersNew").innerText;
-    tarea.completed = false;
-    console.log(tarea);
-    postTarea(tarea);
+    
 }
 
 async function postTarea(datos) {
@@ -569,7 +569,7 @@ function editTarea(tareaid) {
     //falta poner default user
     tareaEdit.users =
         document.getElementById("addselectUsersEditar").innerText == ""
-            ? "admin"
+            ? localStorage.usuario
             : document
                   .getElementById("addselectUsersEditar")
                   .innerText.split(", ");
@@ -584,6 +584,7 @@ async function postEditTarea(datos) {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
+            "x-user-token": localStorage.token,
         },
         body: JSON.stringify(datos),
     });

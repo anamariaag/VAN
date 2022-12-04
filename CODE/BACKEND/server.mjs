@@ -102,6 +102,7 @@ let tareaSchema = mongoose.Schema({
         required: true,
     },
 });
+
 // D A T A B A S E
 let User = mongoose.model("users", userSchema);
 
@@ -115,7 +116,7 @@ const autenticar = async (req, res, next) => {
     } else {
         let userFound = await User.findOne({ token: token });
         if (userFound) {
-            console.log("autenticado");
+            console.log("Autenticado");
             next();
             return;
         }
