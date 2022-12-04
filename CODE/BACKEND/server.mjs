@@ -153,7 +153,8 @@ app.post("/api/newUser", async (req, res) => {
 
     if (faltantes != "") {
         res.status(400);
-        res.send(faltantes.substring(0, faltantes.length - 2) + " incorrectos");
+        res.send(faltantes.substring(0, faltantes.length - 2) + " faltantes");
+        
         return;
     }
     password = bcrypt.hashSync(password, 5);
@@ -164,7 +165,7 @@ app.post("/api/newUser", async (req, res) => {
         if (userFound) {
             console.log("ya existe alguien con ese usuario");
             res.status(400);
-            res.send("Ya existe un alguien con ese usuario");
+            res.send("Ya existe alguien con ese usuario");
 
             return;
         }
@@ -497,7 +498,7 @@ app.delete("/api/users/:id", (req, res) => {
 });
 
 //EDITAR USUARIO A PARTIR DE SU ID
-app.put("/api/users/:id", (req, res) => {
+app.put("/api/users/:id", async (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     console.log(chalk.yellowBright("Actualizando información..."));
     let update = {};
@@ -523,9 +524,33 @@ app.put("/api/users/:id", (req, res) => {
     }
     console.log("test");
     console.log(test);
-    User.updateOne({ id: ID }, { $set: test })
+    try{
+        let userFound = await User.findOne({
+            usuario: usuario,
+        });
+        if (userFound) {
+            console.log("ya existe alguien con ese usuario");
+            res.status(400);
+            res.send("Ya existe alguien con ese usuario, no se puede actualizar");
+
+            return;
+        }
+
+        User.updateOne({ id: ID }, { $set: test })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
+
+    }
+    catch (e) {
+        res.status(400).json({
+            status: "error",
+            message: e.message,
+        });
+    }
+    /*
+    User.updateOne({ id: ID }, { $set: test })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));*/
 });
 
 app.listen(port, () => {
