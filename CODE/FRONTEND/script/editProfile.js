@@ -47,7 +47,7 @@ function updateProfileToHTML(profile) {
                             <div class="col-sm-9 text-secondary">
                                 <input id="updateNombre"
                                     type="text"
-                                    class="form-control"
+                                    class="form-control" 
                                     value=${profile.nombre}
                                 />
                             </div>
@@ -59,7 +59,7 @@ function updateProfileToHTML(profile) {
                             <div class="col-sm-9 text-secondary">
                                 <input id="updateApellido"
                                     type="text"
-                                    class="form-control"
+                                    class="form-control" 
                                     value=${profile.apellido}
                                 />
                             </div>
@@ -71,7 +71,7 @@ function updateProfileToHTML(profile) {
                             <div class="col-sm-9 text-secondary">
                                 <input  id="updateUsuario"
                                     type="text"
-                                    class="form-control"
+                                    class="form-control" 
                                     value=${profile.usuario}
                                 />
                             </div>
@@ -94,7 +94,7 @@ function updateProfileToHTML(profile) {
                             <div class="col-sm-9 text-secondary">
                                 <input id="updateImagen"
                                     type="text"
-                                    class="form-control"
+                                    class="form-control" 
                                     value=${profile.imagen}
                                 />
                             </div>
@@ -113,6 +113,9 @@ function updateProfileToHTML(profile) {
                                     >Guardar cambios</a
                                 >
                             </div>
+                            <div id="alertas">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,6 +124,7 @@ function updateProfileToHTML(profile) {
     </div>
 </div>
     `;
+
     document.getElementById("updateNombre").value = profile.nombre;
     document.getElementById("updateApellido").value = profile.apellido;
     document.getElementById("updateUsuario").value = profile.usuario;
@@ -179,6 +183,7 @@ async function allProfiles() {
 }
 
 async function updateProfileJSON(arreglo) {
+    //debugger;
     console.log("CARGANDO VENTANA DE EDITAR");
     let update = {};
     //primero hay que revisar que no exista
@@ -189,13 +194,27 @@ async function updateProfileJSON(arreglo) {
     let allUsers = allProfiles;
     console.log("TODOS LOS USUARIOS");
     console.table(allUsers);
+/*
+    if(document.getElementById("updateUsuario").value.lenght==0 ||
+    /^\s+$/.test(document.getElementById("updateUsuario").value)
+    ){
+        alert("No puedes dejar el campo vacio");
+        console.log("No puedes dejar el campo vacio");
+        return;
+    }*/
+   
+    console.log( document.getElementById("updateUsuario").value);
 
     update.usuario = document.getElementById("updateUsuario").value;
 
     update.nombre = document.getElementById("updateNombre").value;
+    
     update.apellido = document.getElementById("updateApellido").value;
     update.password = document.getElementById("updatePassword").value;
     update.imagen = document.getElementById("updateImagen").value;
+
+  
+
 
     let xhr = new XMLHttpRequest();
     let currentUser = localStorage.id;
@@ -205,8 +224,14 @@ async function updateProfileJSON(arreglo) {
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send(JSON.stringify(update));
+    let flag=false;
 
     xhr.onload = function () {
+        if(xhr.status==400){
+            
+
+            alert("El nombre de usuario que se queria actualizar no esta disponible");
+        }
         if (xhr.status != 200) {
             alert(
                 "¡No ha iniciado sesión! No tiene permisos para ver esta página :("

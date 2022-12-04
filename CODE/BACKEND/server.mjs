@@ -31,6 +31,11 @@ db.on("connected", () => {
 
 mongoose.connect(mongoConnectionUsers, { useNewUrlParser: true });
 
+let notifSchema = mongoose.Schema({
+    name: { type: String, required: true },
+    user: { type: String, required: true },
+});
+
 //definiendo esquema de USUARIO
 let userSchema = mongoose.Schema({
     id: {
@@ -106,6 +111,7 @@ let tareaSchema = mongoose.Schema({
 
 // D A T A B A S E
 let User = mongoose.model("users", userSchema);
+let Notificacion = mongoose.model("notifs", notifSchema);
 
 app.use(express.json());
 
@@ -153,7 +159,8 @@ app.post("/api/newUser", async (req, res) => {
 
     if (faltantes != "") {
         res.status(400);
-        res.send(faltantes.substring(0, faltantes.length - 2) + " incorrectos");
+        res.send(faltantes.substring(0, faltantes.length - 2) + " faltantes");
+        
         return;
     }
     password = bcrypt.hashSync(password, 5);
@@ -164,7 +171,7 @@ app.post("/api/newUser", async (req, res) => {
         if (userFound) {
             console.log("ya existe alguien con ese usuario");
             res.status(400);
-            res.send("Ya existe un alguien con ese usuario");
+            res.send("Ya existe alguien con ese usuario");
 
             return;
         }
@@ -220,7 +227,7 @@ app.post("/api/newUser", async (req, res) => {
 let Tarea = mongoose.model("tarea", tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
-app.post("/api/tarea", (req, res) => {
+app.post("/api/tarea", async (req, res) => {
     let id = Math.floor(Date.now() * Math.random());
     let date = req.body.date;
     let tags = req.body.tags.split(", ");
@@ -239,6 +246,28 @@ app.post("/api/tarea", (req, res) => {
 
     let tarea = Tarea(newTarea);
     console.table(newTarea);
+
+    let newNotif = [];
+    console.log(users.length);
+    for (let i = 0; i < users.length; i++) {
+        console.log(i);
+        newNotif.push({
+            name: description,
+            user: users[i],
+        });
+    }
+    console.log(newNotif);
+
+    for (let i = 0; i < newNotif.length; i++) {
+        console.log(newNotif[i]);
+        let notif = Notificacion(newNotif[i]);
+        try {
+            await notif.save();
+        } catch (e) {
+            console.log(e);
+        }
+        console.log("notificación creada");
+    }
 
     //guardar
     tarea.save().then((doc) => {
@@ -452,9 +481,17 @@ app.post("/api/login", async (req, res) => {
     // }
 });
 
-app.get("/api/notif", (req, res) => {
+app.get("/api/notif", async (req, res) => {
+    let usuario = req.query.usuario;
+
+    console.log("notif: " + usuario);
+
+    let notifs = await Notificacion.find({ user: usuario });
+    let toSend = [];
+    for (let i = 0; i < notifs.length; i++) toSend.push(notifs[i].name);
+    console.log(notifs);
     res.status(201);
-    res.send(["notif1", "notif2", "notif3", "naim"]);
+    res.send(toSend);
 });
 
 app.delete("/api/notif", (req, res) => {
@@ -497,6 +534,7 @@ app.delete("/api/users/:id", (req, res) => {
 });
 
 //EDITAR USUARIO A PARTIR DE SU ID
+//EDITAR USUARIO A PARTIR DE SU ID
 app.put("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     console.log(chalk.yellowBright("Actualizando información..."));
@@ -526,6 +564,62 @@ app.put("/api/users/:id", (req, res) => {
     User.updateOne({ id: ID }, { $set: test })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
+});
+
+app.put("/api/users/:id", async (req, res) => {
+    console.log(chalk.blueBright("Buscando usuario por ID"));
+    console.log(chalk.yellowBright("Actualizando información..."));
+    let update = {};
+
+    //VERIFICAR QUE NO EXISTA OTRA PERSONA
+    //CON EL MISMO USUARIO
+    let password_enc = bcrypt.hashSync(req.body.password, 5);
+    console.log(password_enc);
+    let ID = req.params.id;
+    (update.nombre = req.body.nombre),
+        (update.apellido = req.body.apellido),
+        (update.usuario = req.body.usuario),
+        (update.password = req.body.password),
+        (update.imagen = req.body.imagen);
+    let { nombre, apellido, usuario, password, imagen } = req.body;
+    let test = { nombre, apellido, usuario, password, imagen };
+    if (test.password == "") delete test.password;
+    console.log(test.password);
+
+    if (test.password) {
+        password = bcrypt.hashSync(req.body.password, 5);
+        console.table(update);
+    }
+    console.log("test");
+    console.log(test);
+    try{
+        let userFound = await User.findOne({
+            usuario: usuario,
+        });
+        if (userFound) {
+            console.log("ya existe alguien con ese usuario");
+            res.status(400);
+            res.send("Ya existe alguien con ese usuario, no se puede actualizar");
+
+            return;
+        }
+        res.status(201);
+
+        User.updateOne({ id: ID }, { $set: test })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+
+    }
+    catch (e) {
+        res.status(400).json({
+            status: "error",
+            message: e.message,
+        });
+    }
+    /*
+    User.updateOne({ id: ID }, { $set: test })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));*/
 });
 
 app.listen(port, () => {

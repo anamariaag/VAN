@@ -1,8 +1,11 @@
-const getNotifications = () => {
+const getNotifications = async () => {
     console.log("busca notificaciones");
     document.getElementById("notifList").innerHTML = "";
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:3000/api/notif");
+    xhr.open(
+        "GET",
+        "http://localhost:3000/api/notif?usuario=" + localStorage.usuario
+    );
     xhr.setRequestHeader("x-auth-user", localStorage.token);
     xhr.send();
     xhr.onload = function () {
@@ -35,7 +38,7 @@ const deleteNotification = (toDel) => {
         if (xhr.status != 200) {
             alert(xhr.status + ": " + xhr.statusText);
         } else {
-            toDel.remove(); 
+            toDel.remove();
             document.getElementById("numNotif").innerText--;
             // getNotifications();
         }
