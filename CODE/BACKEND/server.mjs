@@ -568,7 +568,7 @@ app.delete("/api/users/:id", (req, res) => {
 
 //EDITAR USUARIO A PARTIR DE SU ID
 //EDITAR USUARIO A PARTIR DE SU ID
-app.put("/api/users/:id", (req, res) => {
+app.put("/api/users/:id", async (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     console.log(chalk.yellowBright("Actualizando información..."));
     let update = {};
@@ -592,11 +592,60 @@ app.put("/api/users/:id", (req, res) => {
         password = bcrypt.hashSync(req.body.password, 5);
         console.table(update);
     }
+    try{
+    
+        let userFound = await User.findOne({
+            usuario: usuario,
+        });
+
+        if(userFound.id==ID){
+            res.status(201);
+
+            User.updateOne({ id: ID }, { $set: test })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
+
+        }else{
+            console.log("ya existe alguien con ese usuario");
+            res.status(400);
+            res.send("Ya existe alguien con ese usuario, no se puede actualizar");
+
+            return;
+
+        }
+
+       /*
+     
+        if (userFound.id!=ID) {
+            console.log("ya existe alguien con ese usuario");
+            res.status(400);
+            res.send("Ya existe alguien con ese usuario, no se puede actualizar");
+
+            return;
+        }else{
+            res.status(201);
+
+            User.updateOne({ id: ID }, { $set: test })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
+
+        }*/
+      
+
+    }
+    catch (e) {
+        res.status(400).json({
+            status: "error",
+            message: e.message,
+        });
+    }
+
+/*
     console.log("test");
     console.log(test);
     User.updateOne({ id: ID }, { $set: test })
         .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
+        .catch((error) => res.json({ message: error }));*/
 });
 
 app.put("/api/users/:id", async (req, res) => {

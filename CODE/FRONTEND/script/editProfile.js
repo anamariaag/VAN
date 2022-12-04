@@ -243,11 +243,8 @@ function saveDatos(update){
 
             alert("El nombre de usuario que se queria actualizar no esta disponible");
         }
-        if (xhr.status != 200) {
-            alert(
-                "¡No ha iniciado sesión! No tiene permisos para ver esta página :("
-            );
-        } else {
+      
+         else {
             datosToUpdate = JSON.parse(xhr.response);
             console.table(datosToUpdate);
             let profile = datosToUpdate[0];
