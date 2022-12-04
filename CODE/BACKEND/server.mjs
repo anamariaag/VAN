@@ -31,6 +31,11 @@ db.on("connected", () => {
 
 mongoose.connect(mongoConnectionUsers, { useNewUrlParser: true });
 
+let notifSchema = mongoose.Schema({
+    name: { type: String, required: true },
+    user: { type: String, required: true },
+});
+
 //definiendo esquema de USUARIO
 let userSchema = mongoose.Schema({
     id: {
@@ -106,6 +111,7 @@ let tareaSchema = mongoose.Schema({
 
 // D A T A B A S E
 let User = mongoose.model("users", userSchema);
+let Notificacion = mongoose.model("notifs", notifSchema);
 
 app.use(express.json());
 
@@ -220,7 +226,7 @@ app.post("/api/newUser", async (req, res) => {
 let Tarea = mongoose.model("tarea", tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar
 
 //POST DE NUEVA TAREA A LA BASE DE DATOS
-app.post("/api/tarea", (req, res) => {
+app.post("/api/tarea", async (req, res) => {
     let id = Math.floor(Date.now() * Math.random());
     let date = req.body.date;
     let tags = req.body.tags.split(", ");
@@ -239,6 +245,28 @@ app.post("/api/tarea", (req, res) => {
 
     let tarea = Tarea(newTarea);
     console.table(newTarea);
+
+    let newNotif = [];
+    console.log(users.length);
+    for (let i = 0; i < users.length; i++) {
+        console.log(i);
+        newNotif.push({
+            name: description,
+            user: users[i],
+        });
+    }
+    console.log(newNotif);
+
+    for (let i = 0; i < newNotif.length; i++) {
+        console.log(newNotif[i]);
+        let notif = Notificacion(newNotif[i]);
+        try {
+            await notif.save();
+        } catch (e) {
+            console.log(e);
+        }
+        console.log("notificación creada");
+    }
 
     //guardar
     tarea.save().then((doc) => {
@@ -452,9 +480,17 @@ app.post("/api/login", async (req, res) => {
     // }
 });
 
-app.get("/api/notif", (req, res) => {
+app.get("/api/notif", async (req, res) => {
+    let usuario = req.query.usuario;
+
+    console.log("notif: " + usuario);
+
+    let notifs = await Notificacion.find({ user: usuario });
+    let toSend = [];
+    for (let i = 0; i < notifs.length; i++) toSend.push(notifs[i].name);
+    console.log(notifs);
     res.status(201);
-    res.send(["notif1", "notif2", "notif3", "naim"]);
+    res.send(toSend);
 });
 
 app.delete("/api/notif", (req, res) => {
