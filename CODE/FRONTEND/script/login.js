@@ -11,7 +11,7 @@ const login = () => {
         if (xhr.status == 401) {
             alert(xhr.response);
         } else if (xhr.status == 400) {
-            alert(xhr.status + ": ya existe alguien con ese usuario" );
+            alert(xhr.status + ": ya existe alguien con ese usuario");
         } else {
             localStorage.setItem(
                 "token",
@@ -25,31 +25,32 @@ const login = () => {
             localStorage.setItem(
                 "id",
                 xhr
-                .getResponseHeader("x-user-token")
-                .substring(14,27, xhr.getResponseHeader("x-user-token").length)
+                    .getResponseHeader("x-user-token")
+                    .substring(
+                        14,
+                        27,
+                        xhr.getResponseHeader("x-user-token").length
+                    )
             );
             localStorage.setItem(
                 "usuario",
                 xhr
-                .getResponseHeader("x-user-token")
-                .substring(29, xhr.getResponseHeader("x-user-token").length)
+                    .getResponseHeader("x-user-token")
+                    .substring(29, xhr.getResponseHeader("x-user-token").length)
             );
-           
 
-            cargando.innerHTML=`
+            cargando.innerHTML = `
             <lottie-player src=" https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent"   padding: 10px 15px speed="1"  style="width: 250px; height: 60px;" loop 
-            autoplay></lottie-player>`
+            autoplay></lottie-player>`;
 
             setTimeout(goHome, 1000);
         }
     };
 };
 
-function goHome(){
+function goHome() {
     window.location.href = "home.html";
-  }
-  
-
+}
 
 const registrarse = () => {
     let contra = document.getElementById("password1").value;
@@ -72,18 +73,17 @@ const registrarse = () => {
         datos.imagen = document.getElementById("img_perfil").value;
     if (document.getElementById("user").value != "")
         datos.usuario = document.getElementById("user").value;
-
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:3000/api/users");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-auth-user", localStorage.token);
 
     xhr.send([JSON.stringify(datos)]);
-    debugger;
+    // debugger;
 
     xhr.onload = () => {
         if (xhr.status == 400) {
-            alert("ya eixste alguein con ese usuario/correo");
+            alert(xhr.response);
         } else if (xhr.status == 401) alert(xhr.response);
         else {
             console.log("se guardó el usuario:");

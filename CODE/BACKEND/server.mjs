@@ -117,72 +117,90 @@ app.use("/api/tarea", autenticar);
 // D A T A B A S E
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS
-app.post("/api/users",async (req, res) => {
-
-    
-    
-
-    res.send("Haciendo un POST de un nuevo usuario");
+app.post("/api/users", async (req, res) => {
     let id = Math.floor(Date.now() * Math.random());
+    let faltantes = "";
+
+    console.table(req.body);
     let usuario = req.body.usuario;
+    if (usuario == undefined) faltantes += "usuario, ";
     let nombre = req.body.nombre;
+    if (nombre == undefined) faltantes += "nombre, ";
     let apellido = req.body.apellido;
+    if (apellido == undefined) faltantes += "apellido, ";
     let correo = req.body.correo;
+    if (correo == undefined) faltantes += "correo, ";
     let password = req.body.password;
+    if (password == "") faltantes += "password, ";
     let fecha = req.body.fecha;
     let sexo = req.body.sexo;
     let imagen = req.body.imagen;
     let token = "";
 
-    try{
-        const userFound = await User.findOne({
-            usuario: req.body.usuario,
+    if (faltantes != "") {
+        res.status(400);
+        res.send(faltantes.substring(0, faltantes.length - 2) + " incorrectos");
+        return;
+    }
+
+    try {
+        let userFound = await User.findOne({
+            usuario: usuario,
         });
-        if(userFound.usuario==usuario){
+        if (userFound) {
             console.log("ya existe alguien con ese usuario");
             res.status(400);
-            //res.send("Ya existe un alguien con ese usuario");
-           
-            return;
+            res.send("Ya existe un alguien con ese usuario");
 
-        }else if(userFound.correo==correo){
+            return;
+        }
+        userFound = await User.findOne({ correo: correo });
+        if (userFound) {
             console.log("ya existe alguien con ese correo");
             res.status(400);
-            //res.send("Ya existe un usuario con ese correo");
+            res.send("Ya existe un usuario con ese correo");
 
             return;
-        }else{
-            let newUser = {
-                id,
-                usuario,
-                nombre,
-                apellido,
-                correo,
-                password,
-                sexo,
-                fecha,
-                imagen,
-                token,
-            };
-        
-            let user = User(newUser);
-            console.table(newUser);
-        
-            //guardar
-            user.save().then((doc) =>
-                console.log(chalk.green("Usuario creado!!: ") + doc)
-            );
-
         }
 
-    }catch (e) {
+        if (imagen == undefined) {
+            let s = sexo == "M" ? "women" : "men";
+            let random_number = Math.floor(100 * Math.random());
+            imagen =
+                "https://randomuser.me/api/portraits/" +
+                s +
+                "/" +
+                random_number +
+                ".jpg";
+        }
+
+        let newUser = {
+            id,
+            usuario,
+            nombre,
+            apellido,
+            correo,
+            password,
+            sexo,
+            fecha,
+            imagen,
+            token,
+        };
+
+        let user = User(newUser);
+        console.table(newUser);
+
+        //guardar
+        await user.save();
+        console.log(chalk.green("Usuario creado!!: "));
+        res.status(200);
+        res.send("usuario creado");
+    } catch (e) {
         res.status(400).json({
             status: "error",
             message: e.message,
         });
     }
-
-  
 });
 
 let Tarea = mongoose.model("tarea", tareaSchema); //la tarea hace referencia a qen que parte de la base se va a guardar
@@ -216,12 +234,12 @@ app.post("/api/tarea", (req, res) => {
 //obtener lista de usuarios
 app.get("/api/users", (req, res) => {
     User.find({}, function (err, result) {
-        let arrUsers=[];
+        let arrUsers = [];
         if (err) {
             res.status(400);
             res.send(err);
         } else {
-            for(let i =0; i<result.length;i++){
+            for (let i = 0; i < result.length; i++) {
                 arrUsers.push(result[i].usuario);
             }
             //console.log(arrUsers);
@@ -276,21 +294,21 @@ app.put("/api/tarea", (req, res) => {
 app.put("/api/tarea/done/:id", (req, res) => {
     //console.table(req.params.id);
     let idTarea = req.params.id;
-    
-    Tarea.find({id: idTarea }, function(err, result){
-        if(err){
+
+    Tarea.find({ id: idTarea }, function (err, result) {
+        if (err) {
             res.send(err);
-        }else{
+        } else {
             //console.log(result[0].completed);
-            if(!result[0].completed){
+            if (!result[0].completed) {
                 Tarea.updateOne({ id: idTarea }, { $set: { completed: true } })
-                .then((data) => res.json(data))
-                .catch((error) => res.json({ message: error }));
+                    .then((data) => res.json(data))
+                    .catch((error) => res.json({ message: error }));
                 //console.log("true");
-            }else{
+            } else {
                 Tarea.updateOne({ id: idTarea }, { $set: { completed: false } })
-                .then((data) => res.json(data))
-                .catch((error) => res.json({ message: error }));
+                    .then((data) => res.json(data))
+                    .catch((error) => res.json({ message: error }));
                 console.log("false");
             }
         }
@@ -321,7 +339,11 @@ app.post("/api/login", async (req, res) => {
             if (userFound.password == password) {
                 if (userFound.token != "") {
                     res.status(201);
-                    res.set("x-user-token", [userFound.token, userFound.id,userFound.usuario]);
+                    res.set("x-user-token", [
+                        userFound.token,
+                        userFound.id,
+                        userFound.usuario,
+                    ]);
                     res.set("Access-Control-Expose-Headers", "x-user-token");
                     res.send();
                     return;
@@ -332,7 +354,11 @@ app.post("/api/login", async (req, res) => {
                     await userFound.save();
                     console.log(userFound);
                     res.status(201);
-                    res.set("x-user-token", [userFound.token, userFound.id,userFound.usuario]);
+                    res.set("x-user-token", [
+                        userFound.token,
+                        userFound.id,
+                        userFound.usuario,
+                    ]);
                     res.set("Access-Control-Expose-Headers", "x-user-token");
                     res.send();
                     return;
@@ -401,7 +427,7 @@ app.put("/api/users/:id", (req, res) => {
 
     //VERIFICAR QUE NO EXISTA OTRA PERSONA
     //CON EL MISMO USUARIO
-   
+
     let ID = req.params.id;
     (update.nombre = req.body.nombre),
         (update.apellido = req.body.apellido),
