@@ -29,3 +29,9 @@ const selectUser = (from, to) => {
     else document.getElementById(to).innerText += ", " + selectItem.value;
     document.getElementById(selectItem.value).remove();
 };
+
+const cerrarSesion = () => {
+    localStorage.token = null;
+    console.log(localStorage);
+    window.location.href = "login.html";
+};

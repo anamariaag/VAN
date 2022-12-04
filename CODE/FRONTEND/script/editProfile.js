@@ -1,21 +1,15 @@
-
-
-
-
-
-
 //al querer actualizar informacion
-//del usuario, este primero debe de mostrar de 
+//del usuario, este primero debe de mostrar de
 //manera automatica los datos
-//que ya se tienen 
+//que ya se tienen
 //es por ello que se necesita primero la funcion
 //que muestra el HTML del updateProdile
 //para que en caso de que  no quiera actualzar todos los campos
-//guarde y se quede el que ya tenia 
+//guarde y se quede el que ya tenia
 
-function updateProfileToHTML(profile){
+function updateProfileToHTML(profile) {
     console.log("mostrando pagina de actualizar perfil");
-    infoUpdatePerfil.innerHTML=`
+    infoUpdatePerfil.innerHTML = `
     <div class="container" id="updatePerfil">
     <div class="main-body">
         <br />
@@ -88,10 +82,8 @@ function updateProfileToHTML(profile){
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 <input id="updatePassword"
-                                
                                     type="password"
                                     class="form-control"
-                                    value=${profile.password}
                                 />
                             </div>
                         </div>
@@ -132,103 +124,98 @@ function updateProfileToHTML(profile){
     document.getElementById("updateNombre").value = profile.nombre;
     document.getElementById("updateApellido").value = profile.apellido;
     document.getElementById("updateUsuario").value = profile.usuario;
-    document.getElementById("updatePassword").value = profile.password;
+    // document.getElementById("updatePassword").value = profile.password;
     document.getElementById("updateImagen").value = profile.imagen;
 }
 
-//una vez que ya se tienen los campos actualizados 
+//una vez que ya se tienen los campos actualizados
 //podemos tomarlos para actualizarlos
 
-async function loadProfileJSON(){
+async function loadProfileJSON() {
     console.log("CARGANDO VENTANA DE EDITAR");
-    let datosToUpdate=[];
-    let currentUser=localStorage.id;
+    let datosToUpdate = [];
+    let currentUser = localStorage.id;
 
     let xhr = new XMLHttpRequest();
-            
-    xhr.open('GET', 'http://localhost:3000/api/users/'+currentUser);
+
+    xhr.open("GET", "http://localhost:3000/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
 
-    xhr.onload = function () {   
-        if(xhr.status != 200){
-            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
-        }else {
-            datosToUpdate =JSON.parse(xhr.response);
-            console.table(datosToUpdate); 
-            let profile=datosToUpdate[0];
+    xhr.onload = function () {
+        if (xhr.status != 200) {
+            alert(
+                "¡No ha iniciado sesión! No tiene permisos para ver esta página :("
+            );
+        } else {
+            datosToUpdate = JSON.parse(xhr.response);
+            console.table(datosToUpdate);
+            let profile = datosToUpdate[0];
             updateProfileToHTML(profile);
         }
     };
 }
 
-let profiles=[];
-async function allProfiles(){
-
+let profiles = [];
+async function allProfiles() {
     let xhr = new XMLHttpRequest();
-            
-    xhr.open('GET', 'http://localhost:3000/api/users');
+
+    xhr.open("GET", "http://localhost:3000/api/users");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
 
-    xhr.onload = function () {   
-        if(xhr.status != 200){
-            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
-        }else {
-            profiles =JSON.parse(xhr.response);
-            console.table(profiles); 
-        
+    xhr.onload = function () {
+        if (xhr.status != 200) {
+            alert(
+                "¡No ha iniciado sesión! No tiene permisos para ver esta página :("
+            );
+        } else {
+            profiles = JSON.parse(xhr.response);
+            console.table(profiles);
         }
-
     };
-
 }
 
-
-async function updateProfileJSON(arreglo){
-    
+async function updateProfileJSON(arreglo) {
     console.log("CARGANDO VENTANA DE EDITAR");
-    let update={};
+    let update = {};
     //primero hay que revisar que no exista
-    //algun usuario en la BD 
+    //algun usuario en la BD
     //con el mismo usuario
 
     //obtener todos los usuarios
-    let allUsers=allProfiles;
+    let allUsers = allProfiles;
     console.log("TODOS LOS USUARIOS");
     console.table(allUsers);
-    
 
- 
-    update.usuario=document.getElementById("updateUsuario").value;
+    update.usuario = document.getElementById("updateUsuario").value;
 
-    
-    update.nombre=document.getElementById("updateNombre").value;
-    update.apellido=document.getElementById("updateApellido").value;
-    update.password=document.getElementById("updatePassword").value;
-    update.imagen=document.getElementById("updateImagen").value;
+    update.nombre = document.getElementById("updateNombre").value;
+    update.apellido = document.getElementById("updateApellido").value;
+    update.password = document.getElementById("updatePassword").value;
+    update.imagen = document.getElementById("updateImagen").value;
 
     let xhr = new XMLHttpRequest();
-    let currentUser=localStorage.id;
-            
-    xhr.open('PUT', 'http://localhost:3000/api/users/'+currentUser);
-            
+    let currentUser = localStorage.id;
+
+    xhr.open("PUT", "http://localhost:3000/api/users/" + currentUser);
+
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send(JSON.stringify(update));
 
-    xhr.onload = function () {   
-        if(xhr.status != 200){
-            alert("¡No ha iniciado sesión! No tiene permisos para ver esta página :(");
-        }else {
-            datosToUpdate =JSON.parse(xhr.response);
-            console.table(datosToUpdate); 
-            let profile=datosToUpdate[0];
+    xhr.onload = function () {
+        if (xhr.status != 200) {
+            alert(
+                "¡No ha iniciado sesión! No tiene permisos para ver esta página :("
+            );
+        } else {
+            datosToUpdate = JSON.parse(xhr.response);
+            console.table(datosToUpdate);
+            let profile = datosToUpdate[0];
             updateProfileToHTML(profile);
         }
     };
-
-
 }

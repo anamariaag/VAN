@@ -7,6 +7,7 @@ import chalk from "chalk";
 import * as fs from "node:fs";
 import cors from "cors";
 import randomize from "randomatic";
+import bcrypt from "bcrypt";
 
 const app = express();
 const port = 3000;
@@ -155,7 +156,7 @@ app.post("/api/newUser", async (req, res) => {
         res.send(faltantes.substring(0, faltantes.length - 2) + " incorrectos");
         return;
     }
-
+    password = bcrypt.hashSync(password, 5);
     try {
         let userFound = await User.findOne({
             usuario: usuario,
@@ -381,69 +382,74 @@ app.put("/api/tarea/done/:id", (req, res) => {
 
 //validar usuario y contraseña
 app.post("/api/login", async (req, res) => {
-    try {
-        let user = req.body.user;
-        let password = req.body.pass;
-        console.log("Intento de login");
-        console.log(user);
-        if (user == "") {
-            res.status(401);
-            res.send("Usuario faltante");
-            return;
-        } else if (password == "") {
-            res.status(401);
-            res.send("Contraseña faltante");
-            return;
-        }
+    // try {
+    let user = req.body.user;
+    let password = req.body.pass;
+    console.log("Intento de login");
+    console.log(user);
+    if (user == "") {
+        res.status(401);
+        res.send("Usuario faltante");
+        return;
+    } else if (password == "") {
+        res.status(401);
+        res.send("Contraseña faltante");
+        return;
+    }
 
-        const userFound = await User.findOne({
-            usuario: req.body.user,
-        });
+    const userFound = await User.findOne({
+        usuario: req.body.user,
+    });
 
-        if (userFound != undefined) {
-            if (userFound.password == password) {
-                if (userFound.token != "") {
-                    res.status(201);
-                    res.set("x-user-token", [
-                        userFound.token,
-                        userFound.id,
-                        userFound.usuario,
-                    ]);
-                    res.set("Access-Control-Expose-Headers", "x-user-token");
-                    res.send();
-                    return;
-                } else {
-                    let token =
-                        randomize("Aa0", "10") + "-" + (userFound.id % 10);
-                    userFound.token = token;
-                    await userFound.save();
-                    console.log(userFound);
-                    res.status(201);
-                    res.set("x-user-token", [
-                        userFound.token,
-                        userFound.id,
-                        userFound.usuario,
-                    ]);
-                    res.set("Access-Control-Expose-Headers", "x-user-token");
-                    res.send();
-                    return;
-                }
+    if (userFound != undefined) {
+        console.log(userFound.password);
+        if (
+            userFound.password == password ||
+            bcrypt.compareSync(password, userFound.password)
+        ) {
+            if (userFound.token != "") {
+                res.status(201);
+                res.set("x-user-token", [
+                    userFound.token,
+                    userFound.id,
+                    userFound.usuario,
+                ]);
+                res.set("Access-Control-Expose-Headers", "x-user-token");
+                res.send();
+                return;
             } else {
-                res.status(401);
-                res.send("contraseña incorrecta");
+                let token = randomize("Aa0", "10") + "-" + (userFound.id % 10);
+                userFound.token = token;
+                await userFound.save();
+                console.log(userFound);
+                res.status(201);
+                res.set("x-user-token", [
+                    userFound.token,
+                    userFound.id,
+                    userFound.usuario,
+                ]);
+                res.set("Access-Control-Expose-Headers", "x-user-token");
+                res.send();
                 return;
             }
         } else {
             res.status(401);
-            res.send("no se encontró el usuario");
+            res.send("contraseña incorrecta");
             return;
         }
-    } catch (e) {
-        res.status(400).json({
-            status: "error",
-            message: e.message,
-        });
+    } else {
+        res.status(401);
+        res.send("no se encontró el usuario");
+        return;
     }
+    // }
+    // catch (e) {
+    //     console.log("hola");
+    //     res.status(400).json({
+    //         status: "error",
+    //         message: e.message,
+    //     });
+    // }
 });
 
 app.get("/api/notif", (req, res) => {
@@ -498,20 +504,26 @@ app.put("/api/users/:id", (req, res) => {
 
     //VERIFICAR QUE NO EXISTA OTRA PERSONA
     //CON EL MISMO USUARIO
-
+    let password_enc = bcrypt.hashSync(req.body.password, 5);
+    console.log(password_enc);
     let ID = req.params.id;
     (update.nombre = req.body.nombre),
         (update.apellido = req.body.apellido),
         (update.usuario = req.body.usuario),
         (update.password = req.body.password),
         (update.imagen = req.body.imagen);
-    const { nombre, apellido, usuario, password, imagen } = req.body;
+    let { nombre, apellido, usuario, password, imagen } = req.body;
+    let test = { nombre, apellido, usuario, password, imagen };
+    if (test.password == "") delete test.password;
+    console.log(test.password);
 
-    console.table(update);
-    User.updateOne(
-        { id: ID },
-        { $set: { nombre, apellido, usuario, password, imagen } }
-    )
+    if (test.password) {
+        password = bcrypt.hashSync(req.body.password, 5);
+        console.table(update);
+    }
+    console.log("test");
+    console.log(test);
+    User.updateOne({ id: ID }, { $set: test })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });

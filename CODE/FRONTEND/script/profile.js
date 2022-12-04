@@ -3,11 +3,12 @@
 function profileToHTML(profile) {
     console.log("mostrando pagina de perfil");
 
-    let oculto = "";
+    // let oculto = "";
 
-    for (let i = 0; i < profile.password.length; i++) {
-        oculto += "*";
-    }
+    // for (let i = 0; i < profile.password.length; i++) {
+    //     oculto += "*";
+    // }
+    let oculto = "****";
     informacionPerfil.innerHTML = `
     <div class="container" id="frontProfile">
             <div class="main-body">
@@ -153,7 +154,7 @@ async function deleteProfileJSON() {
 
     xhr.open("DELETE", "http://localhost:3000/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("x-user-token", loalStorage.token);
+    xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
 
     xhr.onload = function () {
@@ -165,10 +166,3 @@ async function deleteProfileJSON() {
         }
     };
 }
-
-const cerrarSesion = () => {
-    localStorage.token = null;
-    console.log(localStorage);
-    alert("spera");
-    window.location.href = "login.html";
-};
