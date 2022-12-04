@@ -11,7 +11,7 @@ const login = () => {
         if (xhr.status == 401) {
             alert(xhr.response);
         } else if (xhr.status == 400) {
-            alert(xhr.status + ": ya existe alguien con ese usuario");
+            alert(xhr.status );
         } else {
             localStorage.setItem(
                 "token",
@@ -82,7 +82,11 @@ const registrarse = () => {
     xhr.onload = () => {
         if (xhr.status == 400) {
             alert(xhr.response);
-        } else if (xhr.status == 401) alert(xhr.response);
+         
+       
+        } else if (xhr.status == 401) 
+            alert(xhr.response);
+       
         else {
             console.log("se guardó el usuario:");
             console.table(datos);
