@@ -10,7 +10,7 @@ import randomize from "randomatic";
 import bcrypt from "bcrypt";
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(
     cors({
@@ -672,6 +672,6 @@ app.put("/api/users/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));*/
 });
 
-app.listen(port, () => {
-    console.log("Servicio levantado en el puerto " + port);
+app.listen(PORT, () => {
+    console.log("Servicio levantado en el puerto " + PORT);
 });
