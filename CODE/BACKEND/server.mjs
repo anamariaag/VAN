@@ -138,7 +138,7 @@ app.use("/api/tarea", autenticar);
 
 ///POST DE UN NUEVO USUARIO A LA BASE DE DATOS
 app.post("/api/newUser", async (req, res) => {
-    let id = Math.floor(Date.now() * Math.random());
+    let id = Math.floor(Date.now() * 4 * Math.random());
     let faltantes = "";
 
     // console.table(req.body);
