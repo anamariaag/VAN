@@ -2,7 +2,7 @@ const getUsers = (place, reset) => {
     document.getElementById(place).innerHTML =
         "<option>--SELECCIONAR --</option>";
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:3000/api/users");
+    xhr.open("GET", "https://van-dasw.onrender.com/api/users");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
     xhr.onload = function () {

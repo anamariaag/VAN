@@ -4,7 +4,7 @@ const getNotifications = async () => {
     let xhr = new XMLHttpRequest();
     xhr.open(
         "GET",
-        "http://localhost:3000/api/notif?usuario=" + localStorage.usuario
+        "https://van-dasw.onrender.com/api/notif?usuario=" + localStorage.usuario
     );
     xhr.setRequestHeader("x-auth-user", localStorage.token);
     xhr.send();
@@ -34,7 +34,7 @@ const deleteNotification = (toDel) => {
     let xhr = new XMLHttpRequest();
     xhr.open(
         "DELETE",
-        "http://localhost:3000/api/notif?name=" +
+        "https://van-dasw.onrender.com/api/notif?name=" +
             toDel.innerText +
             "&user=" +
             localStorage.usuario

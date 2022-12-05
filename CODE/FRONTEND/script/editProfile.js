@@ -142,7 +142,7 @@ async function loadProfileJSON() {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open("GET", "http://localhost:3000/api/users/" + currentUser);
+    xhr.open("GET", "https://van-dasw.onrender.com/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
@@ -165,7 +165,7 @@ let profiles = [];
 async function allProfiles() {
     let xhr = new XMLHttpRequest();
 
-    xhr.open("GET", "http://localhost:3000/api/users");
+    xhr.open("GET", "https://van-dasw.onrender.com/api/users");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
@@ -230,7 +230,7 @@ async function updateProfileJSON(arreglo) {
 function saveDatos(update){
     let xhr = new XMLHttpRequest();
     let currentUser = localStorage.id;
-    xhr.open("PUT", "http://localhost:3000/api/users/" + currentUser);
+    xhr.open("PUT", "https://van-dasw.onrender.com/api/users/" + currentUser);
 
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);

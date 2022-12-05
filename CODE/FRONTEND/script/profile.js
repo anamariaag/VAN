@@ -130,7 +130,7 @@ async function loadProfileJSON() {
     let xhr = new XMLHttpRequest();
     let currentUser = localStorage.id;
 
-    xhr.open("GET", "http://localhost:3000/api/users/" + currentUser);
+    xhr.open("GET", "https://van-dasw.onrender.com/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();
@@ -152,7 +152,7 @@ async function deleteProfileJSON() {
     let xhr = new XMLHttpRequest();
     let currentUser = localStorage.id;
 
-    xhr.open("DELETE", "http://localhost:3000/api/users/" + currentUser);
+    xhr.open("DELETE", "https://van-dasw.onrender.com/api/users/" + currentUser);
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-user-token", localStorage.token);
     xhr.send();

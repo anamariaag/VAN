@@ -241,7 +241,7 @@ async function loadTareasJSON() {
     if (desc == "") desc = undefined;
 
     //console.log(date);
-    let url = "http://localhost:3000/api/tarea";
+    let url = "https://van-dasw.onrender.com/api/tarea";
     let filtro = false;
     if (etiquetas != undefined) {
         url = url + "?etiquetas=" + etiquetas + "&";
@@ -325,7 +325,7 @@ function confirmarDeleteTarea(idTarea) {
 }
 
 async function deleteTarea(idTarea) {
-    let url = "http://localhost:3000/api/tarea/" + idTarea;
+    let url = "https://van-dasw.onrender.com/api/tarea/" + idTarea;
     let resp = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -391,7 +391,7 @@ function addTarea() {
 }
 
 async function postTarea(datos) {
-    let url = "http://localhost:3000/api/tarea";
+    let url = "https://van-dasw.onrender.com/api/tarea";
     let resp = await fetch(url, {
         method: "POST",
         headers: {
@@ -591,7 +591,7 @@ function editTarea(tareaid) {
 }
 
 async function postEditTarea(datos) {
-    let url = "http://localhost:3000/api/tarea";
+    let url = "https://van-dasw.onrender.com/api/tarea";
     let resp = await fetch(url, {
         method: "PUT",
         headers: {
@@ -617,7 +617,7 @@ async function postEditTarea(datos) {
 }
 
 async function completeTarea(idtarea) {
-    let url = "http://localhost:3000/api/tarea/done/" + idtarea;
+    let url = "https://van-dasw.onrender.com/api/tarea/done/" + idtarea;
     let resp = await fetch(url, {
         method: "PUT",
         headers: {
