@@ -1,6 +1,6 @@
 const login = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:3000/api/login");
+    xhr.open("POST", "https://van-dasw.onrender.com/api/login");
     xhr.setRequestHeader("content-type", "application/json");
     let datos = {};
     datos.user = document.getElementById("uname").value;
@@ -72,7 +72,7 @@ const registrarse = () => {
     if (document.getElementById("user").value != "")
         datos.usuario = document.getElementById("user").value;
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:3000/api/newUser");
+    xhr.open("POST", "https://van-dasw.onrender.com/api/newUser");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-auth-user", localStorage.token);
 
