@@ -222,6 +222,7 @@ function tareaCompleteToHTML(tarea, users, tags) {
 }
 
 async function loadTareasJSON() {
+    console.log("loading tareas");
     let etiquetas = document.getElementById("etiqueta").value;
     let desc = document.getElementById("search").value;
     let date = filterDay;
@@ -376,6 +377,7 @@ function addTarea() {
         //console.log(tarea);
         postTarea(tarea);
     }
+    location.reload();
 }
 
 async function postTarea(datos) {

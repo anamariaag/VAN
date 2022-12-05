@@ -141,7 +141,7 @@ app.post("/api/newUser", async (req, res) => {
     let id = Math.floor(Date.now() * Math.random());
     let faltantes = "";
 
-    console.table(req.body);
+    // console.table(req.body);
     let usuario = req.body.usuario;
     if (usuario == undefined) faltantes += "usuario, ";
     let nombre = req.body.nombre;
@@ -209,7 +209,7 @@ app.post("/api/newUser", async (req, res) => {
         };
 
         let user = User(newUser);
-        console.table(newUser);
+        // console.table(newUser);
 
         //guardar
         await user.save();
@@ -245,21 +245,17 @@ app.post("/api/tarea", async (req, res) => {
     };
 
     let tarea = Tarea(newTarea);
-    console.table(newTarea);
+    // console.table(newTarea);
 
     let newNotif = [];
-    console.log(users.length);
     for (let i = 0; i < users.length; i++) {
-        console.log(i);
         newNotif.push({
             name: description,
             user: users[i],
         });
     }
-    console.log(newNotif);
 
     for (let i = 0; i < newNotif.length; i++) {
-        console.log(newNotif[i]);
         let notif = Notificacion(newNotif[i]);
         try {
             await notif.save();
@@ -298,7 +294,6 @@ app.get("/api/tarea", async (req, res) => {
     let date = req.query.date;
 
     let tareas;
-    console.log(date);
     let next_day;
     if (date) {
         date = new Date(Date.parse(date));
@@ -308,14 +303,7 @@ app.get("/api/tarea", async (req, res) => {
         if (date.getHours() == 0) {
             date.setHours(-6);
         }
-        console.log(date);
         next_day = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-
-        // next_day.setHours(-6);
-        // date -= 1;
-        // date = new Date(date);
-        console.log(date);
-        console.log(next_day);
     }
     if (!desc && !date) tareas = await Tarea.find({});
     else if (desc && !date)
@@ -350,6 +338,7 @@ app.get("/api/tarea", async (req, res) => {
             arrTareas.push(tareas[i]);
         }
     }
+    arrTareas.sort((a, b) => (a.date > b.date ? -1 : b.date > a.date ? 1 : 0));
     res.status(201);
     res.send(arrTareas);
 });
@@ -371,7 +360,6 @@ app.delete("/api/tarea/:id", (req, res) => {
 
 //EDITAR TAREA
 app.put("/api/tarea", async (req, res) => {
-    console.table(req.body);
     let idTarea = req.body.id;
 
     let { id, date, description, users, completed, tags } = req.body;
@@ -389,18 +377,14 @@ app.put("/api/tarea", async (req, res) => {
 
     let newNotif = [];
     users = tarea.users;
-    console.log(users.length);
     for (let i = 0; i < users.length; i++) {
-        console.log(i);
         newNotif.push({
             name: description,
             user: users[i],
         });
     }
-    console.log(newNotif);
 
     for (let i = 0; i < newNotif.length; i++) {
-        console.log(newNotif[i]);
         let notif = Notificacion(newNotif[i]);
         try {
             await notif.save();
@@ -430,7 +414,6 @@ app.put("/api/tarea/done/:id", (req, res) => {
                 Tarea.updateOne({ id: idTarea }, { $set: { completed: false } })
                     .then((data) => res.json(data))
                     .catch((error) => res.json({ message: error }));
-                console.log("false");
             }
         }
     });
@@ -441,8 +424,6 @@ app.post("/api/login", async (req, res) => {
     // try {
     let user = req.body.user;
     let password = req.body.pass;
-    console.log("Intento de login");
-    console.log(user);
     if (user == "") {
         res.status(401);
         res.send("Usuario faltante");
@@ -458,7 +439,6 @@ app.post("/api/login", async (req, res) => {
     });
 
     if (userFound != undefined) {
-        console.log(userFound.password);
         if (
             userFound.password == password ||
             bcrypt.compareSync(password, userFound.password)
@@ -477,7 +457,6 @@ app.post("/api/login", async (req, res) => {
                 let token = randomize("Aa0", "10") + "-" + (userFound.id % 10);
                 userFound.token = token;
                 await userFound.save();
-                console.log(userFound);
                 res.status(201);
                 res.set("x-user-token", [
                     userFound.token,
@@ -516,7 +495,6 @@ app.get("/api/notif", async (req, res) => {
     let notifs = await Notificacion.find({ user: usuario });
     let toSend = [];
     for (let i = 0; i < notifs.length; i++) toSend.push(notifs[i].name);
-    console.log(notifs);
     res.status(201);
     res.send(toSend);
 });
@@ -526,7 +504,6 @@ app.delete("/api/notif", async (req, res) => {
     let user = req.query.user;
 
     let found = await Notificacion.deleteOne({ name, user });
-    console.log(found);
 
     res.status(200);
     res.send();
@@ -537,9 +514,7 @@ app.delete("/api/notif", async (req, res) => {
 app.get("/api/users/:id", (req, res) => {
     console.log(chalk.blueBright("Buscando usuario por ID"));
     let ID = req.params.id;
-    console.log(ID);
     User.find({ id: ID }, function (error, val) {
-        console.log(val);
         if (val.length == 0) {
             res.status(404);
             res.send("no existe el usuario con ese id");
@@ -576,7 +551,6 @@ app.put("/api/users/:id", async (req, res) => {
     //VERIFICAR QUE NO EXISTA OTRA PERSONA
     //CON EL MISMO USUARIO
     let password_enc = bcrypt.hashSync(req.body.password, 5);
-    console.log(password_enc);
     let ID = req.params.id;
     (update.nombre = req.body.nombre),
         (update.apellido = req.body.apellido),
@@ -586,35 +560,32 @@ app.put("/api/users/:id", async (req, res) => {
     let { nombre, apellido, usuario, password, imagen } = req.body;
     let test = { nombre, apellido, usuario, password, imagen };
     if (test.password == "") delete test.password;
-    console.log(test.password);
 
     if (test.password) {
         password = bcrypt.hashSync(req.body.password, 5);
-        console.table(update);
     }
-    try{
-    
+    try {
         let userFound = await User.findOne({
             usuario: usuario,
         });
 
-        if(userFound.id==ID){
+        if (userFound.id == ID) {
             res.status(201);
 
             User.updateOne({ id: ID }, { $set: test })
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ message: error }));
-
-        }else{
+                .then((data) => res.json(data))
+                .catch((error) => res.json({ message: error }));
+        } else {
             console.log("ya existe alguien con ese usuario");
             res.status(400);
-            res.send("Ya existe alguien con ese usuario, no se puede actualizar");
+            res.send(
+                "Ya existe alguien con ese usuario, no se puede actualizar"
+            );
 
             return;
-
         }
 
-       /*
+        /*
      
         if (userFound.id!=ID) {
             console.log("ya existe alguien con ese usuario");
@@ -630,17 +601,14 @@ app.put("/api/users/:id", async (req, res) => {
             .catch((error) => res.json({ message: error }));
 
         }*/
-      
-
-    }
-    catch (e) {
+    } catch (e) {
         res.status(400).json({
             status: "error",
             message: e.message,
         });
     }
 
-/*
+    /*
     console.log("test");
     console.log(test);
     User.updateOne({ id: ID }, { $set: test })
@@ -656,7 +624,6 @@ app.put("/api/users/:id", async (req, res) => {
     //VERIFICAR QUE NO EXISTA OTRA PERSONA
     //CON EL MISMO USUARIO
     let password_enc = bcrypt.hashSync(req.body.password, 5);
-    console.log(password_enc);
     let ID = req.params.id;
     (update.nombre = req.body.nombre),
         (update.apellido = req.body.apellido),
@@ -666,14 +633,10 @@ app.put("/api/users/:id", async (req, res) => {
     let { nombre, apellido, usuario, password, imagen } = req.body;
     let test = { nombre, apellido, usuario, password, imagen };
     if (test.password == "") delete test.password;
-    console.log(test.password);
 
     if (test.password) {
         password = bcrypt.hashSync(req.body.password, 5);
-        console.table(update);
     }
-    console.log("test");
-    console.log(test);
     try {
         let userFound = await User.findOne({
             usuario: usuario,
