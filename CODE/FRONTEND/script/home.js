@@ -41,7 +41,13 @@ function tareasListToHTML(listTarea) {
 function tareaIncompleteToHTML(tarea, users, tags) {
     //html de la tarea
     let date = new Date(String(tarea.date).slice(0, -1));
-    //console.log(date);
+    let today = new Date();
+    if (date.toDateString() === today.toDateString()) {
+        date = "Today";
+    } else {
+        date = date.toDateString();
+    }
+
     return `
     <li class="list-group-item">
     <!--color de tarea: bg-->
@@ -93,7 +99,7 @@ function tareaIncompleteToHTML(tarea, users, tags) {
                 <div
                     class="widget-subheading"
                 >
-                    ${date.toDateString()}
+                    ${date}
                 </div>
             </div>
             <div
@@ -104,9 +110,7 @@ function tareaIncompleteToHTML(tarea, users, tags) {
                     class="border-0 btn-transition btn btn-outline-success"
                     data-toggle="modal"
                     data-target="#editarTarea"
-                    onclick="editTareaModal('${tarea.description}', '${
-        tarea.date
-    }', '${tarea.id}')"
+                    onclick="editTareaModal('${tarea.description}', '${tarea.date}', '${tarea.id}')"
                 >
                     <i
                         class="fa fa-edit"
@@ -133,6 +137,12 @@ function tareaCompleteToHTML(tarea, users, tags) {
     //html de la tarea
     let date = new Date(String(tarea.date).slice(0, -1));
     //console.log(date);
+    let today = new Date();
+    if (date.toDateString() === today.toDateString()) {
+        date = "Today";
+    } else {
+        date = date.toDateString();
+    }
     return `
     <li class="list-group-item" style="background: #eee">
     <!--color de tarea: bg-->
@@ -185,7 +195,7 @@ function tareaCompleteToHTML(tarea, users, tags) {
                 <div
                     class="widget-subheading"
                 >
-                    ${date.toDateString()}
+                    ${date}
                 </div>
             </div>
             <div

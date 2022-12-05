@@ -368,30 +368,35 @@ app.put("/api/tarea", async (req, res) => {
         id: id,
     });
 
-    Tarea.updateOne(
-        { id: idTarea },
-        { $set: { id, date, description, users, completed, tags } }
-    )
+    let toSet = { id, date, users, completed };
+    // description, tags
+    if (description != "") toSet.description = description;
+    if (tags[0] != "") toSet.tags = tags;
+    console.log(toSet);
+
+    Tarea.updateOne({ id: idTarea }, { $set: toSet })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 
-    let newNotif = [];
-    users = tarea.users;
-    for (let i = 0; i < users.length; i++) {
-        newNotif.push({
-            name: description,
-            user: users[i],
-        });
-    }
-
-    for (let i = 0; i < newNotif.length; i++) {
-        let notif = Notificacion(newNotif[i]);
-        try {
-            await notif.save();
-        } catch (e) {
-            console.log(e);
+    if (description != "") {
+        let newNotif = [];
+        users = tarea.users;
+        for (let i = 0; i < users.length; i++) {
+            newNotif.push({
+                name: description,
+                user: users[i],
+            });
         }
-        console.log("notificación creada");
+
+        for (let i = 0; i < newNotif.length; i++) {
+            let notif = Notificacion(newNotif[i]);
+            try {
+                await notif.save();
+            } catch (e) {
+                console.log(e);
+            }
+            console.log("notificación creada");
+        }
     }
 });
 

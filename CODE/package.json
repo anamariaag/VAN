@@ -13,7 +13,7 @@
   },
   "name": "code",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "devStart": "nodemon ./BACKEND/server.mjs"
   },
